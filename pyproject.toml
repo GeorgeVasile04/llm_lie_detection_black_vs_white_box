@@ -1,0 +1,46 @@
+[project]
+name = "llm-lie-detection"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "PierreThio",email = "thiolierepierre@gmail.com"}
+]
+readme = "README.md"
+requires-python = ">=3.11, <3.12"
+
+[tool.poetry.dependencies]
+datasets = "^2.16.1"
+torch = "^2.1.2"
+pytest = "^7.4.4"
+scikit-learn = "^1.3.2"
+seaborn = "^0.13.1"
+mppr = { git = "https://github.com/mishajw/mppr.git", branch = "main" }
+transformers = "^4.36.2"
+openai = "^1.7.2"
+python-dotenv = "^1.0.0"
+jsonlines = "^4.0.0"
+jaxtyping = "^0.2.25"
+fire = "^0.5.0"
+accelerate = "^0.26.1"
+plotly = "^5.18.0"
+promptsource = { git = "https://github.com/bigscience-workshop/promptsource", branch = "main" }
+kaleido = "0.2.1"
+numpy = "^2.4.2"
+tenacity = "^9.1.4"
+pandas = "^2.1.4"
+tqdm = "^4.67.3"
+matplotlib = "^3.10.8"
+langchain = "^1.2.9"
+retry = "^0.9.2"
+gensim = "^4.4.0"
+tabulate = "^0.9.0"
+setuptools = "^82.0.0"
+importlib = "^1.0.4"
+<<<<<<< HEAD
+=======
+overrides = "^7.7.0"
+>>>>>>> de1d9388750f5b71140c7866df78dd3a708deab4
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
