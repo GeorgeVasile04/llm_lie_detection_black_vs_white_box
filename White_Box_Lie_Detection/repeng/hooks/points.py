@@ -34,15 +34,31 @@ class TupleTensorExtractor(TensorExtractor):
     index: int
 
     def extract(self, output: Any) -> torch.Tensor:
+        if isinstance(output, torch.Tensor):
+            if self.index == 0:
+                return output
+            raise ValueError(
+                f"Expected tuple for index {self.index}, but got tensor. "
+                "This likely means the model output format has changed."
+            )
+        
         assert isinstance(
             output, tuple
         ), f"Expected tuple, instead found: {type(output)}"
+        
+        # Handle case where tuple element might be None or not a tensor
+        item = output[self.index]
         assert isinstance(
-            output[self.index], torch.Tensor
-        ), f"Expected tensor, instead found: {type(output[self.index])}"
-        return output[self.index]
+            item, torch.Tensor
+        ), f"Expected tensor at index {self.index}, instead found: {type(item)}"
+        return item
 
     def insert(self, output: Any, tensor: torch.Tensor) -> Any:
+        if isinstance(output, torch.Tensor):
+            if self.index == 0:
+                return tensor
+            raise ValueError("Cannot insert into tensor at index > 0")
+
         assert isinstance(
             output, tuple
         ), f"Expected tuple, instead found: {type(output)}"
