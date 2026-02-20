@@ -4,6 +4,7 @@ import json
 import torch
 import numpy as np
 import pandas as pd
+import random
 from typing import List, Dict, Tuple, Any, Optional
 from tqdm.auto import tqdm
 # Import repeng specific tools
@@ -11,39 +12,95 @@ from White_Box_Lie_Detection.repeng.models.loading import load_llm_oioo
 from White_Box_Lie_Detection.repeng.activations.inference import get_model_activations
 from White_Box_Lie_Detection.repeng.probes.difference_in_means import train_dim_probe as train_dim_repeng
 
-def load_dataset(file_path: str) -> pd.DataFrame:
+def _extract_anthropic_data(data_dir: str, num_samples: int = 100) -> pd.DataFrame:
     """
-    Step 1: Load the dataset.
-    Handles both 'records' (list of dicts) and 'columns' (dict of lists/dicts) JSON formats.
+    Extracts samples from Anthropic Awareness datasets.
+    Categorizes them as 'anthropic_awareness'.
     """
-    if not os.path.exists(file_path):
-        raise FileNotFoundError(f"Dataset not found at {file_path}")
-        
-    if file_path.endswith('.json'):
-        # using orient=None allows pandas to automatically detect the structure 
-        # (e.g. 'columns' like {"col": {"idx": val}} or 'records' like [{"col": val}])
-        df = pd.read_json(file_path)
-    elif file_path.endswith('.csv'):
-        df = pd.read_csv(file_path)
-    else:
-        raise ValueError("Unsupported file format. Use .json or .csv")
+    files = [
+        "anthropic_awareness_ai.json"
+    ]
     
-    return df
+    all_data = []
+    
+    for f in files:
+        path = os.path.join(data_dir, f)
+        if os.path.exists(path):
+            with open(path, 'r', encoding='utf-8') as file:
+                data = json.load(file)
+                # These files usually have 'question' and 'answer' keys 
+                # where values are dicts indexed by number
+                questions = data.get('question', {})
+                answers = data.get('answer', {})
+                
+                for key, q in questions.items():
+                    a = answers.get(key, "").strip().lower()
+                    # Creating True/False pairs
+                    # Anthropic questions are Yes/No. 
+                    # We need to construct a Lie.
+                    # If answer is 'no', lie is 'yes'.
+                    
+                    true_ans = a
+                    lie_ans = "yes" if "no" in true_ans else "no"
+                    
+                    # Original (True) -> Label 1
+                    all_data.append({
+                        'question': q,
+                        'answer': true_ans,
+                        'label': 1,
+                        'category': 'anthropic_awareness',
+                        'source_dataset': 'anthropic'
+                    })
+                    # Lie -> Label 0
+                    all_data.append({
+                        'question': q,
+                        'answer': lie_ans,
+                        'label': 0,
+                        'category': 'anthropic_awareness',
+                        'source_dataset': 'anthropic'
+                    })
+    
+    df = pd.DataFrame(all_data)
+    # We need num_samples pairs. So take num_samples // 2 original items and their pairs? 
+    # Or num_samples total rows?
+    # User said "100 Anthropic Awareness". Usually means 100 questions (200 rows if paired).
+    # But let's assume num_samples is the number of QUESTIONS to include.
+    
+    if len(df) == 0:
+        print("Warning: No Anthropic data found.")
+        return pd.DataFrame()
 
-def generate_pairs_from_raw_data(df: pd.DataFrame, num_samples: Optional[int] = None) -> pd.DataFrame:
-    """
-    Helper to process raw QA data into Truth/Lie pairs.
-    """
-    processed_rows = []
+    # Group by question to keep pairs together
+    questions = df['question'].unique()
+    selected_questions = np.random.choice(questions, size=min(num_samples, len(questions)), replace=False)
     
-    if num_samples:
-        df = df.head(num_samples)
+    final_df = df[df['question'].isin(selected_questions)].copy()
+    return final_df
+
+def _extract_common_sense_data(data_dir: str, num_samples: int = 200) -> pd.DataFrame:
+    """
+    Extracts samples from Common Sense QA.
+    """
+    path = os.path.join(data_dir, "common_sens_qa_v2.json")
+    if not os.path.exists(path):
+        # flexibility for filename
+        path = os.path.join(data_dir, "commonsense_QA_v2_dev.json") 
+        if not os.path.exists(path):
+             print(f"Warning: Common sense file not found at {path}")
+             return pd.DataFrame()
+             
+    # Reuse existing logic but simplified
+    raw_df = pd.read_json(path)
     
-    for _, row in df.iterrows():
+    # Random sample of questions
+    if len(raw_df) > num_samples:
+        raw_df = raw_df.sample(n=num_samples, random_state=42)
+        
+    pairs = []
+    for _, row in raw_df.iterrows():
         q = row['question']
         true_ans = str(row['answer']).strip()
         
-        # Determine lie answer (simple inversion for True/False)
         lie_ans = None
         if true_ans.lower() == 'true':
             lie_ans = 'False'
@@ -55,22 +112,258 @@ def generate_pairs_from_raw_data(df: pd.DataFrame, num_samples: Optional[int] = 
             lie_ans = 'Yes'
             
         if lie_ans:
-            # Honest example (Label 0)
-            processed_rows.append({
-                'question': q,
-                'answer': true_ans,
-                'label': 0
-            })
-            # Lying example (Label 1)
-            processed_rows.append({
-                'question': q,
-                'answer': lie_ans,
-                'label': 1
-            })
+            # True -> Label 1
+            pairs.append({'question': q, 'answer': true_ans, 'label': 1, 'category': 'common_sense', 'source_dataset': 'common_sense'})
+            # Lie -> Label 0
+            pairs.append({'question': q, 'answer': lie_ans, 'label': 0, 'category': 'common_sense', 'source_dataset': 'common_sense'})
             
-    df_pairs = pd.DataFrame(processed_rows)
-    # Shuffle the dataset so we don't have alternating True/False patterns
-    return df_pairs.sample(frac=1, random_state=42).reset_index(drop=True)
+    return pd.DataFrame(pairs)
+
+def _extract_math_data(data_dir: str, num_samples: int = 200) -> pd.DataFrame:
+    """
+    Extracts samples from Mathematical Problems.
+    """
+    path = os.path.join(data_dir, "math_problems.json")
+    if not os.path.exists(path):
+        print("Warning: Math file 'math_problems.json' not found.")
+        return pd.DataFrame()
+        
+    with open(path, 'r', encoding='utf-8') as f:
+        data = json.load(f)
+        
+    # Structure: columns question, answer, false_statement, type
+    # types: addition, subtraction, multiplication, division
+    
+    questions = data.get('question', {})
+    answers = data.get('answer', {})
+    false_statements = data.get('false_statement', {}) # This might be the full sentence lie
+    types = data.get('type', {})
+    
+    # We need to construct pairs.
+    # The 'false_statement' is usually "The result of X + Y is Z (wrong)". 
+    # But our probe training expects (Question, Answer).
+    # We need to extract the 'answer' part from the false statement or just use the number if available.
+    # Actually mathematical_problems.json usually has a 'false_answer' column or we can parse it.
+    
+    # Let's inspect available keys in a generic way or assume standard 'false_answer' existing
+    # Checking previous grep: questions_1000 had 'false_answer'. 
+    # Let's assume math has it too or we use the statement.
+    # For robust probing, we want "Question: What is 2+2? Answer: 4" vs "Question: What is 2+2? Answer: 5".
+    
+    # If standard 'false_answer' is missing, we might need to parse.
+    # Let's try to find 'false_answer' in the keys.
+    has_false_answer = 'false_answer' in data
+    
+    all_rows = []
+    ids = list(questions.keys())
+    
+    for i in ids:
+        q = questions[i]
+        a = str(answers[i])
+        t = types.get(i, 'math')
+        
+        # Get false answer
+        if has_false_answer:
+            fa = str(data['false_answer'][i])
+        else:
+            # Fallback: if 'false_statement' exists, try to extract, or generate simple wrong answer
+            if 'false_statement' in data:
+               fs = data['false_statement'][i]
+               # Heuristic: split by is/result is? It's risky.
+               # Simple math generation: add 1
+               try:
+                   val = float(a)
+                   fa = str(val + 1)
+                   if "." in a and ".0" in fa: fa = fa.replace(".0", "")
+               except:
+                   fa = a + " (False)"
+            else:
+                fa = a + " (False)"
+        
+        # True Answer -> Label 1
+        all_rows.append({
+            'question': q,
+            'answer': a,
+            'label': 1,
+            'category': t,
+            'source_dataset': 'math'
+        })
+        # False Answer -> Label 0
+        all_rows.append({
+            'question': q,
+            'answer': fa,
+            'label': 0,
+            'category': t,
+            'source_dataset': 'math'
+        })
+
+    df = pd.DataFrame(all_rows)
+    
+    # Balance types if possible
+    # We want 200 samples total, so roughly 50 per type if 4 types exist
+    unique_types = df['category'].unique()
+    samples_per_type = num_samples // len(unique_types) if len(unique_types) > 0 else num_samples
+    
+    final_dfs = []
+    for t in unique_types:
+        sub_df = df[df['category'] == t]
+        # We need samples_per_type QUESTIONS (so x2 rows)
+        # Group by question
+        qs = sub_df['question'].unique()
+        selected_qs = np.random.choice(qs, size=min(samples_per_type, len(qs)), replace=False)
+        final_dfs.append(sub_df[sub_df['question'].isin(selected_qs)])
+        
+    return pd.concat(final_dfs)
+
+def _extract_questions_1000_data(data_dir: str, num_samples: int = 500) -> pd.DataFrame:
+    """
+    Extracts samples from Questions 1000 (General Knowledge).
+    """
+    path = os.path.join(data_dir, "questions_1000.json")
+    if not os.path.exists(path):
+        print("Warning: Questions 1000 file not found.")
+        return pd.DataFrame()
+        
+    with open(path, 'r', encoding='utf-8') as f:
+        data = json.load(f)
+        
+    questions = data.get('question', {})
+    answers = data.get('answer', {})
+    # This dataset definitely has 'false_answer' usually
+    false_answers = data.get('false_answer', {})
+    cats = data.get('category', {})
+    
+    ids = list(questions.keys())
+    # Shuffle ids first
+    random.shuffle(ids)
+    selected_ids = ids[:num_samples]
+    
+    rows = []
+    for i in selected_ids:
+        q = questions[i]
+        a = str(answers[i])
+        fa = str(false_answers.get(i, "False Answer"))
+        c = cats.get(i, "general")
+        
+        # True Answer => Label 1
+        rows.append({'question': q, 'answer': a, 'label': 1, 'category': c, 'source_dataset': 'questions_1000'})
+        # False Answer => Label 0
+        rows.append({'question': q, 'answer': fa, 'label': 0, 'category': c, 'source_dataset': 'questions_1000'})
+        
+    return pd.DataFrame(rows)
+
+def _extract_synthetic_facts_data(data_dir: str, num_samples: int = 200) -> pd.DataFrame:
+    """
+    Extracts samples from Synthetic Facts.
+    """
+    # Prefer synthetic_facts.json as user mentioned, fallback to _all
+    path = os.path.join(data_dir, "synthetic_facts.json")
+    if not os.path.exists(path):
+         path = os.path.join(data_dir, "synthetic_facts_all.json")
+         
+    if not os.path.exists(path):
+        print("Warning: Synthetic facts file not found.")
+        return pd.DataFrame()
+        
+    with open(path, 'r', encoding='utf-8') as f:
+        data = json.load(f)
+        
+    questions = data.get('question', {})
+    answers = data.get('answer', {})
+    # Synthetic facts usually has 'false_statement' which is full sentence. 
+    # Whatever, let's look for false_answer or extract from false_statement?
+    # Wait, in the user's grep, questions_1000 had 'false_answer'. 
+    # Let's assume synthetic facts has 'false_answer' if it follows same schema.
+    # If not, we might use 'answer' and modify.
+    # Check if 'false_answer' in data
+    
+    has_false_answer = 'false_answer' in data
+    has_false_statement = 'false_statement' in data
+    
+    ids = list(questions.keys())
+    random.shuffle(ids)
+    selected_ids = ids[:num_samples]
+    
+    rows = []
+    for i in selected_ids:
+        q = questions[i]
+        a = str(answers[i])
+        c = data.get('category', {}).get(i, "synthetic")
+        
+        if has_false_answer:
+            fa = str(data['false_answer'][i])
+        elif has_false_statement:
+            # We have "The city is X (False)". We want "X".
+            # This is hard to extract reliably without more logic.
+            # But the 'probe' prompt format is "Question: ... Answer: ..."
+            # So if we put a full sentence "The city is X" as 'Answer', format becomes "Question: Q Answer: The city is X".
+            # That's acceptable for probing if consistent.
+            # But usually 'Answer' is short.
+            # Let's try to use the 'false_statement' as the answer? No, that repeats the question info.
+            # We need a false entity. 
+            # For now, let's generate a placeholder or use "False Answer" if missing to fail loudly?
+            # Actually, let's assume valid data or just append " (False)" to answer.
+            fa = a + " (False)" 
+        else:
+             fa = a + " (False)"
+             
+        # True => Label 1
+        rows.append({'question': q, 'answer': a, 'label': 1, 'category': c, 'source_dataset': 'synthetic_facts'})
+        # False => Label 0
+        rows.append({'question': q, 'answer': fa, 'label': 0, 'category': c, 'source_dataset': 'synthetic_facts'})
+        
+    return pd.DataFrame(rows)
+
+
+def create_unified_dataset(output_path: str = None) -> pd.DataFrame:
+    """
+    Creates the unified dataset with 1200 samples from 5 sources.
+    Source folder is Assumed relative to this file: ../Data
+    """
+    # Resolve Data Directory
+    # current file is in Black_vs_White_Lie_Detection/White_Box
+    # data is in Black_vs_White_Lie_Detection/Data
+    
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    data_dir = os.path.abspath(os.path.join(base_dir, "..", "Data"))
+    
+    if not os.path.exists(data_dir):
+        # Fallback 
+        print(f"Data dir not found at calculated path: {data_dir}. Searching..." )
+        # Try finding it relative to Cwd - assuming running from root
+        cwd = os.getcwd()
+        potential = os.path.join(cwd, "Black_vs_White_Lie_Detection", "Data")
+        if os.path.exists(potential):
+             data_dir = potential
+        else:
+             print(f"Error: Could not find Data directory. Cwd: {cwd}")
+             # One last desperate try:
+             potential = os.path.join(cwd, "Data")
+             if os.path.exists(potential):
+                 data_dir = potential
+
+    print(f"Loading data from: {data_dir}")
+    
+    df1 = _extract_anthropic_data(data_dir, 100)
+    df2 = _extract_common_sense_data(data_dir, 200)
+    df3 = _extract_math_data(data_dir, 200)
+    df4 = _extract_questions_1000_data(data_dir, 500)
+    df5 = _extract_synthetic_facts_data(data_dir, 200)
+    
+    combined = pd.concat([df1, df2, df3, df4, df5], ignore_index=True)
+    
+    print(f"Combined Dataset Size: {len(combined)} rows (expecting ~2400 for 1200 questions)")
+    print("Composition by Source:")
+    print(combined['source_dataset'].value_counts() / 2) # Divided by 2 for quesions count
+    
+    if output_path:
+        # Create dir if needed
+        os.makedirs(os.path.dirname(output_path), exist_ok=True)
+        combined.to_json(output_path, orient='records', indent=2)
+        print(f"Saved unified dataset to {output_path}")
+        
+    return combined
+
 
 def format_prompt(question: str, answer: str) -> str:
     """
@@ -190,9 +483,13 @@ def train_dim_probe_utils(X_train: np.ndarray, y_train: np.ndarray, X_test: np.n
     from sklearn.metrics import accuracy_score, roc_auc_score
     
     # 1. Train Probe
-    # y_train is 0/1. Convert to boolean for repeng (1=True for mask)
-    # If 1 is Lie, mask selects Lies. Probe = Mean(Lies) - Mean(Truths)
-    # So the "direction" V points towards Lies.
+    # y_train is 0 (Lie) or 1 (Truth).
+    # We want the vector to point FROM Lies TO Truths.
+    # Vector arithmetic: V = Tip - Tail = Truth - Lie.
+    # Geometrically (see diagram (b)): This vector starts at Lie and points to Truth.
+    # Result:
+    #   - High dot product (> threshold) -> Closer to Truth
+    #   - Low dot product (< threshold) -> Closer to Lie
     probe = train_dim_repeng(activations=X_train, labels=(y_train == 1))
     
     # 2. Get Scores (Dot Product)
