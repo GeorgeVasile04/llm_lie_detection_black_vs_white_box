@@ -10,8 +10,10 @@ from Black_Box_Lie_Detection.lllm.classification_utils import Classifier, create
 import json
 
 class Commonsense2Custom(QuestionsLoader):
-    default_processed_filename = "common_sens_qa_v2_custom"
-    binary_questions = True
+    default_processed_filename = "processed_dataset_llama_7b"
+    # Important: Set binary_questions = False because this is a mixed dataset now
+    # Some questions are Open-Ended (math/synthetic), so we need explicit lie generation
+    binary_questions = False
 
     # CoT prompt for lying from "how to catch an AI lier" paper
     cot_lie_commonsense = """
@@ -74,11 +76,12 @@ Example 2"""
     ]
 
     def load_from_raw(self):
-        # Improved path handling
+        # Improved path handling - now pointing to raw_dataset.json
         possible_paths = [
-            os.path.join("..", "Data", "common_sens_qa_v2.json"),
-            os.path.join("Black_vs_White_Lie_Detection", "Data", "common_sens_qa_v2.json"),
-            r"c:\ULB\MA2\Master Thesis\Practical Part\llm-lie-detection\Black_vs_White_Lie_Detection\Data\common_sens_qa_v2.json"
+            os.path.join("..", "Data", "raw_dataset.json"),
+            os.path.join("Black_vs_White_Lie_Detection", "Data", "raw_dataset.json"),
+            # Fallback for full paths
+            r"c:\ULB\MA2\Master Thesis\Practical Part\llm_lie_detection_black_vs_white_box\Black_vs_White_Lie_Detection\Data\raw_dataset.json"
         ]
         
         path = None
@@ -88,10 +91,13 @@ Example 2"""
                 break
         
         if path is None:
-             raise FileNotFoundError(f"Dataset 'common_sens_qa_v2.json' not found in expected locations.")
+             raise FileNotFoundError(f"Dataset 'raw_dataset.json' not found in expected locations.")
 
-        # Load with pandas directly which handles the JSON format
+        # Load with pandas
         df = pd.read_json(path)
+        
+        # We process ALL questions now, filtering will happen in the capability check
+        print(f"Loaded {len(df)} base questions from raw dataset.")
         return df
 
 def load_dataset():
