@@ -11,6 +11,8 @@ from tqdm.auto import tqdm
 from White_Box_Lie_Detection.repeng.models.loading import load_llm_oioo
 from White_Box_Lie_Detection.repeng.activations.inference import get_model_activations
 from White_Box_Lie_Detection.repeng.probes.difference_in_means import train_dim_probe as train_dim_repeng
+# Import Logistic Regression from repeng structure - we will reimplement minimal wrapper
+from sklearn.linear_model import LogisticRegression
 
 def _extract_anthropic_data(data_dir: str, num_samples: int = 100) -> pd.DataFrame:
     """
@@ -453,26 +455,40 @@ def extract_activations(
 
 def train_logreg_probe(X_train: np.ndarray, y_train: np.ndarray, X_test: np.ndarray, y_test: np.ndarray):
     """
-    Step 4: Train Logistic Regression Probe.
+    Step 4: Train Logistic Regression Probe (Standard Scikit-Learn / Repeng style).
+    Repeng uses C=1.0, solver='newton-cg', max_iter=10000.
     """
     from sklearn.linear_model import LogisticRegression
     from sklearn.metrics import accuracy_score, roc_auc_score
     
-    clf = LogisticRegression(random_state=42, max_iter=1000)
+    # Configuration matching repeng's LrConfig default
+    clf = LogisticRegression(
+        C=1.0, 
+        solver='newton-cg', 
+        max_iter=10000, 
+        random_state=42
+    )
+    
+    # Fit the model
     clf.fit(X_train, y_train)
     
+    # Predict
     y_pred = clf.predict(X_test)
-    y_prob = clf.predict_proba(X_test)[:, 1]
+    y_prob = clf.predict_proba(X_test)[:, 1] # Probability of Class 1 (Truth)
     
     acc = accuracy_score(y_test, y_pred)
-    auc = roc_auc_score(y_test, y_prob)
+    # Check for single-class edge case in test set
+    if len(np.unique(y_test)) < 2:
+        auc = 0.5 
+    else:
+        auc = roc_auc_score(y_test, y_prob)
     
     return {
         "model": clf,
         "accuracy": acc,
         "auc": auc,
         "y_pred": y_pred,
-        "y_prob": y_prob,
+        "y_prob": y_prob, 
         "type": "LogisticRegression"
     }
 
