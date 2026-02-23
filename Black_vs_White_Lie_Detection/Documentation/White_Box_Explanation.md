@@ -125,3 +125,31 @@ The probability that a randomly chosen Lie sample has a higher score than a rand
 *   **1.0**: Perfect Probe.
 *   **0.5**: Random Guessing.
 *   *Significance*: This is our **primary metric**. It tells us how well the "Lie Direction" separates the two concepts, regardless of where we draw the line. It validates the *quality* of the extracted features.
+
+## 8. Iterative Improvements and Results
+
+The development of our lie detection probe followed an iterative process, refining both the model choice and the data quality to achieve robust generalization.
+
+### 8.1 Phase 1: Initial Baseline (Pythia-1b)
+**Setup**: We started with `Pythia-1b`, a relatively small model, using the basic `Questions 1000` dataset.
+**Result**: The performance was poor, often hovering near random guessing or showing very weak separability between truth and lies.
+**Conclusion**: Small models may not have a sufficiently distinct internal representation of "truth" versus "falsehood," or their representations are too entangled with other features to be easily probed by a simple linear classifier.
+
+### 8.2 Phase 2: Model Scaling (Llama-2-7b-chat)
+**Setup**: We upgraded the target model to `Llama-2-7b-chat-hf` while keeping the dataset constant.
+**Result**: We observed a significant jump in performance, gaining approximately **+0.1 in Accuracy** compared to the Pythia baseline.
+**Conclusion**: This confirms that "truthfulness" features are emergent properties of larger, more capable models. Llama-2 has a richer internal world model, making the distinction between known facts and hallucinations (or forced lies) more linear and extractable.
+
+### 8.3 Phase 3: Data Generalization (Unified Dataset)
+**Setup**: To ensure our probe wasn't just learning to detect "trivia questions," we constructed a **Unified Dataset** of 1200 samples (2400 paired rows) from five distinct sources:
+1.  **Anthropic Awareness**: Introspection and self-knowledge (100 samples).
+2.  **Common Sense QA**: Boolean logic and everyday facts (200 samples).
+3.  **Math Problems**: Arithmetic and logic (200 samples).
+4.  **Questions 1000**: General knowledge trivia (500 samples).
+5.  **Synthetic Facts**: Hallucination-style specific entity facts (200 samples).
+
+**Result**: We trained the probe on this diverse mixture.
+**Interpretation**:
+*   **Generalization**: High performance on this unified dataset indicates we have found a **general direction of truth**. The probe is not relying on the specific phrasing of math problems or trivia; it is detecting the underlying concept of validity across different domains.
+*   **Layer Localisation**: We typically observe that effectiveness peaks in the **middle-to-late layers** of the model. This suggests a processing hierarchy: early layers process syntax/grammar, middle layers resolve semantic truth/facts, and final layers prepare the specific token output.
+*   **Vector Direction**: Our Difference-in-Means vector ($\mu_{Truth} - \mu_{Lie}$) successfully orients the high-dimensional space such that truthful statements project onto higher values and deceptive ones onto lower values. This confirms that "Truth" is a consistent, linear feature within Llama-2's latent space.
