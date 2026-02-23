@@ -133,27 +133,11 @@ def _extract_math_data(data_dir: str, num_samples: int = 200) -> pd.DataFrame:
     with open(path, 'r', encoding='utf-8') as f:
         data = json.load(f)
         
-    # Structure: columns question, answer, false_statement, type
-    # types: addition, subtraction, multiplication, division
-    
     questions = data.get('question', {})
     answers = data.get('answer', {})
-    false_statements = data.get('false_statement', {}) # This might be the full sentence lie
     types = data.get('type', {})
     
-    # We need to construct pairs.
-    # The 'false_statement' is usually "The result of X + Y is Z (wrong)". 
-    # But our probe training expects (Question, Answer).
-    # We need to extract the 'answer' part from the false statement or just use the number if available.
-    # Actually mathematical_problems.json usually has a 'false_answer' column or we can parse it.
-    
-    # Let's inspect available keys in a generic way or assume standard 'false_answer' existing
-    # Checking previous grep: questions_1000 had 'false_answer'. 
-    # Let's assume math has it too or we use the statement.
-    # For robust probing, we want "Question: What is 2+2? Answer: 4" vs "Question: What is 2+2? Answer: 5".
-    
-    # If standard 'false_answer' is missing, we might need to parse.
-    # Let's try to find 'false_answer' in the keys.
+    # Try to find 'false_answer' or derive it
     has_false_answer = 'false_answer' in data
     
     all_rows = []
@@ -161,27 +145,29 @@ def _extract_math_data(data_dir: str, num_samples: int = 200) -> pd.DataFrame:
     
     for i in ids:
         q = questions[i]
-        a = str(answers[i])
+        a = str(answers[i]) # Ensure string
         t = types.get(i, 'math')
         
         # Get false answer
-        if has_false_answer:
+        if has_false_answer and i in data['false_answer']:
             fa = str(data['false_answer'][i])
         else:
-            # Fallback: if 'false_statement' exists, try to extract, or generate simple wrong answer
-            if 'false_statement' in data:
-               fs = data['false_statement'][i]
-               # Heuristic: split by is/result is? It's risky.
-               # Simple math generation: add 1
-               try:
-                   val = float(a)
-                   fa = str(val + 1)
-                   if "." in a and ".0" in fa: fa = fa.replace(".0", "")
-               except:
-                   fa = a + " (False)"
-            else:
+            # Fallback generation for math: generate a random number
+            try:
+                # Check if original answer is a number to decide if we should generate a number
+                float(a) # check validity
+                
+                # Generate random number different from 'a'
+                while True:
+                    fake_val = random.randint(0, 20000)
+                    fa = str(fake_val)
+                    if fa != a:
+                        break
+            except ValueError:
+                # If original answer is not a simple number (e.g. text), 
+                # appending " (False)" is the safest fallback if no false_answer provided.
                 fa = a + " (False)"
-        
+
         # True Answer -> Label 1
         all_rows.append({
             'question': q,
@@ -202,18 +188,21 @@ def _extract_math_data(data_dir: str, num_samples: int = 200) -> pd.DataFrame:
     df = pd.DataFrame(all_rows)
     
     # Balance types if possible
-    # We want 200 samples total, so roughly 50 per type if 4 types exist
     unique_types = df['category'].unique()
-    samples_per_type = num_samples // len(unique_types) if len(unique_types) > 0 else num_samples
+    if len(unique_types) > 0:
+        samples_per_type = num_samples // len(unique_types)
+    else:
+        samples_per_type = num_samples
     
     final_dfs = []
     for t in unique_types:
         sub_df = df[df['category'] == t]
-        # We need samples_per_type QUESTIONS (so x2 rows)
-        # Group by question
         qs = sub_df['question'].unique()
         selected_qs = np.random.choice(qs, size=min(samples_per_type, len(qs)), replace=False)
         final_dfs.append(sub_df[sub_df['question'].isin(selected_qs)])
+        
+    if not final_dfs:
+        return pd.DataFrame()
         
     return pd.concat(final_dfs)
 
@@ -272,15 +261,11 @@ def _extract_synthetic_facts_data(data_dir: str, num_samples: int = 200) -> pd.D
         
     questions = data.get('question', {})
     answers = data.get('answer', {})
-    # Synthetic facts usually has 'false_statement' which is full sentence. 
-    # Whatever, let's look for false_answer or extract from false_statement?
-    # Wait, in the user's grep, questions_1000 had 'false_answer'. 
-    # Let's assume synthetic facts has 'false_answer' if it follows same schema.
-    # If not, we might use 'answer' and modify.
-    # Check if 'false_answer' in data
     
+    # Check available incorrect info keys
     has_false_answer = 'false_answer' in data
-    has_false_statement = 'false_statement' in data
+    # Some datasets contain 'false_statement' which is a full sentence with the lie
+    false_statements = data.get('false_statement', {})
     
     ids = list(questions.keys())
     random.shuffle(ids)
@@ -292,21 +277,34 @@ def _extract_synthetic_facts_data(data_dir: str, num_samples: int = 200) -> pd.D
         a = str(answers[i])
         c = data.get('category', {}).get(i, "synthetic")
         
-        if has_false_answer:
+        fa = None
+        
+        if has_false_answer and i in data['false_answer']:
             fa = str(data['false_answer'][i])
-        elif has_false_statement:
-            # We have "The city is X (False)". We want "X".
-            # This is hard to extract reliably without more logic.
-            # But the 'probe' prompt format is "Question: ... Answer: ..."
-            # So if we put a full sentence "The city is X" as 'Answer', format becomes "Question: Q Answer: The city is X".
-            # That's acceptable for probing if consistent.
-            # But usually 'Answer' is short.
-            # Let's try to use the 'false_statement' as the answer? No, that repeats the question info.
-            # We need a false entity. 
-            # For now, let's generate a placeholder or use "False Answer" if missing to fail loudly?
-            # Actually, let's assume valid data or just append " (False)" to answer.
-            fa = a + " (False)" 
-        else:
+        elif i in false_statements:
+            fs = false_statements[i]
+            
+            # Heuristic based on user request: split by the LAST occurrence of " is " or " in "
+            # We prioritize " is " because it usually precedes a direct definition/answer.
+            # "lives in" or "born in" also contain " in ".
+            
+            split_token = None
+            if " is " in fs:
+                split_token = " is "
+            elif " in " in fs:
+                split_token = " in "
+            
+            if split_token:
+                parts = fs.rsplit(split_token, 1)
+                candidate = parts[-1].strip()
+                # Remove trailing punctuation
+                if candidate.endswith("."): 
+                    candidate = candidate[:-1]
+                fa = candidate
+            else:
+                fa = fs # Fallback to full statement if pattern not found
+        
+        if not fa:
              fa = a + " (False)"
              
         # True => Label 1
