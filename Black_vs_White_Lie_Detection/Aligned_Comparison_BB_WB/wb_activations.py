@@ -1,6 +1,6 @@
 import torch
-from transformers import AutoModelForCausalLM, AutoTokenizer
 import numpy as np
+from transformers import AutoModelForCausalLM, AutoTokenizer
 
 def load_model(model_name, device="cuda"):
     """
@@ -11,38 +11,40 @@ def load_model(model_name, device="cuda"):
     model = AutoModelForCausalLM.from_pretrained(model_name, torch_dtype=torch.float16).to(device)
     return model, tokenizer
 
-def format_prompt(question, answer, mode="chat"):
+def format_prompt_wb(question, answer, template_type="simple"):
     """
-    Formats the input prompt.
-    For base models: "Question: {q} Answer: {a}"
-    For chat models: Standard chat template.
+    Formats the prompt for White Box activation extraction.
+    Matches the 'repeng' library methodology where the activation is extracted 
+    from the last token of this prompt.
+    
+    Structure:
+    Question: {q}
+    Answer: {a}
     """
-    # Simple template for now, can be expanded
+    # Simple template matches repeng/datasets/elk/common_sense_qa.py "simple" template
     return f"Question: {question}\nAnswer: {answer}"
 
-def get_last_token_activations(model, tokenizer, text, layer_nums=None, device="cuda"):
+def get_wb_activations(model, tokenizer, context_text, layer_nums=None, device="cuda"):
     """
-    Runs the model on the text and extracts hidden states (activations) of the last token.
+    Extracts activations from the LAST token of the context_text.
     
     Args:
-        model: Loaded HF model.
-        tokenizer: Loaded HF tokenizer.
-        text: Input text (Question + Answer).
-        layer_nums: List of layer indices to extract. If None, extracts all.
+        model: HF Model
+        tokenizer: HF Tokenizer
+        context_text: formatted prompt (Question + Answer)
+        layer_nums: List of integers (layers to extract). If None, extracts all.
         device: 'cuda' or 'cpu'.
         
     Returns:
-        A dictionary mapping layer_num -> activation_vector (numpy array).
+        activations: Dict {layer_num: numpy_array}
     """
-    inputs = tokenizer(text, return_tensors="pt").to(device)
+    inputs = tokenizer(context_text, return_tensors="pt").to(device)
     
     with torch.no_grad():
         outputs = model(**inputs, output_hidden_states=True)
         
     hidden_states = outputs.hidden_states
-    
-    # hidden_states is a tuple of (num_layers + 1) tensors
-    # shape: (batch_size, seq_len, hidden_dim)
+    # hidden_states tuple: (layer_0 (embeddings), layer_1, ..., layer_N)
     
     activations = {}
     total_layers = len(hidden_states)
@@ -53,46 +55,38 @@ def get_last_token_activations(model, tokenizer, text, layer_nums=None, device="
         
     for layer_idx in layer_nums:
         if layer_idx < total_layers:
-            # Get last token hidden state: [0, -1, :]
-            layer_vec = hidden_states[layer_idx][0, -1, :].cpu().numpy()
-            activations[layer_idx] = layer_vec
+            # Extract last token: [batch=0, seq_len=-1, hidden_dim]
+            # .float() ensures we return float32 even if model is fp16/bf16
+            act = hidden_states[layer_idx][0, -1, :].float().cpu().numpy()
+            activations[layer_idx] = act
             
     return activations
 
 def get_activations_for_dataset(df, model, tokenizer, device="cuda"):
     """
-    Iterates over the dataset and extracts activations for both Truth and Lie scenarios.
+    Iterates over the "Aligned" dataset layout (from load_data.py).
+    Each row has 'question', 'answer', 'label'.
     
     Returns:
-        X: List of activation vectors (n_samples, hidden_dim) - typically specific layer.
-        y: List of labels (1 for Truth, 0 for Lie).
+        List of dicts: [{'activations': ..., 'label': int}, ...]
     """
-    # This is a high-level function, might need to be specific about which layer to use for X
-    # For now, let's return a dictionary structure storing all layers
-    
     results = []
     
     for index, row in df.iterrows():
         q = row['question']
-        true_a = row['true_answer']
-        false_a = row['false_answer']
+        a = row['answer']
+        label = row['label']
         
-        # Truth Scenario
-        text_truth = format_prompt(q, true_a)
-        acts_truth = get_last_token_activations(model, tokenizer, text_truth, device=device)
-        results.append({
-            "activations": acts_truth,
-            "label": 1,
-            "text": text_truth
-        })
+        # Format the prompt (Context)
+        context_text = format_prompt_wb(q, a)
         
-        # Lie Scenario
-        text_lie = format_prompt(q, false_a)
-        acts_lie = get_last_token_activations(model, tokenizer, text_lie, device=device)
+        # Extract activations
+        activations = get_wb_activations(model, tokenizer, context_text, device=device)
+        
         results.append({
-            "activations": acts_lie,
-            "label": 0,
-            "text": text_lie
+            "activations": activations,
+            "label": label,
+            "text": context_text
         })
         
     return results
