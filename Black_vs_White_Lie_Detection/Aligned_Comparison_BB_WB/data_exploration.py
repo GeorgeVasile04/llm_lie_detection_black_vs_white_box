@@ -4,13 +4,24 @@ Analyzes the structure and size of the loaded datasets to match original methodo
 """
 
 from load_data import load_dataset_aligned
+from datasets import load_dataset
 import numpy as np
 
 def explore_data():
     print("--- Aligned Comparison Data Analysis ---\n")
     
+    # 0. Raw Data Preview
+    print("Loading Raw CommonSenseQA Sample (First Item)...")
+    raw_dataset = load_dataset("commonsense_qa", split="validation")
+    raw_sample = raw_dataset[0]
+    
+    print("\n[RAW DATA SAMPLE - DICTIONARY DUMP]")
+    # Print the raw dictionary directly, no formatting
+    print(raw_sample)
+    print("-" * 50)
+
     # 1. Load Data
-    print("Loading CommonSenseQA (aligned)...")
+    print("\nLoading Transformed Aligned Data...")
     try:
         data = load_dataset_aligned(n_samples=None) # Load full
     except Exception as e:
@@ -43,13 +54,26 @@ def explore_data():
     print(f"Average samples per question: {total / len(unique_ids):.2f}")
     
     # 4. Preview
-    print("\n--- Sample Positive ---")
-    if positives:
-        print(positives[0])
+    print("\n--- Detailed Question Sample ---")
+    
+    # Group by ID to show one full question
+    if data:
+        first_id = data[0]['id']
+        question_group = [d for d in data if d['id'] == first_id]
         
-    print("\n--- Sample Negative ---")
-    if negatives:
-        print(negatives[0])
+        print(f"Question ID: {first_id}")
+        print(f"Question: {question_group[0]['question']}")
+        print(f"Total options: {len(question_group)}")
         
+        print("\nCorrect Answer:")
+        for d in question_group:
+            if d['label'] == 1:
+                print(f"  - {d['answer']}")
+                
+        print("\nFalse Answers:")
+        for d in question_group:
+            if d['label'] == 0:
+                print(f"  - {d['answer']}")
+
 if __name__ == "__main__":
     explore_data()
