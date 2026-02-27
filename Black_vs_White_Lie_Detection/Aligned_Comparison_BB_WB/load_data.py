@@ -117,7 +117,14 @@ def load_dataset_aligned(dataset_name="commonsense_qa", split='validation', n_sa
         
         # Populate metadata for improved readability
         if row.format_args:
-            item.update(row.format_args)
+            # Avoid overwriting 'label' which is our binary target (0/1)
+            # define safe_args excluding 'label'
+            safe_args = {k: v for k, v in row.format_args.items() if k != 'label'}
+            item.update(safe_args)
+            
+            # Use format_args['label'] as the answer text if it exists (common in DLK)
+            if 'label' in row.format_args and 'answer' not in item:
+                 item['answer'] = row.format_args['label']
             
             # Normalize common fields
             if 'question' not in item and 'question_stem' in item:

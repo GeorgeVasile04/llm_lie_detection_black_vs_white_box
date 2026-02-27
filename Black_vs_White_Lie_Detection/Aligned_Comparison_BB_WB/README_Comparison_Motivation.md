@@ -48,3 +48,28 @@ This alignment is the standard for fair comparison because:
 1.  **Identical "Cognitive State":** Both detectors are analyzing the model at the exact same moment (after "saying" the false answer).
 2.  **Removal of Generation Noise:** We eliminate the variability of the model refusing to lie, failing to follow instructions, or generating a "lie" that is accidentally true (hallucination).
 3.  **Apples-to-Apples:** Any difference in performance can be attributed strictly to the **signal quality**: Is the information about "lie" more accessible in the neurons (White Box) or in the behavioral side-effects (Black Box)?
+
+
+## Dataset Statistics
+
+| Dataset | Total Samples | Positive (True) | Negative (False) |
+| :--- | :---: | :---: | :---: |
+| **commonsense_qa** | 6105 | 1221 | 4884 |
+| **race** | 5556 | 1389 | 4167 |
+| **arc_easy** | 2281 | 570 | 1711 |
+| **arc_challenge** | 1194 | 299 | 895 |
+| **open_book_qa** | 2000 | 500 | 1500 |
+| **boolq*** | 6000 | 3000 | 3000 |
+| **copa*** | 200 | 100 | 100 |
+| **rte*** | 554 | 277 | 277 |
+| **piqa*** | 0 | 0 | 0 |
+| **imdb*** | 6000 | 3000 | 3000 |
+| **amazon_polarity*** | 6000 | 3000 | 3000 |
+| **ag_news*** | 6000 | 3000 | 3000 |
+| **dbpedia_14*** | 6000 | 3000 | 3000 |
+| **got_cities** | 606 | 303 | 303 |
+| **got_sp_en_trans** | 116 | 58 | 58 |
+| **got_larger_than** | 826 | 413 | 413 |
+| **got_cities_cities_conj** | 322 | 156 | 166 |
+| **got_cities_cities_disj** | 292 | 152 | 140 |
+| **TOTAL** | **50,052** | **20,438** | **29,614** |

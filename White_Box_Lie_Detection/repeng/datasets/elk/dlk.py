@@ -47,7 +47,13 @@ _DATASET_SPECS: dict[DlkDatasetId, _DatasetSpec] = {
 
 def get_dlk_dataset(dataset_id: DlkDatasetId):
     dataset_spec = _DATASET_SPECS[dataset_id]
-    dataset: Any = load_dataset(dataset_spec.name, dataset_spec.subset)
+    try:
+        dataset: Any = load_dataset(dataset_spec.name, dataset_spec.subset, trust_remote_code=True)
+    except Exception as e:
+        print(f"Error loading {dataset_id} with trust_remote_code=True: {e}")
+        # fallback
+        dataset: Any = load_dataset(dataset_spec.name, dataset_spec.subset)
+    
     return {
         **_get_dlk_dataset(dataset_id, dataset, split="train", limit=3000),
         **_get_dlk_dataset(dataset_id, dataset, split="validation", limit=3000),
@@ -69,9 +75,26 @@ def _get_dlk_dataset(
         raise ValueError(split)
 
     results = {}
-    for row_idx, row in deterministic_shuffle(
-        enumerate(dataset[hf_split]), lambda row: str(row[0])
-    )[:limit]:
+    # dataset = dataset.shuffle(seed=42) # Skipping shuffle to avoid processing time on massive datasets
+    
+    ds_split = dataset[hf_split]
+    
+    items_to_process = []
+    
+    if len(ds_split) > 20000:
+        # Optimization for huge datasets:
+        # Just take the first 'limit' rows directly. 
+        # Skipping deterministic_shuffle which sorts the whole dataset.
+        ds_trimmed = ds_split.select(range(limit))
+        items_to_process = enumerate(ds_trimmed)
+    else:
+        # Original logic for small datasets
+        iterable = enumerate(ds_split)
+        items_to_process = deterministic_shuffle(
+            iterable, lambda row: str(row[0])
+        )[:limit]
+
+    for row_idx, row in items_to_process:
         assert "label" in row and type(row["label"]) == int, row
         template = _TEMPLATES[dataset_id]
         true_label: int = row["label"]
