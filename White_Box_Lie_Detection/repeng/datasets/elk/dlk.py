@@ -81,14 +81,35 @@ def _get_dlk_dataset(
     
     items_to_process = []
     
+    # Optimization: Replicate the EXACT original logic (lexicographical sort of indices)
+    # without loading the full dataset content.
     if len(ds_split) > 20000:
-        # Optimization for huge datasets:
-        # Just take the first 'limit' rows directly. 
-        # Skipping deterministic_shuffle which sorts the whole dataset.
-        ds_trimmed = ds_split.select(range(limit))
-        items_to_process = enumerate(ds_trimmed)
+        # 1. Generate all indices
+        all_indices = range(len(ds_split))
+        # 2. Sort indices by their string representation (mimicking deterministic_shuffle)
+        # This gives us the exact indices the original code would have picked.
+        # Sorting 3.6M integers-as-strings takes ~1-2 seconds, which is fine.
+        sorted_indices = sorted(all_indices, key=lambda i: str(i))
+        # 3. Take the top 'limit' indices
+        target_indices = sorted_indices[:limit]
+        # 4. Select only these rows from the dataset
+        ds_trimmed = ds_split.select(target_indices)
+        # 5. Enumerate. Note: The rows are now in the "sorted" order, so validation matches.
+        # We need to yield (original_index, row) or (new_index, row)?
+        # deterministic_shuffle yields (index, row).
+        # The original code's 'row_idx' comes from enumerate(dataset).
+        # So we need to pass the ORIGINAL index to the loop for consistency?
+        # The loop uses row_idx for:
+        #   - split_train(..., row_id=str(row_idx))
+        #   - group_id=str(row_idx)
+        #   - rotating false labels: false_label = false_label_options[row_idx % len...]
+        
+        # So yes, we must preserve the original index.
+        # ds_trimmed doesn't keep original indices.
+        # So we construct the iterator manually.
+        items_to_process = zip(target_indices, ds_trimmed)
     else:
-        # Original logic for small datasets
+        # Original logic for small datasets (unchanged)
         iterable = enumerate(ds_split)
         items_to_process = deterministic_shuffle(
             iterable, lambda row: str(row[0])
