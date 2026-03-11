@@ -20,7 +20,7 @@ def load_probes(csv_path="probes.csv"):
     df = pd.read_csv(csv_path)
     return df
 
-def get_bb_logprobs(model, tokenizer, context_text, probes_df=None, device="cuda"):
+def get_bb_logprobs(model, tokenizer, row, probes_df=None, device="cuda"):
     """
     For a given context (which ends with the model's lie or truth),
     append each elicitation question and get the probability of 'Yes' vs 'No'.
@@ -28,7 +28,7 @@ def get_bb_logprobs(model, tokenizer, context_text, probes_df=None, device="cuda
     Args:
         model: The LLM model
         tokenizer: The tokenizer
-        context_text: The conversation history (Question + Answer)
+        row: The pandas row containing the text and label.
         probes_df: DataFrame with 'probe' and 'probe_type' columns. If None, loads from CSV.
     
     Returns:
@@ -47,6 +47,7 @@ def get_bb_logprobs(model, tokenizer, context_text, probes_df=None, device="cuda
         probes_df = load_probes()
 
     results = []
+    from prompt_utils import get_black_box_context
     
     # Tokenizer prep - do this once
     # We look for " Yes" and " No" (with leading space) which is common for Llama-2/Alpaca
@@ -80,9 +81,9 @@ def get_bb_logprobs(model, tokenizer, context_text, probes_df=None, device="cuda
         print("Warning: Could not find single token ID for Yes/No variants.")
         return []
         
-    for idx, row in probes_df.iterrows():
-        probe_text = row['probe']
-        category = row['probe_type']
+    for idx, p_row in probes_df.iterrows():
+        probe_text = p_row['probe']
+        category = p_row['probe_type']
         
         # PROMPT STRUCTURE FOR BLACK BOX:
         # Context (Question + forcing Answer)
@@ -93,7 +94,7 @@ def get_bb_logprobs(model, tokenizer, context_text, probes_df=None, device="cuda
         # We append the probe question to the context
         # context_text usually ends with the answer to the original question.
         # We add a newline, then the probe question.
-        full_prompt = f"{context_text}\n{probe_text}"
+        full_prompt = get_black_box_context(row, probe_text)
         
         inputs = tokenizer(full_prompt, return_tensors="pt").to(device)
         
@@ -138,30 +139,22 @@ def compute_bb_features_for_dataset(df, model, tokenizer, device="cuda"):
     probes_df = load_probes()
     results = []
     
-    from .wb_activations import format_prompt_wb
-    
     # We iterate over the dataframe
-    # For every sample (Question+Answer), we compute the vector of elicitation scores
+    # For every sample, we use the exact RepEng prompt as context 
+    # to maintain the aligned state.
     
     for index, row in df.iterrows():
-        q = row['question']
-        a = row['answer']
-        label = row['label']
+        label = row.get('label', None)
         
-        # 1. Format Context (Same as White Box)
-        context_text = format_prompt_wb(q, a)
+        # Compute features using the shared row data
+        bb_result = get_bb_logprobs(model, tokenizer, row, probes_df=probes_df, device=device)
         
-        # 2. Get Features
-        bb_result = get_bb_logprobs(model, tokenizer, context_text, probes_df, device)
-        
-        # 3. Store in a structured way
-        # e.g. a flat vector for classification or the full dict
-        # For classifiers, we likely want a flat vector, but let's keep metadata
+        from prompt_utils import get_white_box_context
         
         results.append({
             "bb_features": bb_result,
             "label": label,
-            "context": context_text
+            "context": get_white_box_context(row)  # just for logging purposes
         })
         
     return results

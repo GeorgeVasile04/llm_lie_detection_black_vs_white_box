@@ -1,6 +1,7 @@
 import torch
 import numpy as np
 from transformers import AutoModelForCausalLM, AutoTokenizer
+from prompt_utils import get_white_box_context
 
 def load_model(model_name, device="cuda"):
     """
@@ -10,19 +11,6 @@ def load_model(model_name, device="cuda"):
     tokenizer = AutoTokenizer.from_pretrained(model_name)
     model = AutoModelForCausalLM.from_pretrained(model_name, torch_dtype=torch.float16).to(device)
     return model, tokenizer
-
-def format_prompt_wb(question, answer, template_type="simple"):
-    """
-    Formats the prompt for White Box activation extraction.
-    Matches the 'repeng' library methodology where the activation is extracted 
-    from the last token of this prompt.
-    
-    Structure:
-    Question: {q}
-    Answer: {a}
-    """
-    # Simple template matches repeng/datasets/elk/common_sense_qa.py "simple" template
-    return f"Question: {question}\nAnswer: {answer}"
 
 def get_wb_activations(model, tokenizer, context_text, layer_nums=None, device="cuda"):
     """
@@ -73,12 +61,9 @@ def get_activations_for_dataset(df, model, tokenizer, device="cuda"):
     results = []
     
     for index, row in df.iterrows():
-        q = row['question']
-        a = row['answer']
+        # Get the unified conversational context
+        context_text = get_white_box_context(row)
         label = row['label']
-        
-        # Format the prompt (Context)
-        context_text = format_prompt_wb(q, a)
         
         # Extract activations
         activations = get_wb_activations(model, tokenizer, context_text, device=device)
