@@ -73,3 +73,7 @@ This alignment is the standard for fair comparison because:
 | **got_cities_cities_conj** | 322 | 156 | 166 |
 | **got_cities_cities_disj** | 292 | 152 | 140 |
 | **TOTAL** | **50,052** | **20,438** | **29,614** |
+
+
+
+For each dataset train on 80 to determin the best parameters (layer and model) then get the accuracy from the test part.
