@@ -4,10 +4,17 @@ import numpy as np
 import pandas as pd
 import os
 
-def load_probes(csv_path="probes.csv"):
+def load_probes(csv_path="probes.csv", probe_indices=None):
     """
     Loads elicitation questions from the CSV file.
-    Returns a dataframe with 'probe_type' and 'probe' columns.
+    
+    Args:
+        csv_path: Path to probes.csv
+        probe_indices: Optional numpy array or list of indices to select specific probes.
+                      If None, loads all probes. If provided, filters to only these indices.
+    
+    Returns:
+        DataFrame with 'probe_type' and 'probe' columns (filtered if indices provided).
     """
     # If path is relative, try to find it relative to this script
     if not os.path.exists(csv_path):
@@ -18,6 +25,11 @@ def load_probes(csv_path="probes.csv"):
         raise FileNotFoundError(f"Could not find probes.csv at {csv_path}")
         
     df = pd.read_csv(csv_path)
+    
+    # Filter by indices if provided
+    if probe_indices is not None:
+        df = df.iloc[probe_indices].reset_index(drop=True)
+    
     return df
 
 def get_bb_logprobs(model, tokenizer, row, probes_df=None, device="cuda"):
@@ -126,7 +138,7 @@ def get_bb_logprobs(model, tokenizer, row, probes_df=None, device="cuda"):
             
     return results
 
-def compute_bb_features_for_dataset(df, model, tokenizer, device="cuda", batch_size=1):
+def compute_bb_features_for_dataset(df, model, tokenizer, device="cuda", batch_size=1, probe_indices=None):
     """
     Iterates over the aligned dataset and computes Black Box features.
     
@@ -136,11 +148,14 @@ def compute_bb_features_for_dataset(df, model, tokenizer, device="cuda", batch_s
         tokenizer: The tokenizer
         device: 'cuda' or 'cpu'
         batch_size: Number of samples to process together (default 1)
+        probe_indices: Optional numpy array or list of probe indices to use.
+                      If None, uses all probes. If provided, uses only these probes.
+                      Set to use exact probes from original Black Box paper.
         
     Returns:
         List of samples with appended 'bb_features' key
     """
-    probes_df = load_probes()
+    probes_df = load_probes(probe_indices=probe_indices)
     results = []
     
     # Note: Black Box requires individual forward passes per probe per sample,
