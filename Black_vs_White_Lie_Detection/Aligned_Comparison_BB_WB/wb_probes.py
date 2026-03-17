@@ -64,12 +64,12 @@ def train_dim_probe(activations: np.ndarray, labels: np.ndarray) -> DifferenceIn
 def train_lr_probe(activations: np.ndarray, labels: np.ndarray, C: float = 1.0, max_iter: int = 10000) -> LogisticRegressionProbe:
     """
     Trains a Logistic Regression probe using sklearn.
-    Default config from repeng: C=1.0, solver='newton-cg' (or 'lbfgs' if easier), max_iter=10000.
+    Default config from repeng: C=1.0, solver='newton-cg', max_iter=10000.
     """
-    # Using 'lbfgs' for standard compatibility. 
+    # Using 'newton-cg' as specified in original RepEng paper (faster for small datasets)
     model = LogisticRegression(
         C=C,
-        solver='lbfgs',
+        solver='newton-cg',
         max_iter=max_iter,
         fit_intercept=True
     )
@@ -125,30 +125,44 @@ def train_wb_probes(activation_data: List[Dict[str, Any]], layer_list: List[int]
         result = probe.predict(X_test)
         logits = result.logits
         
-        # Metric Calculation
+        # Metric Calculation with Probe Direction Flip Detection (RepEng paper methodology)
         if method == "dim":
-            # For DiM, raw logits (dot product) might not be centered at 0 for classification
-            # We assume the "direction" is correct, but the threshold needs calibration or we look at AUC
-            # Simple thresholding: (mean(pos) + mean(neg)) / 2 projected onto probe
-            # But let's just use AUC which is threshold-independent for performance
-            # For accuracy, let's use the Training Mean as threshold
+            # For DiM, test both probe directions (+ and -) and pick the better one
+            # This accounts for label encoding ambiguity (truth=1 vs truth=0)
             train_logits = probe.predict(X_train).logits
+            
+            # Compute AUC for both directions
+            if len(np.unique(y_test)) == 2:
+                auc_normal = roc_auc_score(y_test, logits)
+                auc_flipped = roc_auc_score(y_test, -logits)
+            else:
+                auc_normal = 0.5
+                auc_flipped = 0.5
+            
+            # Use the direction with better AUC
+            if auc_flipped > auc_normal:
+                logits = -logits
+                auc = auc_flipped
+                is_flipped = True
+            else:
+                auc = auc_normal
+                is_flipped = False
+            
+            # Compute threshold on training data
             mean_pos = np.mean(train_logits[y_train])
             mean_neg = np.mean(train_logits[~y_train])
             threshold = (mean_pos + mean_neg) / 2
         else:
             # LR decision function is 0-centered
             threshold = 0.0
+            is_flipped = False
+            if len(np.unique(y_test)) == 2:
+                auc = roc_auc_score(y_test, logits)
+            else:
+                auc = 0.5
             
         preds = (logits > threshold).astype(int)
-        
         acc = accuracy_score(y_test, preds)
-        
-        # Handle AUC (needs 2 classes in y_test)
-        if len(np.unique(y_test)) == 2:
-            auc = roc_auc_score(y_test, logits)
-        else:
-            auc = 0.5
             
         probes[layer] = probe
         metrics[layer] = {'accuracy': acc, 'auc': auc}
