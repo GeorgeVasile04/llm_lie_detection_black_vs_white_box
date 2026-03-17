@@ -126,36 +126,59 @@ def get_bb_logprobs(model, tokenizer, row, probes_df=None, device="cuda"):
             
     return results
 
-def compute_bb_features_for_dataset(df, model, tokenizer, device="cuda"):
+def compute_bb_features_for_dataset(df, model, tokenizer, device="cuda", batch_size=1):
     """
-    Iterates over the aligned dataset and computes BBQ features.
+    Iterates over the aligned dataset and computes Black Box features.
     
     Args:
         df: DataFrame with 'question', 'answer', 'label'
+        model: The LLM model
+        tokenizer: The tokenizer
+        device: 'cuda' or 'cpu'
+        batch_size: Number of samples to process together (default 1)
         
     Returns:
-        List of samples with appended 'bb_features'
+        List of samples with appended 'bb_features' key
     """
     probes_df = load_probes()
     results = []
     
-    # We iterate over the dataframe
-    # For every sample, we use the exact RepEng prompt as context 
-    # to maintain the aligned state.
+    # Note: Black Box requires individual forward passes per probe per sample,
+    # so batch_size mainly reduces redundancy in probe loading and setup,
+    # not model computation. For now, we process samples one at a time through probes.
     
-    for index, row in df.iterrows():
-        label = row.get('label', None)
+    from prompt_utils import get_white_box_context
+    
+    if batch_size == 1:
+        # Original single-sample mode
+        for index, row in df.iterrows():
+            label = row.get('label', None)
+            bb_result = get_bb_logprobs(model, tokenizer, row, probes_df=probes_df, device=device)
+            results.append({
+                "bb_features": bb_result,
+                "label": label,
+                "context": get_white_box_context(row)
+            })
+    else:
+        # Process multiple samples (still iterate through probes individually)
+        from tqdm import tqdm
         
-        # Compute features using the shared row data
-        bb_result = get_bb_logprobs(model, tokenizer, row, probes_df=probes_df, device=device)
+        rows = list(df.iterrows())
+        total_batches = (len(rows) + batch_size - 1) // batch_size
         
-        from prompt_utils import get_white_box_context
-        
-        results.append({
-            "bb_features": bb_result,
-            "label": label,
-            "context": get_white_box_context(row)  # just for logging purposes
-        })
-        
+        for batch_idx in tqdm(range(total_batches), desc=f"Computing BB features (batch_size={batch_size})"):
+            start_idx = batch_idx * batch_size
+            end_idx = min(start_idx + batch_size, len(rows))
+            batch_rows = rows[start_idx:end_idx]
+            
+            for _, row in batch_rows:
+                label = row.get('label', None)
+                bb_result = get_bb_logprobs(model, tokenizer, row, probes_df=probes_df, device=device)
+                results.append({
+                    "bb_features": bb_result,
+                    "label": label,
+                    "context": get_white_box_context(row)
+                })
+    
     return results
 

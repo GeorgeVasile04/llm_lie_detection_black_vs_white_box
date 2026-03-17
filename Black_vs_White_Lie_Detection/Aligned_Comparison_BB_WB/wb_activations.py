@@ -6,10 +6,11 @@ from prompt_utils import get_white_box_context
 def load_model(model_name, device="cuda"):
     """
     Loads the model and tokenizer.
+    Uses bfloat16 precision (same as original RepEng paper) for numerical stability.
     """
     print(f"Loading model: {model_name}...")
     tokenizer = AutoTokenizer.from_pretrained(model_name)
-    model = AutoModelForCausalLM.from_pretrained(model_name, torch_dtype=torch.float16).to(device)
+    model = AutoModelForCausalLM.from_pretrained(model_name, torch_dtype=torch.bfloat16).to(device)
     return model, tokenizer
 
 def get_wb_activations(model, tokenizer, context_text, layer_nums=None, device="cuda"):
@@ -50,28 +51,85 @@ def get_wb_activations(model, tokenizer, context_text, layer_nums=None, device="
             
     return activations
 
-def get_activations_for_dataset(df, model, tokenizer, device="cuda"):
+def get_activations_for_dataset(df, model, tokenizer, device="cuda", batch_size=1):
     """
     Iterates over the "Aligned" dataset layout (from load_data.py).
     Each row has 'question', 'answer', 'label'.
     
+    Args:
+        df: DataFrame with 'question', 'answer', 'label' columns
+        model: HF Model
+        tokenizer: HF Tokenizer
+        device: 'cuda' or 'cpu'
+        batch_size: Number of samples per forward pass (default 1, use 16+ for speed)
+    
     Returns:
-        List of dicts: [{'activations': ..., 'label': int}, ...]
+        List of dicts: [{'activations': ..., 'label': int, 'text': ...}, ...]
     """
     results = []
     
-    for index, row in df.iterrows():
-        # Get the unified conversational context
-        context_text = get_white_box_context(row)
-        label = row['label']
+    if batch_size == 1:
+        # Original single-sample mode (simpler, easier to debug)
+        for index, row in df.iterrows():
+            context_text = get_white_box_context(row)
+            label = row['label']
+            activations = get_wb_activations(model, tokenizer, context_text, device=device)
+            results.append({
+                "activations": activations,
+                "label": label,
+                "text": context_text
+            })
+    else:
+        # Batched mode: process multiple samples per forward pass
+        from tqdm import tqdm
         
-        # Extract activations
-        activations = get_wb_activations(model, tokenizer, context_text, device=device)
+        rows = list(df.iterrows())
+        total_batches = (len(rows) + batch_size - 1) // batch_size
         
-        results.append({
-            "activations": activations,
-            "label": label,
-            "text": context_text
-        })
-        
+        for batch_idx in tqdm(range(total_batches), desc=f"Extracting activations (batch_size={batch_size})"):
+            start_idx = batch_idx * batch_size
+            end_idx = min(start_idx + batch_size, len(rows))
+            batch_rows = rows[start_idx:end_idx]
+            
+            # Prepare batch texts and labels
+            batch_texts = []
+            batch_labels = []
+            batch_row_data = []
+            
+            for _, row in batch_rows:
+                context_text = get_white_box_context(row)
+                batch_texts.append(context_text)
+                batch_labels.append(row['label'])
+                batch_row_data.append(context_text)
+            
+            # Tokenize all texts in batch
+            inputs = tokenizer(batch_texts, return_tensors="pt", padding=True, truncation=True).to(device)
+            
+            # Forward pass for entire batch
+            with torch.no_grad():
+                outputs = model(**inputs, output_hidden_states=True)
+            
+            hidden_states = outputs.hidden_states
+            total_layers = len(hidden_states)
+            
+            # Extract last token for each sample in batch
+            # attention_mask tells us where the actual tokens end (ignoring padding)
+            attention_mask = inputs['attention_mask']
+            
+            for sample_idx, label in enumerate(batch_labels):
+                # Find the last non-padded token position for this sample
+                last_token_pos = attention_mask[sample_idx].sum().item() - 1
+                
+                activations = {}
+                for layer_idx in range(total_layers):
+                    # Extract activation at last token position for this sample
+                    act = hidden_states[layer_idx][sample_idx, last_token_pos, :].float().cpu().numpy()
+                    activations[layer_idx] = act
+                
+                results.append({
+                    "activations": activations,
+                    "label": label,
+                    "text": batch_row_data[sample_idx]
+                })
+    
     return results
