@@ -11,6 +11,14 @@ def load_model(model_name, device="cuda"):
     print(f"Loading model: {model_name}...")
     tokenizer = AutoTokenizer.from_pretrained(model_name)
     model = AutoModelForCausalLM.from_pretrained(model_name, torch_dtype=torch.bfloat16).to(device)
+
+    # Llama-family tokenizers often do not define a pad token by default.
+    # Batched extraction uses padding=True, so we map PAD -> EOS for safe padding.
+    if tokenizer.pad_token is None:
+        tokenizer.pad_token = tokenizer.eos_token
+    tokenizer.padding_side = "right"  # keep right padding for attention_mask-based last-token indexing
+    model.config.pad_token_id = tokenizer.pad_token_id
+
     return model, tokenizer
 
 def get_wb_activations(model, tokenizer, context_text, layer_nums=None, device="cuda"):
