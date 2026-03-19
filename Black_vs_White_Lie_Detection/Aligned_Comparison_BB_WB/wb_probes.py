@@ -76,15 +76,22 @@ def train_lr_probe(activations: np.ndarray, labels: np.ndarray, C: float = 1.0, 
     model.fit(activations, labels)
     return LogisticRegressionProbe(model)
 
-def train_wb_probes(activation_data: List[Dict[str, Any]], layer_list: List[int] = [10, 15, 20], method: ProbeMethod = "lr", test_size: float = 0.2):
+def train_wb_probes(
+    activation_data: List[Dict[str, Any]],
+    eval_data: Optional[List[Dict[str, Any]]] = None,
+    layer_list: List[int] = [10, 15, 20],
+    method: ProbeMethod = "lr",
+    test_size: float = 0.2,
+):
     """
     Trains probes for specified layers using the chosen method.
     
     Args:
-        activation_data: List of dicts with 'activations' key (dict of layer->vec) and 'label' key.
+        activation_data: Training data with 'activations' and 'label'.
+        eval_data: Optional validation data with same structure. If provided, no random split is used.
         layer_list: List of layers to train on.
         method: "lr" (Logistic Regression) or "dim" (Difference in Means).
-        test_size: Proportion of data to use for validation.
+        test_size: Proportion used only when eval_data is None.
         
     Returns:
         probes: {layer: probe_object}
@@ -95,6 +102,7 @@ def train_wb_probes(activation_data: List[Dict[str, Any]], layer_list: List[int]
     
     # Extract labels once
     y_all = np.array([item['label'] for item in activation_data])
+    y_eval_all = None if eval_data is None else np.array([item['label'] for item in eval_data])
     
     for layer in layer_list:
         print(f"Training WB Probe ({method}) for Layer {layer}...")
@@ -107,8 +115,20 @@ def train_wb_probes(activation_data: List[Dict[str, Any]], layer_list: List[int]
             print(f"Layer {layer} not found in activations. Skipping.")
             continue
             
-        # Split train/test
-        X_train, X_test, y_train, y_test = train_test_split(X_layer, y_all, test_size=test_size, random_state=42)
+        if eval_data is None:
+            # Backward-compatible behavior if explicit validation split is not provided.
+            X_train, X_test, y_train, y_test = train_test_split(
+                X_layer, y_all, test_size=test_size, random_state=42
+            )
+        else:
+            try:
+                X_test = np.array([item['activations'][layer] for item in eval_data])
+            except KeyError:
+                print(f"Layer {layer} not found in validation activations. Skipping.")
+                continue
+            X_train = X_layer
+            y_train = y_all
+            y_test = y_eval_all
         
         if method == "lr":
             probe = train_lr_probe(X_train, y_train)
