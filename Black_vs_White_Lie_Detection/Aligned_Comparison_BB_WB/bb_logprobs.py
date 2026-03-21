@@ -163,7 +163,7 @@ def compute_bb_features_for_dataset(
         total_batches = (len(rows) + batch_size - 1) // batch_size
 
         for batch_idx in tqdm(
-            range(total_batches), desc=f"Computing BB features (batch_size={batch_size})"
+            range(total_batches), desc=f"Computing BB features (batch_size={batch_size})", leave=False
         ):
             start_idx = batch_idx * batch_size
             end_idx = min(start_idx + batch_size, len(rows))

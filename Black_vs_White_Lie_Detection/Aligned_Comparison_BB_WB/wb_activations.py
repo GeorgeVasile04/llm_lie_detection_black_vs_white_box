@@ -94,7 +94,9 @@ def get_activations_for_dataset(df, model, tokenizer, device="cuda", batch_size=
         rows = list(df.iterrows())
         total_batches = (len(rows) + batch_size - 1) // batch_size
         
-        for batch_idx in tqdm(range(total_batches), desc=f"Extracting activations (batch_size={batch_size})"):
+        # Use leave=False or update a single bar if managing externally, but typically 
+        # a standard tqdm loop here is fine as long as there's not nested loops creating multiple bars concurrently.
+        for batch_idx in tqdm(range(total_batches), desc=f"Extracting activations (batch_size={batch_size})", leave=False):
             start_idx = batch_idx * batch_size
             end_idx = min(start_idx + batch_size, len(rows))
             batch_rows = rows[start_idx:end_idx]
