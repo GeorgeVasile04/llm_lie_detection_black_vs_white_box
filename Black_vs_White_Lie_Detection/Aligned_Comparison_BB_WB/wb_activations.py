@@ -146,6 +146,10 @@ def get_activations_for_dataset(df, model, tokenizer, device="cuda", batch_size=
             # Explicitly free batch memory to prevent OOM
             del inputs
             del outputs
+            
+            # Since hidden_states is a tuple, we must make sure all layers inside the tuple are deleted
+            for t in hidden_states:
+                del t
             del hidden_states
             del attention_mask
             torch.cuda.empty_cache()
