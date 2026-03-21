@@ -66,6 +66,10 @@ def train_lr_probe(activations: np.ndarray, labels: np.ndarray, C: float = 1.0, 
     Trains a Logistic Regression probe using sklearn.
     Default config from repeng: C=1.0, solver='newton-cg', max_iter=10000.
     """
+    # Fix Cython buffer dtype mismatch (e.g. expected 'const float' but got 'double')
+    activations = np.asarray(activations, dtype=np.float64)
+    labels = np.asarray(labels, dtype=int)
+    
     # Using 'newton-cg' as specified in original RepEng paper (faster for small datasets)
     model = LogisticRegression(
         C=C,

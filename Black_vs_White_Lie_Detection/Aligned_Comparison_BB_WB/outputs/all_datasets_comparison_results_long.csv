@@ -1,0 +1,375 @@
+Dataset,Algorithm,Method,Layer,Accuracy,AUC
+commonsense_qa,Logistic Regression,Black Box (Logprobs),N/A,0.806,0.737778125
+commonsense_qa,Logistic Regression,White Box (Probes),1,0.8,0.517909375
+commonsense_qa,Logistic Regression,White Box (Probes),3,0.759,0.531465625
+commonsense_qa,Logistic Regression,White Box (Probes),5,0.743,0.5576093750000001
+commonsense_qa,Logistic Regression,White Box (Probes),7,0.764,0.6668218750000001
+commonsense_qa,Logistic Regression,White Box (Probes),9,0.796,0.735415625
+commonsense_qa,Logistic Regression,White Box (Probes),11,0.82,0.7982218750000001
+commonsense_qa,Logistic Regression,White Box (Probes),13,0.822,0.820746875
+commonsense_qa,Logistic Regression,White Box (Probes),15,0.834,0.824478125
+commonsense_qa,Logistic Regression,White Box (Probes),17,0.846,0.8208656249999999
+commonsense_qa,Logistic Regression,White Box (Probes),19,0.819,0.7953468749999999
+commonsense_qa,Logistic Regression,White Box (Probes),21,0.821,0.790996875
+commonsense_qa,Logistic Regression,White Box (Probes),23,0.81,0.7965593750000001
+commonsense_qa,Logistic Regression,White Box (Probes),25,0.82,0.790765625
+commonsense_qa,Logistic Regression,White Box (Probes),27,0.819,0.784990625
+commonsense_qa,Logistic Regression,White Box (Probes),29,0.821,0.786271875
+commonsense_qa,Logistic Regression,White Box (Probes),31,0.823,0.785971875
+commonsense_qa,Difference in Means (DiM),Black Box (Logprobs),N/A,0.806,0.737778125
+commonsense_qa,Difference in Means (DiM),White Box (Probes),1,0.8,0.502615625
+commonsense_qa,Difference in Means (DiM),White Box (Probes),3,0.733,0.530190625
+commonsense_qa,Difference in Means (DiM),White Box (Probes),5,0.683,0.556753125
+commonsense_qa,Difference in Means (DiM),White Box (Probes),7,0.645,0.620659375
+commonsense_qa,Difference in Means (DiM),White Box (Probes),9,0.697,0.6863406249999999
+commonsense_qa,Difference in Means (DiM),White Box (Probes),11,0.691,0.764134375
+commonsense_qa,Difference in Means (DiM),White Box (Probes),13,0.664,0.787940625
+commonsense_qa,Difference in Means (DiM),White Box (Probes),15,0.644,0.789596875
+commonsense_qa,Difference in Means (DiM),White Box (Probes),17,0.641,0.7771656250000001
+commonsense_qa,Difference in Means (DiM),White Box (Probes),19,0.598,0.759253125
+commonsense_qa,Difference in Means (DiM),White Box (Probes),21,0.591,0.7563531250000001
+commonsense_qa,Difference in Means (DiM),White Box (Probes),23,0.585,0.7540843749999999
+commonsense_qa,Difference in Means (DiM),White Box (Probes),25,0.553,0.745046875
+commonsense_qa,Difference in Means (DiM),White Box (Probes),27,0.59,0.746203125
+commonsense_qa,Difference in Means (DiM),White Box (Probes),29,0.591,0.7472906249999999
+commonsense_qa,Difference in Means (DiM),White Box (Probes),31,0.62,0.753259375
+arc_challenge,Logistic Regression,Black Box (Logprobs),N/A,0.75,0.7095782424374599
+arc_challenge,Logistic Regression,White Box (Probes),1,0.742,0.5100931387932914
+arc_challenge,Logistic Regression,White Box (Probes),3,0.731,0.5387209506433545
+arc_challenge,Logistic Regression,White Box (Probes),5,0.709,0.5304655875829126
+arc_challenge,Logistic Regression,White Box (Probes),7,0.674,0.5270293990925483
+arc_challenge,Logistic Regression,White Box (Probes),9,0.685,0.5655668381214793
+arc_challenge,Logistic Regression,White Box (Probes),11,0.713,0.6356576364767897
+arc_challenge,Logistic Regression,White Box (Probes),13,0.733,0.7000622343735872
+arc_challenge,Logistic Regression,White Box (Probes),15,0.721,0.697259027973553
+arc_challenge,Logistic Regression,White Box (Probes),17,0.719,0.6824185235027844
+arc_challenge,Logistic Regression,White Box (Probes),19,0.706,0.6668333342198629
+arc_challenge,Logistic Regression,White Box (Probes),21,0.695,0.656397108495258
+arc_challenge,Logistic Regression,White Box (Probes),23,0.695,0.6459236485300454
+arc_challenge,Logistic Regression,White Box (Probes),25,0.703,0.6456204554279543
+arc_challenge,Logistic Regression,White Box (Probes),27,0.699,0.6363491295166465
+arc_challenge,Logistic Regression,White Box (Probes),29,0.68,0.6446044925770883
+arc_challenge,Logistic Regression,White Box (Probes),31,0.674,0.6356735940084788
+arc_challenge,Difference in Means (DiM),Black Box (Logprobs),N/A,0.75,0.7095782424374599
+arc_challenge,Difference in Means (DiM),White Box (Probes),1,0.359,0.5005718115521891
+arc_challenge,Difference in Means (DiM),White Box (Probes),3,0.352,0.536625194814866
+arc_challenge,Difference in Means (DiM),White Box (Probes),5,0.314,0.5447635359762553
+arc_challenge,Difference in Means (DiM),White Box (Probes),7,0.489,0.5510667609934096
+arc_challenge,Difference in Means (DiM),White Box (Probes),9,0.553,0.5784232894855823
+arc_challenge,Difference in Means (DiM),White Box (Probes),11,0.493,0.651726870887611
+arc_challenge,Difference in Means (DiM),White Box (Probes),13,0.588,0.7106846313012303
+arc_challenge,Difference in Means (DiM),White Box (Probes),15,0.593,0.7134825185240348
+arc_challenge,Difference in Means (DiM),White Box (Probes),17,0.6,0.7075250400268087
+arc_challenge,Difference in Means (DiM),White Box (Probes),19,0.629,0.6973334964547684
+arc_challenge,Difference in Means (DiM),White Box (Probes),21,0.638,0.6857642859802446
+arc_challenge,Difference in Means (DiM),White Box (Probes),23,0.628,0.6801791498890951
+arc_challenge,Difference in Means (DiM),White Box (Probes),25,0.621,0.684705769711541
+arc_challenge,Difference in Means (DiM),White Box (Probes),27,0.588,0.6875089761115751
+arc_challenge,Difference in Means (DiM),White Box (Probes),29,0.638,0.681790860589684
+arc_challenge,Difference in Means (DiM),White Box (Probes),31,0.602,0.6536417746902909
+open_book_qa,Logistic Regression,Black Box (Logprobs),N/A,0.771,0.7254666666666667
+open_book_qa,Logistic Regression,White Box (Probes),1,0.737,0.5739306666666667
+open_book_qa,Logistic Regression,White Box (Probes),3,0.72,0.61936
+open_book_qa,Logistic Regression,White Box (Probes),5,0.721,0.6126186666666668
+open_book_qa,Logistic Regression,White Box (Probes),7,0.719,0.6557173333333334
+open_book_qa,Logistic Regression,White Box (Probes),9,0.713,0.680992
+open_book_qa,Logistic Regression,White Box (Probes),11,0.756,0.7386826666666666
+open_book_qa,Logistic Regression,White Box (Probes),13,0.749,0.762352
+open_book_qa,Logistic Regression,White Box (Probes),15,0.764,0.784608
+open_book_qa,Logistic Regression,White Box (Probes),17,0.753,0.77728
+open_book_qa,Logistic Regression,White Box (Probes),19,0.736,0.763136
+open_book_qa,Logistic Regression,White Box (Probes),21,0.72,0.7573813333333334
+open_book_qa,Logistic Regression,White Box (Probes),23,0.733,0.7547040000000002
+open_book_qa,Logistic Regression,White Box (Probes),25,0.728,0.7473973333333334
+open_book_qa,Logistic Regression,White Box (Probes),27,0.732,0.7502133333333333
+open_book_qa,Logistic Regression,White Box (Probes),29,0.734,0.7343626666666667
+open_book_qa,Logistic Regression,White Box (Probes),31,0.723,0.7169066666666668
+open_book_qa,Difference in Means (DiM),Black Box (Logprobs),N/A,0.771,0.7254666666666667
+open_book_qa,Difference in Means (DiM),White Box (Probes),1,0.338,0.5844906666666666
+open_book_qa,Difference in Means (DiM),White Box (Probes),3,0.398,0.5971626666666667
+open_book_qa,Difference in Means (DiM),White Box (Probes),5,0.412,0.601408
+open_book_qa,Difference in Means (DiM),White Box (Probes),7,0.398,0.6192213333333334
+open_book_qa,Difference in Means (DiM),White Box (Probes),9,0.39,0.6550986666666667
+open_book_qa,Difference in Means (DiM),White Box (Probes),11,0.388,0.6730666666666667
+open_book_qa,Difference in Means (DiM),White Box (Probes),13,0.38,0.7082400000000001
+open_book_qa,Difference in Means (DiM),White Box (Probes),15,0.364,0.7189226666666666
+open_book_qa,Difference in Means (DiM),White Box (Probes),17,0.373,0.704912
+open_book_qa,Difference in Means (DiM),White Box (Probes),19,0.349,0.698096
+open_book_qa,Difference in Means (DiM),White Box (Probes),21,0.332,0.6947519999999999
+open_book_qa,Difference in Means (DiM),White Box (Probes),23,0.333,0.687472
+open_book_qa,Difference in Means (DiM),White Box (Probes),25,0.33,0.6809973333333333
+open_book_qa,Difference in Means (DiM),White Box (Probes),27,0.324,0.688112
+open_book_qa,Difference in Means (DiM),White Box (Probes),29,0.342,0.6800213333333333
+open_book_qa,Difference in Means (DiM),White Box (Probes),31,0.358,0.6580213333333333
+got_cities,Logistic Regression,Black Box (Logprobs),N/A,0.9834983498349835,0.9993791458353756
+got_cities,Logistic Regression,White Box (Probes),1,0.5,0.5
+got_cities,Logistic Regression,White Box (Probes),3,0.5,0.5
+got_cities,Logistic Regression,White Box (Probes),5,0.5346534653465347,0.5409382522410657
+got_cities,Logistic Regression,White Box (Probes),7,0.740924092409241,0.796664814996351
+got_cities,Logistic Regression,White Box (Probes),9,0.9191419141914191,0.9739023407291225
+got_cities,Logistic Regression,White Box (Probes),11,0.9834983498349835,0.9990414883072465
+got_cities,Logistic Regression,White Box (Probes),13,0.9884488448844885,0.9996405581152175
+got_cities,Logistic Regression,White Box (Probes),15,0.9933993399339934,0.9997603720768116
+got_cities,Logistic Regression,White Box (Probes),17,0.9933993399339934,0.9997821564334651
+got_cities,Logistic Regression,White Box (Probes),19,0.9933993399339934,0.9997385877201581
+got_cities,Logistic Regression,White Box (Probes),21,0.9933993399339934,0.9997059111851779
+got_cities,Logistic Regression,White Box (Probes),23,0.9933993399339934,0.9997603720768117
+got_cities,Logistic Regression,White Box (Probes),25,0.9933993399339934,0.9997276955418314
+got_cities,Logistic Regression,White Box (Probes),27,0.9900990099009901,0.9996841268285245
+got_cities,Logistic Regression,White Box (Probes),29,0.9917491749174917,0.9996405581152175
+got_cities,Logistic Regression,White Box (Probes),31,0.9917491749174917,0.999662342471871
+got_cities,Difference in Means (DiM),Black Box (Logprobs),N/A,0.9834983498349835,0.9993791458353756
+got_cities,Difference in Means (DiM),White Box (Probes),1,0.5,0.5178904029016762
+got_cities,Difference in Means (DiM),White Box (Probes),3,0.5,0.5321809408663639
+got_cities,Difference in Means (DiM),White Box (Probes),5,0.5,0.5178468341883693
+got_cities,Difference in Means (DiM),White Box (Probes),7,0.46534653465346537,0.5591826509383612
+got_cities,Difference in Means (DiM),White Box (Probes),9,0.6386138613861386,0.6416364408718099
+got_cities,Difference in Means (DiM),White Box (Probes),11,0.7260726072607261,0.9167292966920455
+got_cities,Difference in Means (DiM),White Box (Probes),13,0.7260726072607261,0.9714842771405853
+got_cities,Difference in Means (DiM),White Box (Probes),15,0.9834983498349835,0.9986058011741767
+got_cities,Difference in Means (DiM),White Box (Probes),17,0.9207920792079208,0.9873759653193043
+got_cities,Difference in Means (DiM),White Box (Probes),19,0.9158415841584159,0.9857639229269463
+got_cities,Difference in Means (DiM),White Box (Probes),21,0.8976897689768977,0.9837706542931521
+got_cities,Difference in Means (DiM),White Box (Probes),23,0.9422442244224423,0.9908614623838621
+got_cities,Difference in Means (DiM),White Box (Probes),25,0.9455445544554455,0.9911664433770109
+got_cities,Difference in Means (DiM),White Box (Probes),27,0.9537953795379538,0.9926586718077748
+got_cities,Difference in Means (DiM),White Box (Probes),29,0.9653465346534653,0.9934320164689736
+got_cities,Difference in Means (DiM),White Box (Probes),31,0.9785478547854786,0.9944449890533608
+got_sp_en_trans,Logistic Regression,Black Box (Logprobs),N/A,0.9741379310344828,0.9821640903686087
+got_sp_en_trans,Logistic Regression,White Box (Probes),1,0.49137931034482757,0.5234839476813318
+got_sp_en_trans,Logistic Regression,White Box (Probes),3,0.5431034482758621,0.5796670630202141
+got_sp_en_trans,Logistic Regression,White Box (Probes),5,0.5775862068965517,0.5692627824019024
+got_sp_en_trans,Logistic Regression,White Box (Probes),7,0.5344827586206896,0.6004756242568371
+got_sp_en_trans,Logistic Regression,White Box (Probes),9,0.6724137931034483,0.738703923900119
+got_sp_en_trans,Logistic Regression,White Box (Probes),11,0.8793103448275862,0.9527348394768131
+got_sp_en_trans,Logistic Regression,White Box (Probes),13,0.9568965517241379,0.9815695600475625
+got_sp_en_trans,Logistic Regression,White Box (Probes),15,0.9741379310344828,0.9892984542211652
+got_sp_en_trans,Logistic Regression,White Box (Probes),17,0.9741379310344828,0.991973840665874
+got_sp_en_trans,Logistic Regression,White Box (Probes),19,0.9741379310344828,0.9952437574316291
+got_sp_en_trans,Logistic Regression,White Box (Probes),21,0.9741379310344828,0.9964328180737217
+got_sp_en_trans,Logistic Regression,White Box (Probes),23,0.9741379310344828,0.9994054696789537
+got_sp_en_trans,Logistic Regression,White Box (Probes),25,0.9827586206896551,0.9988109393579073
+got_sp_en_trans,Logistic Regression,White Box (Probes),27,0.9827586206896551,0.9994054696789536
+got_sp_en_trans,Logistic Regression,White Box (Probes),29,0.9827586206896551,1.0
+got_sp_en_trans,Logistic Regression,White Box (Probes),31,0.9827586206896551,1.0
+got_sp_en_trans,Difference in Means (DiM),Black Box (Logprobs),N/A,0.9741379310344828,0.9821640903686087
+got_sp_en_trans,Difference in Means (DiM),White Box (Probes),1,0.5086206896551724,0.5160523186682521
+got_sp_en_trans,Difference in Means (DiM),White Box (Probes),3,0.5603448275862069,0.5783293697978598
+got_sp_en_trans,Difference in Means (DiM),White Box (Probes),5,0.49137931034482757,0.5555885850178359
+got_sp_en_trans,Difference in Means (DiM),White Box (Probes),7,0.5086206896551724,0.5395362663495838
+got_sp_en_trans,Difference in Means (DiM),White Box (Probes),9,0.5172413793103449,0.5793697978596909
+got_sp_en_trans,Difference in Means (DiM),White Box (Probes),11,0.6724137931034483,0.6835612366230678
+got_sp_en_trans,Difference in Means (DiM),White Box (Probes),13,0.6896551724137931,0.7345422116527943
+got_sp_en_trans,Difference in Means (DiM),White Box (Probes),15,0.6379310344827587,0.7158145065398336
+got_sp_en_trans,Difference in Means (DiM),White Box (Probes),17,0.7155172413793104,0.7443519619500595
+got_sp_en_trans,Difference in Means (DiM),White Box (Probes),19,0.6982758620689655,0.7360285374554102
+got_sp_en_trans,Difference in Means (DiM),White Box (Probes),21,0.7413793103448276,0.7520808561236624
+got_sp_en_trans,Difference in Means (DiM),White Box (Probes),23,0.7844827586206896,0.9203329369797859
+got_sp_en_trans,Difference in Means (DiM),White Box (Probes),25,0.7931034482758621,0.9357907253269917
+got_sp_en_trans,Difference in Means (DiM),White Box (Probes),27,0.8706896551724138,0.9863258026159334
+got_sp_en_trans,Difference in Means (DiM),White Box (Probes),29,0.7758620689655172,0.9836504161712248
+got_sp_en_trans,Difference in Means (DiM),White Box (Probes),31,0.6896551724137931,0.7648632580261594
+got_larger_than,Logistic Regression,Black Box (Logprobs),N/A,0.923728813559322,0.979814620476171
+got_larger_than,Logistic Regression,White Box (Probes),1,0.4830508474576271,0.49186546207106807
+got_larger_than,Logistic Regression,White Box (Probes),3,0.5302663438256658,0.5419918039034057
+got_larger_than,Logistic Regression,White Box (Probes),5,0.6222760290556901,0.6775322596720389
+got_larger_than,Logistic Regression,White Box (Probes),7,0.7457627118644068,0.8188768181791533
+got_larger_than,Logistic Regression,White Box (Probes),9,0.8462469733656174,0.9200030486196202
+got_larger_than,Logistic Regression,White Box (Probes),11,0.9334140435835351,0.9852493712222034
+got_larger_than,Logistic Regression,White Box (Probes),13,0.9878934624697336,0.9990854141139363
+got_larger_than,Logistic Regression,White Box (Probes),15,0.9891041162227603,0.9992906096652967
+got_larger_than,Logistic Regression,White Box (Probes),17,0.9915254237288136,0.9995309815968904
+got_larger_than,Logistic Regression,White Box (Probes),19,0.9915254237288136,0.9996306480075512
+got_larger_than,Logistic Regression,White Box (Probes),21,0.9903147699757869,0.9997361771482509
+got_larger_than,Logistic Regression,White Box (Probes),23,0.9878934624697336,0.9996951380379788
+got_larger_than,Logistic Regression,White Box (Probes),25,0.9903147699757869,0.9998358435589116
+got_larger_than,Logistic Regression,White Box (Probes),27,0.9951573849878934,0.9999296472395336
+got_larger_than,Logistic Regression,White Box (Probes),29,0.9939467312348669,0.9999179217794558
+got_larger_than,Logistic Regression,White Box (Probes),31,0.9951573849878934,0.9999120590494169
+got_larger_than,Difference in Means (DiM),Black Box (Logprobs),N/A,0.923728813559322,0.979814620476171
+got_larger_than,Difference in Means (DiM),White Box (Probes),1,0.5,0.5082899002749619
+got_larger_than,Difference in Means (DiM),White Box (Probes),3,0.5278450363196125,0.5418217847322785
+got_larger_than,Difference in Means (DiM),White Box (Probes),5,0.5605326876513317,0.6186059600513576
+got_larger_than,Difference in Means (DiM),White Box (Probes),7,0.6162227602905569,0.667161090233278
+got_larger_than,Difference in Means (DiM),White Box (Probes),9,0.612590799031477,0.6502705649912939
+got_larger_than,Difference in Means (DiM),White Box (Probes),11,0.6719128329297821,0.7538474165880082
+got_larger_than,Difference in Means (DiM),White Box (Probes),13,0.7966101694915254,0.8974960280003987
+got_larger_than,Difference in Means (DiM),White Box (Probes),15,0.7796610169491526,0.9083244903821914
+got_larger_than,Difference in Means (DiM),White Box (Probes),17,0.7687651331719129,0.9103881713558736
+got_larger_than,Difference in Means (DiM),White Box (Probes),19,0.7675544794188862,0.9090397434469336
+got_larger_than,Difference in Means (DiM),White Box (Probes),21,0.7651331719128329,0.9063252994389368
+got_larger_than,Difference in Means (DiM),White Box (Probes),23,0.7578692493946732,0.906847082412396
+got_larger_than,Difference in Means (DiM),White Box (Probes),25,0.7602905569007264,0.9111034244206158
+got_larger_than,Difference in Means (DiM),White Box (Probes),27,0.7590799031476998,0.9119476575462129
+got_larger_than,Difference in Means (DiM),White Box (Probes),29,0.7590799031476998,0.9113906981925202
+got_larger_than,Difference in Means (DiM),White Box (Probes),31,0.7578692493946732,0.9116545210442695
+got_cities_cities_conj,Logistic Regression,Black Box (Logprobs),N/A,0.9658385093167702,0.9940145196169292
+got_cities_cities_conj,Logistic Regression,White Box (Probes),1,0.484472049689441,0.4552826691380908
+got_cities_cities_conj,Logistic Regression,White Box (Probes),3,0.484472049689441,0.5020080321285141
+got_cities_cities_conj,Logistic Regression,White Box (Probes),5,0.5403726708074534,0.5708989805375347
+got_cities_cities_conj,Logistic Regression,White Box (Probes),7,0.65527950310559,0.7025409329626197
+got_cities_cities_conj,Logistic Regression,White Box (Probes),9,0.8012422360248447,0.8800200803212851
+got_cities_cities_conj,Logistic Regression,White Box (Probes),11,0.9285714285714286,0.9789542786530738
+got_cities_cities_conj,Logistic Regression,White Box (Probes),13,0.9720496894409938,0.9948254556688292
+got_cities_cities_conj,Logistic Regression,White Box (Probes),15,0.9782608695652174,0.9983395118937288
+got_cities_cities_conj,Logistic Regression,White Box (Probes),17,0.9875776397515528,0.9986098239110287
+got_cities_cities_conj,Logistic Regression,White Box (Probes),19,0.9875776397515528,0.9985325919060859
+got_cities_cities_conj,Logistic Regression,White Box (Probes),21,0.9875776397515528,0.9986870559159716
+got_cities_cities_conj,Logistic Regression,White Box (Probes),23,0.984472049689441,0.9983781278962002
+got_cities_cities_conj,Logistic Regression,White Box (Probes),25,0.984472049689441,0.9983395118937287
+got_cities_cities_conj,Logistic Regression,White Box (Probes),27,0.984472049689441,0.9983008958912574
+got_cities_cities_conj,Logistic Regression,White Box (Probes),29,0.9813664596273292,0.9980691998764288
+got_cities_cities_conj,Logistic Regression,White Box (Probes),31,0.9782608695652174,0.9976830398517146
+got_cities_cities_conj,Difference in Means (DiM),Black Box (Logprobs),N/A,0.9658385093167702,0.9940145196169292
+got_cities_cities_conj,Difference in Means (DiM),White Box (Probes),1,0.484472049689441,0.5424389867160951
+got_cities_cities_conj,Difference in Means (DiM),White Box (Probes),3,0.531055900621118,0.5006950880444856
+got_cities_cities_conj,Difference in Means (DiM),White Box (Probes),5,0.5496894409937888,0.5524791473586654
+got_cities_cities_conj,Difference in Means (DiM),White Box (Probes),7,0.6055900621118012,0.643651529193698
+got_cities_cities_conj,Difference in Means (DiM),White Box (Probes),9,0.6149068322981367,0.7914735866543096
+got_cities_cities_conj,Difference in Means (DiM),White Box (Probes),11,0.6583850931677019,0.9050046339202965
+got_cities_cities_conj,Difference in Means (DiM),White Box (Probes),13,0.7577639751552795,0.95037843682422
+got_cities_cities_conj,Difference in Means (DiM),White Box (Probes),15,0.8354037267080745,0.9854031510658017
+got_cities_cities_conj,Difference in Means (DiM),White Box (Probes),17,0.9006211180124224,0.9935897435897436
+got_cities_cities_conj,Difference in Means (DiM),White Box (Probes),19,0.9192546583850931,0.9946709916589435
+got_cities_cities_conj,Difference in Means (DiM),White Box (Probes),21,0.9254658385093167,0.9945165276490577
+got_cities_cities_conj,Difference in Means (DiM),White Box (Probes),23,0.9316770186335404,0.9946323756564721
+got_cities_cities_conj,Difference in Means (DiM),White Box (Probes),25,0.9409937888198758,0.9946323756564721
+got_cities_cities_conj,Difference in Means (DiM),White Box (Probes),27,0.9440993788819876,0.9948640716713006
+got_cities_cities_conj,Difference in Means (DiM),White Box (Probes),29,0.937888198757764,0.9952502316960148
+got_cities_cities_conj,Difference in Means (DiM),White Box (Probes),31,0.9503105590062112,0.9951343836886005
+got_cities_cities_disj,Logistic Regression,Black Box (Logprobs),N/A,0.8698630136986302,0.9514567669172933
+got_cities_cities_disj,Logistic Regression,White Box (Probes),1,0.4931506849315068,0.5263627819548872
+got_cities_cities_disj,Logistic Regression,White Box (Probes),3,0.5513698630136986,0.5261278195488721
+got_cities_cities_disj,Logistic Regression,White Box (Probes),5,0.565068493150685,0.6073308270676692
+got_cities_cities_disj,Logistic Regression,White Box (Probes),7,0.6712328767123288,0.7140507518796992
+got_cities_cities_disj,Logistic Regression,White Box (Probes),9,0.7568493150684932,0.8388627819548872
+got_cities_cities_disj,Logistic Regression,White Box (Probes),11,0.863013698630137,0.9588345864661655
+got_cities_cities_disj,Logistic Regression,White Box (Probes),13,0.9315068493150684,0.9808740601503759
+got_cities_cities_disj,Logistic Regression,White Box (Probes),15,0.952054794520548,0.9881109022556391
+got_cities_cities_disj,Logistic Regression,White Box (Probes),17,0.958904109589041,0.9920582706766917
+got_cities_cities_disj,Logistic Regression,White Box (Probes),19,0.9657534246575342,0.9930451127819548
+got_cities_cities_disj,Logistic Regression,White Box (Probes),21,0.958904109589041,0.9922932330827068
+got_cities_cities_disj,Logistic Regression,White Box (Probes),23,0.958904109589041,0.993045112781955
+got_cities_cities_disj,Logistic Regression,White Box (Probes),25,0.9726027397260274,0.993515037593985
+got_cities_cities_disj,Logistic Regression,White Box (Probes),27,0.9691780821917808,0.9943139097744361
+got_cities_cities_disj,Logistic Regression,White Box (Probes),29,0.9691780821917808,0.9949718045112782
+got_cities_cities_disj,Logistic Regression,White Box (Probes),31,0.9657534246575342,0.9937499999999999
+got_cities_cities_disj,Difference in Means (DiM),Black Box (Logprobs),N/A,0.8698630136986302,0.9514567669172933
+got_cities_cities_disj,Difference in Means (DiM),White Box (Probes),1,0.5205479452054794,0.5258458646616541
+got_cities_cities_disj,Difference in Means (DiM),White Box (Probes),3,0.5205479452054794,0.5226973684210526
+got_cities_cities_disj,Difference in Means (DiM),White Box (Probes),5,0.523972602739726,0.5509868421052632
+got_cities_cities_disj,Difference in Means (DiM),White Box (Probes),7,0.5616438356164384,0.5979793233082707
+got_cities_cities_disj,Difference in Means (DiM),White Box (Probes),9,0.6986301369863014,0.7379229323308271
+got_cities_cities_disj,Difference in Means (DiM),White Box (Probes),11,0.7568493150684932,0.8484492481203006
+got_cities_cities_disj,Difference in Means (DiM),White Box (Probes),13,0.7842465753424658,0.8855733082706767
+got_cities_cities_disj,Difference in Means (DiM),White Box (Probes),15,0.8082191780821918,0.887406015037594
+got_cities_cities_disj,Difference in Means (DiM),White Box (Probes),17,0.791095890410959,0.8836466165413533
+got_cities_cities_disj,Difference in Means (DiM),White Box (Probes),19,0.7808219178082192,0.8678101503759399
+got_cities_cities_disj,Difference in Means (DiM),White Box (Probes),21,0.7773972602739726,0.8653665413533834
+got_cities_cities_disj,Difference in Means (DiM),White Box (Probes),23,0.7671232876712328,0.8662124060150375
+got_cities_cities_disj,Difference in Means (DiM),White Box (Probes),25,0.7636986301369864,0.8633458646616542
+got_cities_cities_disj,Difference in Means (DiM),White Box (Probes),27,0.7636986301369864,0.8603853383458645
+got_cities_cities_disj,Difference in Means (DiM),White Box (Probes),29,0.7602739726027398,0.8568609022556392
+got_cities_cities_disj,Difference in Means (DiM),White Box (Probes),31,0.7568493150684932,0.8536654135338345
+imdb,Logistic Regression,Black Box (Logprobs),N/A,0.985,0.9992920000000001
+imdb,Logistic Regression,White Box (Probes),1,1.0,1.0
+imdb,Logistic Regression,White Box (Probes),3,1.0,1.0
+imdb,Logistic Regression,White Box (Probes),5,1.0,1.0
+imdb,Logistic Regression,White Box (Probes),7,1.0,1.0
+imdb,Logistic Regression,White Box (Probes),9,1.0,1.0
+imdb,Logistic Regression,White Box (Probes),11,1.0,1.0
+imdb,Logistic Regression,White Box (Probes),13,1.0,1.0
+imdb,Logistic Regression,White Box (Probes),15,1.0,1.0
+imdb,Logistic Regression,White Box (Probes),17,1.0,1.0
+imdb,Logistic Regression,White Box (Probes),19,1.0,1.0
+imdb,Logistic Regression,White Box (Probes),21,1.0,1.0
+imdb,Logistic Regression,White Box (Probes),23,1.0,1.0
+imdb,Logistic Regression,White Box (Probes),25,1.0,1.0
+imdb,Logistic Regression,White Box (Probes),27,1.0,1.0
+imdb,Logistic Regression,White Box (Probes),29,1.0,1.0
+imdb,Logistic Regression,White Box (Probes),31,1.0,1.0
+imdb,Difference in Means (DiM),Black Box (Logprobs),N/A,0.985,0.9992920000000001
+imdb,Difference in Means (DiM),White Box (Probes),1,1.0,1.0
+imdb,Difference in Means (DiM),White Box (Probes),3,1.0,1.0
+imdb,Difference in Means (DiM),White Box (Probes),5,1.0,1.0
+imdb,Difference in Means (DiM),White Box (Probes),7,1.0,1.0
+imdb,Difference in Means (DiM),White Box (Probes),9,1.0,1.0
+imdb,Difference in Means (DiM),White Box (Probes),11,1.0,1.0
+imdb,Difference in Means (DiM),White Box (Probes),13,1.0,1.0
+imdb,Difference in Means (DiM),White Box (Probes),15,1.0,1.0
+imdb,Difference in Means (DiM),White Box (Probes),17,1.0,1.0
+imdb,Difference in Means (DiM),White Box (Probes),19,1.0,1.0
+imdb,Difference in Means (DiM),White Box (Probes),21,0.999,1.0
+imdb,Difference in Means (DiM),White Box (Probes),23,0.999,1.0
+imdb,Difference in Means (DiM),White Box (Probes),25,0.999,1.0
+imdb,Difference in Means (DiM),White Box (Probes),27,0.999,1.0
+imdb,Difference in Means (DiM),White Box (Probes),29,0.999,1.0
+imdb,Difference in Means (DiM),White Box (Probes),31,0.998,0.999992
+copa,Logistic Regression,Black Box (Logprobs),N/A,0.45,0.45599999999999996
+copa,Logistic Regression,White Box (Probes),1,0.45,0.45935000000000004
+copa,Logistic Regression,White Box (Probes),3,0.45,0.4589
+copa,Logistic Regression,White Box (Probes),5,0.45,0.45149999999999996
+copa,Logistic Regression,White Box (Probes),7,0.45,0.45599999999999996
+copa,Logistic Regression,White Box (Probes),9,0.45,0.44844999999999996
+copa,Logistic Regression,White Box (Probes),11,0.45,0.44784999999999997
+copa,Logistic Regression,White Box (Probes),13,0.45,0.4524
+copa,Logistic Regression,White Box (Probes),15,0.45,0.44604999999999995
+copa,Logistic Regression,White Box (Probes),17,0.45,0.44844999999999996
+copa,Logistic Regression,White Box (Probes),19,0.45,0.44794999999999996
+copa,Logistic Regression,White Box (Probes),21,0.45,0.43589999999999995
+copa,Logistic Regression,White Box (Probes),23,0.45,0.42925
+copa,Logistic Regression,White Box (Probes),25,0.445,0.4293499999999999
+copa,Logistic Regression,White Box (Probes),27,0.445,0.43084999999999996
+copa,Logistic Regression,White Box (Probes),29,0.445,0.4281499999999999
+copa,Logistic Regression,White Box (Probes),31,0.445,0.42574999999999996
+copa,Difference in Means (DiM),Black Box (Logprobs),N/A,0.45,0.45599999999999996
+copa,Difference in Means (DiM),White Box (Probes),1,0.55,0.54125
+copa,Difference in Means (DiM),White Box (Probes),3,0.55,0.5423
+copa,Difference in Means (DiM),White Box (Probes),5,0.55,0.5461
+copa,Difference in Means (DiM),White Box (Probes),7,0.55,0.5455
+copa,Difference in Means (DiM),White Box (Probes),9,0.55,0.5431
+copa,Difference in Means (DiM),White Box (Probes),11,0.55,0.5523500000000001
+copa,Difference in Means (DiM),White Box (Probes),13,0.55,0.5527
+copa,Difference in Means (DiM),White Box (Probes),15,0.55,0.55125
+copa,Difference in Means (DiM),White Box (Probes),17,0.55,0.54795
+copa,Difference in Means (DiM),White Box (Probes),19,0.55,0.54605
+copa,Difference in Means (DiM),White Box (Probes),21,0.55,0.55425
+copa,Difference in Means (DiM),White Box (Probes),23,0.55,0.5464500000000001
+copa,Difference in Means (DiM),White Box (Probes),25,0.55,0.5476
+copa,Difference in Means (DiM),White Box (Probes),27,0.55,0.5503
+copa,Difference in Means (DiM),White Box (Probes),29,0.55,0.54905
+copa,Difference in Means (DiM),White Box (Probes),31,0.55,0.5515500000000001
+boolq,Logistic Regression,Black Box (Logprobs),N/A,0.642,0.676332
+boolq,Logistic Regression,White Box (Probes),1,0.62,0.60608
+boolq,Logistic Regression,White Box (Probes),3,0.62,0.60888
+boolq,Logistic Regression,White Box (Probes),5,0.61,0.634544
+boolq,Logistic Regression,White Box (Probes),7,0.619,0.6424680000000002
+boolq,Logistic Regression,White Box (Probes),9,0.609,0.6422720000000001
+boolq,Logistic Regression,White Box (Probes),11,0.597,0.6378079999999999
+boolq,Logistic Regression,White Box (Probes),13,0.622,0.6593439999999999
+boolq,Logistic Regression,White Box (Probes),15,0.625,0.6800120000000001
+boolq,Logistic Regression,White Box (Probes),17,0.626,0.668272
+boolq,Logistic Regression,White Box (Probes),19,0.619,0.673052
+boolq,Logistic Regression,White Box (Probes),21,0.614,0.6561440000000001
+boolq,Logistic Regression,White Box (Probes),23,0.597,0.640448
+boolq,Logistic Regression,White Box (Probes),25,0.606,0.6430199999999999
+boolq,Logistic Regression,White Box (Probes),27,0.61,0.638736
+boolq,Logistic Regression,White Box (Probes),29,0.603,0.635324
+boolq,Logistic Regression,White Box (Probes),31,0.611,0.637732
+boolq,Difference in Means (DiM),Black Box (Logprobs),N/A,0.642,0.676332
+boolq,Difference in Means (DiM),White Box (Probes),1,0.62,0.6372439999999999
+boolq,Difference in Means (DiM),White Box (Probes),3,0.62,0.631066
+boolq,Difference in Means (DiM),White Box (Probes),5,0.62,0.63298
+boolq,Difference in Means (DiM),White Box (Probes),7,0.62,0.6286759999999999
+boolq,Difference in Means (DiM),White Box (Probes),9,0.62,0.6217760000000001
+boolq,Difference in Means (DiM),White Box (Probes),11,0.62,0.6268959999999999
+boolq,Difference in Means (DiM),White Box (Probes),13,0.62,0.6412479999999999
+boolq,Difference in Means (DiM),White Box (Probes),15,0.62,0.659756
+boolq,Difference in Means (DiM),White Box (Probes),17,0.62,0.66808
+boolq,Difference in Means (DiM),White Box (Probes),19,0.62,0.664912
+boolq,Difference in Means (DiM),White Box (Probes),21,0.62,0.658052
+boolq,Difference in Means (DiM),White Box (Probes),23,0.62,0.655804
+boolq,Difference in Means (DiM),White Box (Probes),25,0.62,0.65042
+boolq,Difference in Means (DiM),White Box (Probes),27,0.62,0.6462239999999999
+boolq,Difference in Means (DiM),White Box (Probes),29,0.62,0.643788
+boolq,Difference in Means (DiM),White Box (Probes),31,0.62,0.64586
