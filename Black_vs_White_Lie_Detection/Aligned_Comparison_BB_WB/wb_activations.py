@@ -133,6 +133,7 @@ def get_activations_for_dataset(df, model, tokenizer, device="cuda", batch_size=
                 activations = {}
                 for layer_idx in range(total_layers):
                     # Extract activation at last token position for this sample
+                    # Move immediately to CPU numpy array to save GPU memory
                     act = hidden_states[layer_idx][sample_idx, last_token_pos, :].float().cpu().numpy()
                     activations[layer_idx] = act
                 
@@ -141,5 +142,12 @@ def get_activations_for_dataset(df, model, tokenizer, device="cuda", batch_size=
                     "label": label,
                     "text": batch_row_data[sample_idx]
                 })
+            
+            # Explicitly free batch memory to prevent OOM
+            del inputs
+            del outputs
+            del hidden_states
+            del attention_mask
+            torch.cuda.empty_cache()
     
     return results

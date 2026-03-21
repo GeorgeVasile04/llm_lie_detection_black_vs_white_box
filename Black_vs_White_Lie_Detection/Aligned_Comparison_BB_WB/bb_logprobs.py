@@ -118,6 +118,13 @@ def get_bb_logprobs(model, tokenizer, row, probes_df=None, device="cuda"):
             "probs": {"yes": yes_prob, "no": no_prob},
         })
 
+    # Explicitly clear memory to prevent OOM
+    del inputs
+    del outputs
+    del logits
+    del attention_mask
+    torch.cuda.empty_cache()
+
     return results
 
 
