@@ -128,6 +128,7 @@ def compute_bb_features_for_dataset(
     device="cuda",
     batch_size=1,
     probe_indices=None,
+    show_progress=False,
 ):
     """Iterate over a dataset and compute Black Box probe features.
 
@@ -138,6 +139,7 @@ def compute_bb_features_for_dataset(
         device: 'cuda' or 'cpu'
         batch_size: Number of samples to process together (default 1)
         probe_indices: Optional list/array of probe indices to use. If None, uses all probes.
+        show_progress: Whether to show a tqdm progress bar for this dataset
 
     Returns:
         List of samples with appended 'bb_features' key.
@@ -157,13 +159,13 @@ def compute_bb_features_for_dataset(
                 "context": get_white_box_context(row),
             })
     else:
-        from tqdm import tqdm
+        from tqdm.auto import tqdm
 
         rows = list(df.iterrows())
         total_batches = (len(rows) + batch_size - 1) // batch_size
 
         for batch_idx in tqdm(
-            range(total_batches), desc=f"Computing BB features (batch_size={batch_size})", leave=False
+            range(total_batches), desc=f"Computing BB features (batch_size={batch_size})", leave=False, disable=not show_progress
         ):
             start_idx = batch_idx * batch_size
             end_idx = min(start_idx + batch_size, len(rows))

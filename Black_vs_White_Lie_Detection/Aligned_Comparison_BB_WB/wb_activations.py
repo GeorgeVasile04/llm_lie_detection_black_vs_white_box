@@ -59,7 +59,7 @@ def get_wb_activations(model, tokenizer, context_text, layer_nums=None, device="
             
     return activations
 
-def get_activations_for_dataset(df, model, tokenizer, device="cuda", batch_size=1):
+def get_activations_for_dataset(df, model, tokenizer, device="cuda", batch_size=1, show_progress=False):
     """
     Iterates over the "Aligned" dataset layout (from load_data.py).
     Each row has 'question', 'answer', 'label'.
@@ -70,6 +70,7 @@ def get_activations_for_dataset(df, model, tokenizer, device="cuda", batch_size=
         tokenizer: HF Tokenizer
         device: 'cuda' or 'cpu'
         batch_size: Number of samples per forward pass (default 1, use 16+ for speed)
+        show_progress: Whether to show a tqdm progress bar for this dataset
     
     Returns:
         List of dicts: [{'activations': ..., 'label': int, 'text': ...}, ...]
@@ -89,12 +90,13 @@ def get_activations_for_dataset(df, model, tokenizer, device="cuda", batch_size=
             })
     else:
         # Batched mode: process multiple samples per forward pass
-        from tqdm import tqdm
+        from tqdm.auto import tqdm
         
         rows = list(df.iterrows())
         total_batches = (len(rows) + batch_size - 1) // batch_size
         
-        for batch_idx in tqdm(range(total_batches), desc=f"Extracting activations (batch_size={batch_size})", leave=False):
+        # We set disable=not show_progress to avoid overloading the console
+        for batch_idx in tqdm(range(total_batches), desc=f"Extracting activations (batch_size={batch_size})", leave=False, disable=not show_progress):
             start_idx = batch_idx * batch_size
             end_idx = min(start_idx + batch_size, len(rows))
             batch_rows = rows[start_idx:end_idx]
