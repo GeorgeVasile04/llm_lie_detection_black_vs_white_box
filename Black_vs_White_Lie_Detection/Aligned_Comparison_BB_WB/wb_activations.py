@@ -82,11 +82,13 @@ def get_activations_for_dataset(df, model, tokenizer, device="cuda", batch_size=
         for index, row in df.iterrows():
             context_text = get_white_box_context(row)
             label = row['label']
+            group_id = row.get('id', index)
             activations = get_wb_activations(model, tokenizer, context_text, device=device)
             results.append({
                 "activations": activations,
                 "label": label,
-                "text": context_text
+                "text": context_text,
+                "id": group_id
             })
     else:
         # Batched mode: process multiple samples per forward pass
@@ -104,12 +106,14 @@ def get_activations_for_dataset(df, model, tokenizer, device="cuda", batch_size=
             # Prepare batch texts and labels
             batch_texts = []
             batch_labels = []
+            batch_ids = []
             batch_row_data = []
             
-            for _, row in batch_rows:
+            for index, row in batch_rows:
                 context_text = get_white_box_context(row)
                 batch_texts.append(context_text)
                 batch_labels.append(row['label'])
+                batch_ids.append(row.get('id', index))
                 batch_row_data.append(context_text)
             
             # Tokenize all texts in batch
@@ -140,7 +144,8 @@ def get_activations_for_dataset(df, model, tokenizer, device="cuda", batch_size=
                 results.append({
                     "activations": activations,
                     "label": label,
-                    "text": batch_row_data[sample_idx]
+                    "text": batch_row_data[sample_idx],
+                    "id": batch_ids[sample_idx]
                 })
             
             # Explicitly free batch memory to prevent OOM

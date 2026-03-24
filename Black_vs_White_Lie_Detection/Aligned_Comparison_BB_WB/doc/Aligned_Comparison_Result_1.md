@@ -2,9 +2,16 @@
 
 # Questions
 1)	Should I increase the dataset size?
+No, we want to rephrase t the resarch question to be (what happens if I scale the data). I scale only the traing (100 -> 500 -> 1000 -> 5000-> 10000) show the trend on a graph.
 2)	Should I correct the class unbalance problem?
+Do a new research question about this topic and see if inprouves the results then integrate it in the main experipment
 3)	Should I procede to a generalization matrix as well?
+yes good idea
 
+Remarks:
+In totala I have 4 RQ.
+For the best accuracy resarch question, I want to partition the datasets by cathegory so I can make a more general conclusion.????????
+Add all the WB algorithms
 
 ## 1. Dataset Configurations & Volume Analysis
 
