@@ -5,22 +5,37 @@ This document outlines the optimal chronologic execution plan for your four Rese
 ---
 
 ## Phase 1: Robustness to Class Imbalance (RQ4)
-**Goal:** Determine if models are sensitive to skewed data and establish the "gold standard" balancing ratio for remaining experiments.
+**Goal:** Determine if White-Box and Black-Box representations degrade when trained on highly skewed, natural label distributions (e.g., 1 True answer vs 4 False answers). 
 
 ### The Scientific Problem
-If you compare 1000 items (balanced) vs 400 items (imbalanced), the balanced model will win simply because it saw *more total data*. To test imbalance fairly, we must isolate the **class ratio** while keeping the **total volume of training data constant**.
+Most multiple-choice QA datasets have a natural imbalance resulting from their structure (one correct option, multiple incorrect options). If an AI lie detector is trained on this skewed data without correction, does it actually learn to detect lies, or does it simply collapse into guessing "False" 80% of the time to artificially inflate its overall accuracy?
 
-### The Implementation Strategy
-1. **Control Variable:** Total Training Size = $N$ (e.g., $N=1000$ samples).
-2. **Independent Variables (Scenarios):**
-   * **Setup A (Balanced):** 500 True / 500 False (requires 500 unique questions).
-   * **Setup B (Imbalanced):** 200 True / 800 False (requires 200 unique questions, fully simulating the original RepEng schema).
-3. **Strict Validation Constraint:** Evaluate *both* models on a strictly **balanced** validation set (e.g., 500T / 500F). 
-4. **The Metrics:** Do not use overall Accuracy. An imbalanced model might just predict "False" 90% of the time. You must report:
-   * **Macro F1-Score:** Penalizes models that ignore the minority class.
-   * **Class-wise Recall:** Shows if the model is disproportionately good at catching Truths vs. Lies.
+### What Data Was Used
+We targeted strictly multi-choice formatted datasets that natively feature skewed option distributions. We extracted features using the `meta-llama/Llama-2-7b-chat-hf` model across:
+*   `commonsense_qa` (1 True vs 4 False)
+*   `arc_challenge` & `arc_easy` (1 True vs 3 False)
+*   `open_book_qa` (1 True vs 3 False)
+*   `race` (1 True vs 3 False)
+*   `ag_news` (1 True vs 3 False)
+*   `dbpedia_14` (1 True vs 13 False)
 
-**Outcome:** If Setup A significantly outperforms Setup B on the Validation set, you conclusively prove that class balance is critical. You will then *enforce Setup A (1:1 balance)* for Phases 2, 3, and 4. 
+### The Implementation Strategy (How we did it)
+1. **Control Variable:** Total training volume is fixed at roughly 1,000 samples for all tests. The only difference is the *ratio* of True/False statements. (Note: For `dbpedia_14`, size is slightly adjusted to $994$ ($71 \text{ qs} \times 14 \text{ opts}$) to prevent truncation of the final question block).
+2. **Dynamic Structural Grouping (The Ratio Mechanism):** Instead of manually stripping ratios, we leverage the natural structure of the questions. Every multiple-choice question generates a semantic "block" sharing the same Question `id`. By filtering at the block level, the code forces or adopts ratios organically:
+   * **Scenario A (Forced Balanced Extraction):** For every `id` block, the script randomly picks exactly 1 Truth row and exactly 1 Lie row. 
+     * **Result:** A globally uniform **1:1** ratio ($50\%$ True / $50\%$ False) regardless of what dataset is being processed.
+   * **Scenario B (Natural Imbalanced Extraction):** For every `id` block, the script picks the 1 Truth row and extracts **ALL** associated Lie rows for that question. 
+     * **Result:** The ratio perfectly adopts the "natural bias" of the dataset form factor. Processing `ag_news` organically yields a **$1:3$ ($25\%$)** true-rate, while processing `dbpedia_14` yields a violent **$1:13$ ($7.1\%$)** true-rate.
+3. **Strict Validation Constraint:** All models are tested against a completely unseen validation set (400 samples) that is strictly forced to use Scenario A's balanced 50/50 logic. This guarantees a perfectly fair "exam" that mathematically penalizes blind guessing.
+4. **Feature Extraction & Training Matrix:** 
+   * **White-Box:** Extracted hidden states from Layers 1 to 32 (step 2) and trained 8 different algorithms (Logistic Regression, PCA, CCS, LDA, etc.).
+   * **Black-Box:** Extracted logprobs based on the 48 custom elicitation probes from the original RepEng paper.
+   * We trained the entire set of algorithms on Scenario A, and a competing set on Scenario B.
+5. **The Metrics:** We discarded standard "Accuracy" (which is easily tricked by imbalance) and evaluated based on:
+   * **Macro F1-Score:** Takes the harmonic mean, violently penalizing models that ignore minority classes.
+   * **Class-wise Recall (Recall Truth vs Recall Lie):** Directly exposes if the imbalanced model collapses into only predicting "Lies".
+
+**Outcome:** If models trained under Scenario B suffer a major structural collapse in **Recall (True)** compared to the exact same models trained in Scenario A, we definitively prove that class balance is critical to Lie Detection geometry. We will then mathematically enforce Scenario A's baseline (1:1 ratio) for all remaining Research Questions.
 
 ---
 
