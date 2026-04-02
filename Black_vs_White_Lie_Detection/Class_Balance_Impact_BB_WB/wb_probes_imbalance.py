@@ -34,6 +34,7 @@ def train_wb_probes_imbalance(
     layer_list: List[int] = [10, 15, 20],
     method: ProbeMethod = "lr",
     test_size: float = 0.2,
+    verbose: bool = True,
 ):
     """
     MODIFIED from Aligned_Comparison_BB_WB for Class Imbalance Study:
@@ -53,7 +54,8 @@ def train_wb_probes_imbalance(
         g_eval_all = None
         
     for layer in layer_list:
-        print(f"Training WB Probe ({method}) for Layer {layer}...")
+        if verbose:
+            print(f"Training WB Probe ({method}) for Layer {layer}...")
         try:
             X_layer = np.array([item['activations'][layer] for item in activation_data])
         except KeyError:
@@ -107,19 +109,26 @@ def train_wb_probes_imbalance(
         
         if method in ["dim", "pca", "pca-g", "lat", "ccs"]:
             train_logits = probe.predict(X_train, groups=g_train).logits
-            if len(np.unique(y_test)) == 2:
-                auc_normal = roc_auc_score(y_test, logits)
-                auc_flipped = roc_auc_score(y_test, -logits)
+            
+            # 1. SCIENTIFIC FIX: Resolve the sign using TRAIN data only!
+            if len(np.unique(y_train)) == 2:
+                train_auc_normal = roc_auc_score(y_train, train_logits)
+                train_auc_flipped = roc_auc_score(y_train, -train_logits)
             else:
-                auc_normal, auc_flipped = 0.5, 0.5
+                train_auc_normal, train_auc_flipped = 0.5, 0.5
                 
-            if auc_flipped > auc_normal:
+            # If the flipped version is better on the training data, lock that decision in
+            if train_auc_flipped > train_auc_normal:
                 logits = -logits
-                auc = auc_flipped
                 train_logits = -train_logits
+            
+            # 2. Evaluate the test set using the permanently locked sign
+            if len(np.unique(y_test)) == 2:
+                auc = roc_auc_score(y_test, logits)
             else:
-                auc = auc_normal
+                auc = 0.5
                 
+            # 3. Calculate thresholds using the corrected train_logits
             if len(np.unique(y_train)) == 2:
                 mean_pos = np.mean(train_logits[y_train == 1])
                 mean_neg = np.mean(train_logits[y_train == 0])

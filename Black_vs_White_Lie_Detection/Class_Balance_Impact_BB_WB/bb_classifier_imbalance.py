@@ -3,7 +3,7 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import accuracy_score, roc_auc_score, f1_score, recall_score
 import numpy as np
 
-def train_bb_classifier_imbalance(X_train, X_test, y_train, y_test):
+def train_bb_classifier_imbalance(X_train, X_test, y_train, y_test, verbose=True):
     """
     Trains the Black Box classifier on scaled logprob features.
     MODIFIED for Class Imbalance Study: Also returns Macro F1 and Class-wise Recall.
@@ -13,12 +13,14 @@ def train_bb_classifier_imbalance(X_train, X_test, y_train, y_test):
         X_test: (n_test, n_probes)
         y_train: (n_train,)
         y_test: (n_test,)
+        verbose: bool, controls printing
         
     Returns:
         clf: Trained LogisticRegression model
         metrics: dict with accuracy, auc, macro_f1, recall_true, recall_false
     """
-    print("Training Black Box Classifier (Imbalance setup)...")
+    if verbose:
+        print("Training Black Box Classifier (Imbalance setup)...")
     
     scaler = StandardScaler()
     X_train_scaled = scaler.fit_transform(X_train)
@@ -38,7 +40,8 @@ def train_bb_classifier_imbalance(X_train, X_test, y_train, y_test):
     recall_true = recall_score(y_test, preds, pos_label=1, zero_division=0)
     recall_false = recall_score(y_test, preds, pos_label=0, zero_division=0)
     
-    print(f"Black Box Results - Acc: {acc:.4f}, AUC: {auc:.4f}, Macro-F1: {macro_f1:.4f}, Recall(T/L): {recall_true:.2f}/{recall_false:.2f}")
+    if verbose:
+        print(f"Black Box Results - Acc: {acc:.4f}, AUC: {auc:.4f}, Macro-F1: {macro_f1:.4f}, Recall(T/L): {recall_true:.2f}/{recall_false:.2f}")
     
     return clf, {
         'accuracy': acc, 

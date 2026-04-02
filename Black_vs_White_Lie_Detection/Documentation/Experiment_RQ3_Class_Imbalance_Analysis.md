@@ -67,6 +67,41 @@ However, the functional application of these methods (the actual classifiers bui
 
 Ultimately, without explicitly rebalancing the training data or manually adjusting the decision thresholds, standard Black-Box and White-Box lie detectors cannot be trusted in real-world skewed environments, because they will simply default to assuming everything is a lie.
 
+---
+
+## Methodological Upgrades & Scientific Rigor
+
+To ensure absolute statistical validity in comparing Setup A and Setup B, several rigorous testing frameworks were implemented during this study, notably repairing a significant data leakage problem present in the original literature.
+
+### 1. 30-Iteration Monte Carlo Cross-Validation
+Evaluating a model on a single 80/20 train/test split leaves results vulnerable to sheer luck. Does Setup B genuinely perform worse, or did it just accidentally receive a much harder test set?
+To resolve this, we utilize a **Stratified Shuffle Split (Monte Carlo CV)**:
+- We randomly slice exactly 50% of the validation dataset.
+- The models for Setup A and Setup B are both evaluated on this *exact same* 50% slice.
+- We repeat this process 30 times to generate 30 "paired" test metrics.
+By testing both Setups on the identical exams 30 times, we guarantee that any degradation in Setup B is strictly caused by its imbalanced training data, entirely decoupling the metrics from test-set variance.
+
+### 2. The Wilcoxon Signed-Rank Test
+Because we now possess 30 paired evaluation metrics (AUC and Macro F1), we can test our hypothesis scientifically using the **Wilcoxon Signed-Rank Test**. 
+This is a non-parametric statistical test that compares the paired iterations side-by-side. 
+- **The Hypothesis:** Setup B causes a statistically significant degradation in classifier performance.
+- **The Test:** It measures if the score differences between Setup A and B are consistently leaning in one direction across the 30 splits.
+- **The Threshold:** If the p-value is strictly less than 0.05 ($p < 0.05$), we reject the null hypothesis and conclusively prove that class imbalance inherently damages the model's geometry.
+
+### 3. Critical Fix: Rectifying Original Data Leakage in Unsupervised Probes
+During replication of the original White-Box ("Representation Engineering") framework, a significant data leakage flaw was discovered in how unsupervised probes (PCA, PCA-G, LAT, DIM, CCS) were evaluated.
+
+**The Original Problem:**
+Unsupervised methods like PCA identify an axis that separates the data, but the math itself does not know which side of the axis represents "Truth" and which represents "False". To solve this, the original codebase tested both directions against the labels and picked the one that yielded the highest AUC.
+Critically, *the original code tested this direction against the **test set**.*
+
+**Why this is a fatal flaw for Imbalance Testing:**
+1. **The "Real-World Deployment" Problem**: If this model is deployed to the real world, a user types a single new sentence. The model runs PCA and outputs a logit of `+3.4`. Is the user lying? In the real world, the model does not have the final test label to check; it *must* have decided whether positive meant "Truth" beforehand perfectly using only its training data. If the training data was too messy to reveal the direction, the model fails. 
+2. **It Destroys Fairness Comparison (Setup A vs Setup B)**: Setup A (Balanced) easily determines the PCA direction using its balanced training data. Setup B is trained on highly imbalanced data (90% True, 10% False), and might get very confused and guess the PCA direction backward. *This confusion is a real consequence of class imbalance.* If the original evaluation script uses the perfectly balanced **test set** to automatically flip Setup B's predictions whenever it gets it wrong, the script is "cheating." It artificially rescues Setup B by using the clean test data to fix the damage caused by the messy training data. 
+
+**The Implemented Solution:**
+To eliminate this data leak and preserve the integrity of our Setup A vs Setup B comparison, the code was rewritten. The sign polarity of the unsupervised probe is now anchored strictly by evaluating the highest AUC on the `y_train` distribution. That determined polarity is then locked and blindly applied to `y_test`. 
+
 Discussion with the teacher:
 1) How the sklearn decides on the treshold of the clasifier? Is it always 0.5? How in the original black box and white box paper what they did?
 
