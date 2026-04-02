@@ -48,5 +48,7 @@ def train_bb_classifier_imbalance(X_train, X_test, y_train, y_test, verbose=True
         'auc': auc,
         'macro_f1': macro_f1,
         'recall_true': recall_true,
-        'recall_false': recall_false
+        'recall_false': recall_false,
+        'probs': probs,
+        'preds': preds
     }

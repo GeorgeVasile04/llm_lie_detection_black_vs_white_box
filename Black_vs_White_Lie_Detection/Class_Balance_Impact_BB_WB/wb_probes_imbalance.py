@@ -155,7 +155,9 @@ def train_wb_probes_imbalance(
             'auc': auc,
             'macro_f1': macro_f1,
             'recall_true': recall_true,
-            'recall_false': recall_false
+            'recall_false': recall_false,
+            'logits': logits,
+            'preds': preds
         }
         print(f"Layer {layer} ({method}) - Acc: {acc:.4f}, AUC: {auc:.4f}, F1: {macro_f1:.4f}, Rec(T/F): {recall_true:.2f}/{recall_false:.2f}")
         
