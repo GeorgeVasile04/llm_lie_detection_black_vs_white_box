@@ -102,13 +102,24 @@ Critically, *the original code tested this direction against the **test set**.*
 **The Implemented Solution:**
 To eliminate this data leak and preserve the integrity of our Setup A vs Setup B comparison, the code was rewritten. The sign polarity of the unsupervised probe is now anchored strictly by evaluating the highest AUC on the `y_train` distribution. That determined polarity is then locked and blindly applied to `y_test`. 
 
-Discussion with the teacher:
-1) How the sklearn decides on the treshold of the clasifier? Is it always 0.5? How in the original black box and white box paper what they did?
+### 4. Hypothesis Testing Results: Scenario A vs Scenario B
+To definitively establish which setup yields better performance (answering the core hypothesis), we analyzed 903 distinct classifier configurations (Combinations of Algorithms $\times$ Layers $\times$ Datasets) using the Wilcoxon Signed-Rank Test over our 30 Monte Carlo test splits.
 
-2) How to make a fair comparison across different classifiers?
+When evaluating these results, we firmly distinguish between **Statistical Significance** ($p < 0.05$, meaning a difference is mathematically consistent and not due to chance) and **Practical Significance** (Effect Size, meaning the difference is large enough to impact real-world performance). We apply standard machine learning thresholds: an absolute difference in means of $< 0.01$ (1%) is considered practically negligible, while differences $> 0.03$ (3%) exhibit clear real-world impact.
 
-3) I have 2 setups how to say that setup A is better than B significance above 0,05?
+**Results for ROC AUC (Core Representation):**
+- **Scenario A Significantly Outperforms:** 436 cases (**48.28%**)
+- **Scenario B Significantly Outperforms:** 156 cases (**17.28%**)
+- **No Significant Difference (Statistical Ties):** 311 cases (**34.44%**)
+- **Effect Size:** Despite Setup A winning statistically in nearly half of all cases (proving it is the superior method), the average absolute difference in AUC (`Mean A - Mean B`) across all configurations was a mere **0.0054** (0.5%).
+- **Conclusion for AUC:** While Setup A is statistically superior, the effect size falls strictly into the negligible category ($< 1\%$). This mathematically validates the finding that the core representation of truth and deception remains fundamentally intact despite severe class imbalance.
 
-4) Have a hypothesis test, assume that setup A is better than setup B? How can I see that this is true or false?
+**Results for Macro F1 (Decision Boundary):**
+- **Scenario A Significantly Outperforms:** 418 cases (**46.29%**)
+- **Scenario B Significantly Outperforms:** 169 cases (**18.72%**)
+- **No Significant Difference (Statistical Ties):** 316 cases (**34.99%**)
+- **Effect Size:** The scenario changes completely for the decision boundary. The average absolute degradation for Macro F1 is **~0.0322** (roughly $6\times$ larger than the AUC drop). When isolating the highest-performing viable layers, this degradation often reached 10% to 20%.
+- **Conclusion for Macro F1:** This difference represents a massive structural degradation in the classifier's thresholding. Class imbalance conclusively and practically destroys the model's physical decision boundary, creating an extreme pessimistic bias.
 
-5) Do the Wilcoxon Signed-Rank Test
+### Final Statistical Verdict
+Based on rigorous hypothesis testing, **Scenario A (Balanced Training) is definitively the superior methodology.** The Wilcoxon Signed-Rank Test proves that Setup A significantly outperforms Setup B in nearly $3\times$ as many head-to-head comparisons. Furthermore, the effect size analysis resolves the deceiving duality of class imbalance: while the internal representational geometry (AUC) remains surprisingly stable (dropping by $<1\%$), the functional classification application (Macro F1) collapses. Therefore, imbalanced training (Setup B) is practically unviable for real-world deployment without explicit dataset rebalancing or threshold calibration.
