@@ -1,0 +1,4 @@
+Metric,Pairs Count,Mean Diff (A - B),W-Statistic,P-Value,Significant,Conclusion
+AUC,63,0.0044,224.0,0.00011130606325894513,True,A > B (Imbalance degrades performace)
+MAP,63,0.0042,253.0,0.0003488217382562794,True,A > B (Imbalance degrades performace)
+BRP_90,63,0.0012,319.5,0.09883087891762947,False,No significant difference
