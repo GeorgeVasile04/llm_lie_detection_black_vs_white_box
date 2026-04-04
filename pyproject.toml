@@ -36,10 +36,7 @@ gensim = "^4.4.0"
 tabulate = "^0.9.0"
 setuptools = "^82.0.0"
 importlib = "^1.0.4"
-<<<<<<< HEAD
-=======
 overrides = "^7.7.0"
->>>>>>> de1d9388750f5b71140c7866df78dd3a708deab4
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]
