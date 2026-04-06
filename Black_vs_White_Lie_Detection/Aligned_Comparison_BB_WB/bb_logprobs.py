@@ -32,7 +32,7 @@ def load_probes(csv_path="probes.csv", probe_indices=None):
     
     return df
 
-def get_bb_logprobs(model, tokenizer, row, probes_df=None, device="cuda"):
+def get_bb_logprobs(model, tokenizer, row, probes_df=None, device="cuda", probe_batch_size=24):
     """Compute Black Box logprobs for a single example using **independent** probe prompts.
 
     This avoids cross-probe contamination by making each probe a separate prompt.
@@ -43,6 +43,7 @@ def get_bb_logprobs(model, tokenizer, row, probes_df=None, device="cuda"):
         row: The pandas row containing the text and label.
         probes_df: DataFrame with 'probe' and 'probe_type' columns. If None, loads from CSV.
         device: Device to run model on.
+        probe_batch_size: Ensure we don't OOM with long sequences by limiting max forward pass prompts.
 
     Returns:
         results: List of dictionaries:
@@ -70,18 +71,6 @@ def get_bb_logprobs(model, tokenizer, row, probes_df=None, device="cuda"):
 
     prompts = [get_black_box_context(row, probe_text) for probe_text in probes]
 
-    # Tokenize as a batch so we do a single forward pass.
-    inputs = tokenizer(
-        prompts,
-        return_tensors="pt",
-        padding=True,
-        truncation=True,
-    ).to(device)
-
-    with torch.no_grad():
-        outputs = model(**inputs)
-        logits = outputs.logits  # Shape: [batch, seq_len, vocab]
-
     # Find token ids for yes/no (single-token variants only)
     yes_variants = ["Yes", "yes"]
     no_variants = ["No", "no"]
@@ -93,37 +82,56 @@ def get_bb_logprobs(model, tokenizer, row, probes_df=None, device="cuda"):
         print("Warning: Could not find single token ID for Yes/No variants.")
         return []
 
-    # For each item in the batch, extract the logits at the last non-padding position.
-    attention_mask = inputs["attention_mask"]
-    last_token_idx = attention_mask.sum(dim=1) - 1  # [batch]
-
     results = []
-    for i, (probe_text, category) in enumerate(zip(probes, categories)):
-        idx = last_token_idx[i].item()
-        probe_logits = logits[i, idx]
-        probs = torch.softmax(probe_logits, dim=-1)
+    
+    # Chunk the prompts to avoid Out Of Memory errors for long texts (like IMDb)
+    for i in range(0, len(prompts), probe_batch_size):
+        chunk_prompts = prompts[i:i + probe_batch_size]
+        chunk_probes = probes[i:i + probe_batch_size]
+        chunk_categories = categories[i:i + probe_batch_size]
 
-        yes_prob = sum([probs[j].item() for j in yes_ids])
-        no_prob = sum([probs[j].item() for j in no_ids])
+        # Tokenize as a batch so we do a single forward pass.
+        inputs = tokenizer(
+            chunk_prompts,
+            return_tensors="pt",
+            padding=True,
+            truncation=True,
+        ).to(device)
 
-        epsilon = 1e-10
-        yes_log = np.log(max(yes_prob, epsilon))
-        no_log = np.log(max(no_prob, epsilon))
-        score = yes_log - no_log
+        with torch.no_grad():
+            outputs = model(**inputs)
+            logits = outputs.logits  # Shape: [batch, seq_len, vocab]
 
-        results.append({
-            "category": category,
-            "question": probe_text,
-            "score": score,
-            "probs": {"yes": yes_prob, "no": no_prob},
-        })
+        # For each item in the batch, extract the logits at the last non-padding position.
+        attention_mask = inputs["attention_mask"]
+        last_token_idx = attention_mask.sum(dim=1) - 1  # [batch]
 
-    # Explicitly clear memory to prevent OOM
-    del inputs
-    del outputs
-    del logits
-    del attention_mask
-    torch.cuda.empty_cache()
+        for batch_i, (probe_text, category) in enumerate(zip(chunk_probes, chunk_categories)):
+            idx = last_token_idx[batch_i].item()
+            probe_logits = logits[batch_i, idx]
+            probs = torch.softmax(probe_logits, dim=-1)
+
+            yes_prob = sum([probs[j].item() for j in yes_ids])
+            no_prob = sum([probs[j].item() for j in no_ids])
+
+            epsilon = 1e-10
+            yes_log = np.log(max(yes_prob, epsilon))
+            no_log = np.log(max(no_prob, epsilon))
+            score = yes_log - no_log
+
+            results.append({
+                "category": category,
+                "question": probe_text,
+                "score": score,
+                "probs": {"yes": yes_prob, "no": no_prob},
+            })
+
+        # Explicitly clear memory to prevent OOM
+        del inputs
+        del outputs
+        del logits
+        del attention_mask
+        torch.cuda.empty_cache()
 
     return results
 
@@ -136,6 +144,7 @@ def compute_bb_features_for_dataset(
     batch_size=1,
     probe_indices=None,
     show_progress=False,
+    probe_batch_size=24,
 ):
     """Iterate over a dataset and compute Black Box probe features.
 
@@ -147,6 +156,7 @@ def compute_bb_features_for_dataset(
         batch_size: Number of samples to process together (default 1)
         probe_indices: Optional list/array of probe indices to use. If None, uses all probes.
         show_progress: Whether to show a tqdm progress bar for this dataset
+        probe_batch_size: Chunk size for evaluating probes to avoid GPU OOM.
 
     Returns:
         List of samples with appended 'bb_features' key.
@@ -159,7 +169,7 @@ def compute_bb_features_for_dataset(
     if batch_size == 1:
         for _, row in df.iterrows():
             label = row.get("label", None)
-            bb_result = get_bb_logprobs(model, tokenizer, row, probes_df=probes_df, device=device)
+            bb_result = get_bb_logprobs(model, tokenizer, row, probes_df=probes_df, device=device, probe_batch_size=probe_batch_size)
             results.append({
                 "bb_features": bb_result,
                 "label": label,
@@ -181,7 +191,7 @@ def compute_bb_features_for_dataset(
             for _, row in batch_rows:
                 label = row.get("label", None)
                 bb_result = get_bb_logprobs(
-                    model, tokenizer, row, probes_df=probes_df, device=device
+                    model, tokenizer, row, probes_df=probes_df, device=device, probe_batch_size=probe_batch_size
                 )
                 results.append({
                     "bb_features": bb_result,
