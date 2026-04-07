@@ -1,110 +1,50 @@
-# RQ3: Robustness to Class Imbalance - Analysis
+# RQ3: Robustness to Class Imbalance - Experiment Summary
 
-## Overview of the Experiment
-The methodology isolated the impact of class imbalance by controlling sample sizes. For 7 diverse datasets, models were evaluated under two conditions:
-- **Setup A (Balanced)**: 1 Truth vs 1 uniformly random Lie per prompt (50/50 split).
-- **Setup B (Imbalanced)**: 1 Truth vs *ALL* available Lies per prompt naturally attached to the question (resulting in natural 1:3, 1:4, or 1:13 splits).
+## 1. What I Did (Objective)
+Evaluated the impact of **Class Imbalance** on the robustness of Black-Box (Logprobs) and White-Box (Probes) lie detection methods. The core experiment isolates the effect of varying sample sizes (truths vs. lies) to determine how highly skewed data affects performance metrics and decision boundaries.
+All related experiment scripts and evaluation logic are located in the `Black_vs_White_Lie_Detection/Class_Balance_Impact_BB_WB/` folder.
 
-The goal was to track metric degradation across both **White-Box (Probes)** and **Black-Box (Logprobs)** extraction strategies when linear boundary classifiers are trained on skewed (unbalanced) data distributions.
+## 2. Methodology & Code Organization (How I Did It)
+The pipeline is constructed through specific modular scripts:
+* **Data Loading** (`load_data_imbalance.py`): Fetches and formats datasets into the correct Imbalanced/Balanced setups.
+* **White-Box Extraction** (`wb_probes_imbalance.py`): Extracts internal activations/probes representing truthfulness. *Includes a critical fix to unsupervised probe polarity by determining direction solely on training data, thus preventing data leakage.*
+* **Black-Box Extraction** (`bb_classifier_imbalance.py`): Extracts logprobs and trains classifiers on output distributions.
+* **Evaluation** (`evaluation_utils_imbalance.py`): Calculates the core metrics (AUC, Accuracy, Recall, Macro F1, MAP, BRP_90).
+* **Statistical Compilation** (`summarize_wilcoxon.py` & `Class_Imbalance_Experiment.ipynb`): Runs the paired Wilcoxon tests across all setups and visualizes the statistical significance of the results.
 
----
+## 3. Data & Setup Construction
+The experiment was conducted on **7 diverse datasets** (e.g., `commonsense_qa`, `race`, `arc_challenge`, `open_book_qa`, `dbpedia_14`, `ag_news`). To isolate class imbalance, models were evaluated under two controlled scenarios:
 
-## Key Findings Simplified
+* **Setup A (Balanced)**: The baseline. Each prompt has **1 Truth vs 1 uniformly random Lie** (50/50 split).
+* **Setup B (Imbalanced)**: The skewed scenario. Each prompt has **1 Truth vs ALL available Lies** naturally attached to the question (resulting in natural splits like 1:3, 1:4, or 1:13).
 
-### 1. The Core Signal Survives (AUC remains stable)
+## 4. Metrics Evaluated
+Instead of relying solely on standard Accuracy (which can be high simply by predicting the majority class), we tracked precise metrics:
+* **ROC AUC**: Measures *ranking ability*—does the model successfully score an actual Truth higher than an actual Lie, regardless of quantity?
+* **Recall (Truth) & Macro F1 Score**: Measures the health of the *decision boundary*—does the model actually identify the minority class (Truth), or does it stubbornly default to predict "Lie"?
+* **MAP (Mean Average Precision) & BRP_90**: Measures ranking precision (how many top predictions are actually relevant) and calibration confidence.
 
-**Understanding the Concept:**
-In simple terms, **ROC AUC (Area Under the Curve)** measures the *ranking* ability of the detector. If you grab one random true statement and one random lie, AUC is simply the chance that the detector gave a higher "truth score" to the actual truth. 
-- An **AUC of 0.50** means the detector is flipping a coin.
-- An **AUC of 1.00** means the detector perfectly lines up every truth above every lie.
+## 5. Statistical Rigor: The Wilcoxon Signed-Rank Test
+To scientifically validate performance differences between setups, the **Wilcoxon Signed-Rank Test** was applied:
+* **What it is:** A non-parametric paired statistical test that compares two related samples to assess whether their population mean ranks differ.
+* **How it was applied:** The performance of Setup A vs Setup B was paired and compared across **63 distinct configurations** (7 Datasets x 9 Extraction Algorithms). It's important to mention that at the biginning there was (2 * 7 * (16 * 8 + 1) = 1806 trained classifiers. In order to simplyfi, the best layer was chose in order to have this 63 pairs for the 3 metrics.
+* **The Goal:** To test the null hypothesis that class imbalance does *not* affect performance. Finding a p-value < 0.05 definitively rejects this, proving class imbalance harms the extraction.
 
-Crucially, AUC doesn't care if you have 10 truths and 100 lies, or 50 truths and 50 lies. It only measures whether the model *can tell the difference* between the core concepts.
+## 6. Final Results & Interpretation
 
-**The Finding:**
-When moving from Setup A (Balanced) to Setup B (Imbalanced), the **AUC stays nearly identical**.
-- In `commonsense_qa`, the standard White-Box probe hits an AUC of `0.828` when balanced, and stays at `0.827` when flooded with lies.
-- In `race`, the AUC goes from `0.800` (Balanced) to a very similar `0.782` (Imbalanced).
+### Finding 1: Balanced Training Yields Statistically Better Ranking (AUC & MAP)
+While the core "lie signal" remains broadly intact regardless of imbalance, the Wilcoxon test definitively proved (p < 0.05) that **Setup A (Balanced) significantly outperforms Setup B (Imbalanced)** in terms of overall ranking capability. However, the actual performance magnitude drop is small:
+* **ROC AUC:** Decreased by a mean difference of `0.0044` when moving to Imbalanced data.
+* **MAP:** Decreased by a mean difference of `0.0042` when moving to Imbalanced data.
+Even though the difference is minute (less than 1% absolute drop), the degradation is strictly consistent across datasets, proving balanced training mathematically preserves the discriminator's precision.
 
-**What this means:**
-The fundamental "lie signal" inside the Large Language Model does not break when there are way more lies than truths. Whether we look at internal brain states (White-Box) or output probabilities (Black-Box), the LLM still separates the *concept* of truth from the *concept* of a lie just as well. 
+### Finding 2: Decision Boundaries Collapse (Asymmetric Sensitivity)
+Beyond the small drop in ranking metrics, the functional application of the detectors completely breaks under imbalance. Because there are dramatically more lies in Setup B, the classifier shifts its decision boundary drastically to penalize Truths.
+* **Result**: While standard *Accuracy* appears high (because it safely labels all the lies correctly), the **Recall (Truth)** and **Macro F1 Scores** plummet catastrophically (e.g., from 96% down to 33% on difficult reasoning tasks). 
+* **Exception**: Very easy datasets (like `dbpedia_14`) where the separation is incredibly obvious do not suffer from this decision boundary collapse.
 
-### 2. The Decision Boundary Breaks (Recall & Macro F1 Collapse)
+### Finding 3: Calibration Remains Unaffected (BRP_90)
+Interestingly, highly-confident predictions are not fundamentally disturbed. The Brier score on the top 90% most confident predictions (BRP_90) showed no statistically significant difference (p = 0.0988) between Setup A and Setup B, meaning the model's calibration on its highest certainty answers is untouched by imbalance.
 
-**Understanding the Concepts:**
-While AUC measures if the model *can* rank truths above lies, we still have to draw a line in the sand (a **threshold**) and say "Everything above this line is labeled Truth, everything below is labeled Lie."
-- **Accuracy**: The total percentage of correct guesses. This can be very misleading! If a test is 90% lies, a model that simply screams "LIE" at everything will get 90% Accuracy, even though it's completely useless.
-- **Recall (Truth)**: Out of all the actual true statements, how many did the model successfully catch? This is the true test of not ignoring the minority class.
-- **Macro F1 Score**: This is the ultimate "fairness" score. It calculates a harsh average of how well the model detects Truths AND how well it detects Lies independently. You cannot get a high Macro F1 score if you are secretly ignoring the smaller group.
-
-**The Finding:**
-Because there are so many more lies in Setup B, the detector learns a bad habit: it shifts its decision boundary so high that it practically calls everything a lie. This leads to an **extreme asymmetric sensitivity** where the model is great at catching lies, but terrible at recognizing truths.
-- **commonsense_qa**: Recall for Truths plummets from an outstanding **96.2%** (Balanced) down to a bleak **33.4%** (Imbalanced). The **Macro F1 score** similarly crashes from **0.885** down to **0.620**.
-- **arc_challenge**: Recall for Truths drops from **72.2%** to **48.8%**.
-- **open_book_qa**: Recall for Truths is slashed from **85.2%** to **47.4%**.
-
-**What this means:**
-The detector turns extremely "pessimistic." To get the highest simple math score during training, it realizes it's safer to just assume most things are lies. Therefore, true statements are heavily punished. This is why looking only at **Accuracy** is dangerous; the Accuracy often stays high (e.g., 80%) because the model is correctly identifying the massive pile of lies, completely masking the fact that its ability to detect truth has broken down. The **Macro F1 score** exposes this failure clearly.
-
-### 3. "Easy" Tasks Hide the Problem
-Datasets that are strictly factual or easy for LLaMA-2-7B to answer completely ignore the imbalance problem.
-- **dbpedia_14** (1 Truth vs 13 Lies) and **ag_news** easily kept `Recall (True)` scores above 90% even when unbalanced. 
-
-**What this means:**
-If the difference between truth and lie is incredibly obvious to the model (where AUC is near 0.99), the decision boundary can be drawn widely anywhere without making mistakes. The imbalance problem only destroys the detector in highly complex, difficult reasoning tasks (like `commonsense_qa` or `race`).
-
----
-
-## Conclusion: Answering RQ3
-
-**Research Question 3:** *How robust are black-box and white-box lie detection methods to class imbalance, and do these methods exhibit asymmetric sensitivity to deceptive versus truthful instances under skewed data distributions?*
-
-**Answer:** 
-Black-box and white-box lie detection methods display a **deceiving duality** when exposed to class imbalance (like multiple-choice scenarios with many wrong answers and one right answer). 
-
-On a fundamental level, the methods are highly robust: the LLM's internal representation structure successfully preserves the difference between truthful and deceptive concepts, as shown by very stable ROC AUC scores regardless of how unbalanced the data is.
-
-However, the functional application of these methods (the actual classifiers built to say "Truth" or "Lie") exhibits **severe asymmetric sensitivity**. When faced with heavy skews, the decision boundaries drift aggressively toward predicting deception. The detectors become artificially "pessimistic," maintaining high Accuracy by catching almost all the lies, but suffering catastrophic drops in `Recall (Truth)` and `Macro F1`—often losing 30 to 60 percentage points in performance on complex reasoning tasks. 
-
-Ultimately, without explicitly rebalancing the training data or manually adjusting the decision thresholds, standard Black-Box and White-Box lie detectors cannot be trusted in real-world skewed environments, because they will simply default to assuming everything is a lie.
-
----
-
-## Methodological Upgrades & Scientific Rigor
-
-To ensure absolute statistical validity in comparing Setup A and Setup B, several rigorous testing frameworks were implemented during this study, notably repairing a significant data leakage problem present in the original literature.
-
-### 1. The Wilcoxon Signed-Rank Test on Dataset-Algorithm Pairs
-To evaluate whether class imbalance (Setup B) systematically degrades performance compared to a balanced setup (Setup A), we formulated the problem as a paired statistical test. We have 7 datasets and 9 distinct detection algorithms (e.g., LR, CCS, PCA, BB, etc.), resulting in exactly 63 Dataset-Algorithm pairs.
-
-For each pair, we calculate the performance metric (AUC, MAP, or BRP_90) under Setup A and Setup B. This allows us to use the **Wilcoxon Signed-Rank Test**. 
-This non-parametric statistical test directly compares the paired datasets/algorithms side-by-side:
-- **The Hypothesis:** Setup B (Imbalanced) causes a statistically significant degradation in classifier performance across different datasets and algorithms compared to Setup A (Balanced).
-- **The Test:** It measures if the score differences between Setup A and B are consistently leaning in favor of Setup A across the 63 pairs.
-- **The Threshold:** If the p-value is strictly less than 0.05 ($p < 0.05$), we reject the null hypothesis and conclusively prove that class imbalance inherently damages the model's extraction capabilities or decision boundaries.
-
-### 2. Critical Fix: Rectifying Original Data Leakage in Unsupervised Probes
-During replication of the original White-Box ("Representation Engineering") framework, a significant data leakage flaw was discovered in how unsupervised probes (PCA, PCA-G, LAT, DIM, CCS) were evaluated.
-
-**The Original Problem:**
-Unsupervised methods like PCA identify an axis that separates the data, but the math itself does not know which side of the axis represents "Truth" and which represents "False". To solve this, the original codebase tested both directions against the labels and picked the one that yielded the highest AUC.
-Critically, *the original code tested this direction against the **test set**.*
-
-**Why this is a fatal flaw for Imbalance Testing:**
-1. **The "Real-World Deployment" Problem**: If this model is deployed to the real world, a user types a single new sentence. The model runs PCA and outputs a logit of `+3.4`. Is the user lying? In the real world, the model does not have the final test label to check; it *must* have decided whether positive meant "Truth" beforehand perfectly using only its training data. If the training data was too messy to reveal the direction, the model fails. 
-2. **It Destroys Fairness Comparison (Setup A vs Setup B)**: Setup A (Balanced) easily determines the PCA direction using its balanced training data. Setup B is trained on highly imbalanced data (90% True, 10% False), and might get very confused and guess the PCA direction backward. *This confusion is a real consequence of class imbalance.* If the original evaluation script uses the perfectly balanced **test set** to automatically flip Setup B's predictions whenever it gets it wrong, the script is "cheating." It artificially rescues Setup B by using the clean test data to fix the damage caused by the messy training data. 
-
-**The Implemented Solution:**
-To eliminate this data leak and preserve the integrity of our Setup A vs Setup B comparison, the code was rewritten. The sign polarity of the unsupervised probe is now anchored strictly by evaluating the highest AUC on the `y_train` distribution. That determined polarity is then locked and blindly applied to `y_test`. 
-
-### 3. Hypothesis Testing Results: Setup A vs Setup B
-To definitively establish which setup yields better performance (answering the core hypothesis), we analyzed the 63 paired configurations (7 Datasets $\times$ 9 Algorithms) using the Wilcoxon Signed-Rank Test.
-
-When evaluating these results, we look at three key performance metrics: ROC AUC, MAP (Mean Average Precision), and BRP_90 (Brier score for the top 90% confident predictions).
-
-**Results Summary:**
-- **ROC AUC (Core Representation):** We observed a Mean Difference (A - B) of `+0.0044`. The Wilcoxon test yielded W = 224.0 and a p-value of $0.00011$. This confirms a statistically significant degradation caused by class imbalance. While the effect size is small (less than 1% absolute drop), the signal stability takes a consistent hit across most datasets and algorithms.
-- **MAP (Precision and Ranking):** The Mean Difference was `+0.0042`, with W = 253.0 and $p = 0.00035$. Map scores consistently decreased under Setup B, confirming that the ranking capability of the algorithms degrades when flooded with lies.
-- **BRP_90 (Calibration):** Mean Difference was `+0.0012` with W = 319.5 and $p = 0.0988$. No statistically significant difference was found here, meaning the highly-confident tail predictions remain similarly calibrated between Setups A and B.
-
-### Final Statistical Verdict
-Based on rigorous hypothesis testing, **Setup A (Balanced Training) is definitively the superior methodology.** The Wilcoxon Signed-Rank Test proves that Setup A significantly outperforms Setup B in separating truth from falsehoods (AUC) and correctly ranking them (MAP). Class imbalance conclusively and practically harms the model's extraction capabilities, demonstrating that without actively balancing the training data, lie detectors trained on skewed data will suffer a consistent drop in their discriminative power. Therefore, imbalanced training (Setup B) is discouraged when preparing detectors for real-world deployment.
+### Conclusion
+Class imbalance causes a total collapse of correct decision boundaries (Recall/F1) while simultaneously inducing a small, but persistent, decay in core extraction quality (AUC/MAP). Because the goal is to extract maximum possible performance and to avoid the model defaulting to assumptions of deception, **we will utilize the Balanced scenario (Setup A) moving forward**, as it is logically and statistically superior, even if the AUC improvement is slight.
