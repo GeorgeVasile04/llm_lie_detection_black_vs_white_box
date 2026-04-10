@@ -2,7 +2,7 @@ import sys
 import os
 import numpy as np
 from typing import Literal, Dict, Any, List, Optional
-from sklearn.model_selection import train_test_split
+from sklearn.model_selection import train_test_split, StratifiedKFold
 from sklearn.metrics import accuracy_score, roc_auc_score, f1_score, recall_score
 from pathlib import Path
 
@@ -27,6 +27,114 @@ from Black_vs_White_Lie_Detection.Aligned_Comparison_BB_WB.wb_probes import (
     train_ccs_probe,
     ProbeMethod
 )
+
+def select_best_layer_cv(
+    activation_data: List[Dict[str, Any]],
+    layer_list: List[int] = [10, 15, 20],
+    method: ProbeMethod = "lr",
+    n_splits: int = 4,
+    verbose: bool = True
+) -> int:
+    """
+    Selects the best layer based on mean AUC using Stratified K-Fold CV on the training data.
+    """
+    y_all = np.array([item['label'] for item in activation_data])
+    g_all = np.array([item.get('id', i) for i, item in enumerate(activation_data)])
+    
+    cv = StratifiedKFold(n_splits=n_splits, shuffle=True, random_state=42)
+    
+    best_layer = layer_list[0]
+    best_auc = -1.0
+    
+    for layer in layer_list:
+        try:
+            X_layer = np.array([item['activations'][layer] for item in activation_data])
+        except KeyError:
+            continue
+            
+        fold_aucs = []
+        for train_idx, val_idx in cv.split(X_layer, y_all):
+            X_train, X_val = X_layer[train_idx], X_layer[val_idx]
+            y_train, y_val = y_all[train_idx], y_all[val_idx]
+            g_train, g_val = g_all[train_idx], g_all[val_idx]
+            
+            if method == "lr":
+                try:
+                    probe = train_lr_probe(X_train, y_train)
+                except ValueError:
+                    continue
+            elif method == "lr-g":
+                try:
+                    probe = train_lr_g_probe(X_train, y_train, g_train)
+                except ValueError:
+                    continue
+            elif method == "dim":
+                try:
+                    probe = train_dim_probe(X_train, y_train)
+                except (ValueError, np.linalg.LinAlgError):
+                    continue
+            elif method == "pca":
+                try:
+                    probe = train_pca_probe(X_train)
+                except (ValueError, np.linalg.LinAlgError):
+                    continue
+            elif method == "pca-g":
+                try:
+                    probe = train_pca_g_probe(X_train, g_train)
+                except (ValueError, np.linalg.LinAlgError):
+                    continue
+            elif method == "lat":
+                try:
+                    probe = train_lat_probe(X_train)
+                except (ValueError, np.linalg.LinAlgError):
+                    continue
+            elif method == "lda":
+                try:
+                    probe = train_lda_probe(X_train, y_train)
+                except (ValueError, np.linalg.LinAlgError):
+                    continue
+            elif method == "ccs":
+                try:
+                    probe = train_ccs_probe(X_train, y_train, g_train)
+                except (ValueError, np.linalg.LinAlgError):
+                    continue
+            else:
+                raise ValueError(f"Unknown Method: {method}")
+                
+            try:
+                result = probe.predict(X_val, groups=g_val)
+                logits = result.logits
+                if method in ["dim", "pca", "pca-g", "lat", "ccs"]:
+                    train_logits = probe.predict(X_train, groups=g_train).logits
+                    if len(np.unique(y_train)) == 2:
+                        train_auc_normal = roc_auc_score(y_train, train_logits)
+                        train_auc_flipped = roc_auc_score(y_train, -train_logits)
+                    else:
+                        train_auc_normal, train_auc_flipped = 0.5, 0.5
+                    if train_auc_flipped > train_auc_normal:
+                        logits = -logits
+                
+                if len(np.unique(y_val)) == 2:
+                    auc = roc_auc_score(y_val, logits)
+                else:
+                    auc = 0.5
+                fold_aucs.append(auc)
+            except Exception:
+                continue
+                
+        mean_auc = np.mean(fold_aucs) if fold_aucs else 0.0
+        if verbose:
+            print(f"Layer {layer} CV Mean AUC: {mean_auc:.4f}")
+        
+        if mean_auc > best_auc:
+            best_auc = mean_auc
+            best_layer = layer
+            
+    if verbose:
+        print(f"Selected Best Layer: {best_layer} with AUC: {best_auc:.4f}")
+        
+    return best_layer
+
 
 def train_wb_probes_imbalance(
     activation_data: List[Dict[str, Any]],
