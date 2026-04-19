@@ -76,3 +76,58 @@ def load_dataset_efficiency(dataset_name="commonsense_qa", split='train', random
     df_balanced = pd.concat(balanced_samples).reset_index(drop=True)
     return df_balanced
 
+import gc
+import torch
+from tqdm.auto import tqdm
+from Black_vs_White_Lie_Detection.Aligned_Comparison_BB_WB.wb_activations import get_activations_for_dataset
+
+def robust_get_activations(df, model, tokenizer, device, initial_batch_size, desc="Extracting", target_size=None):
+    results = []
+    idx = 0
+    total_to_extract = target_size if target_size is not None else len(df)
+    pbar = tqdm(total=total_to_extract, desc=desc)
+    current_bs = initial_batch_size
+    
+    # We iterate until we've processed the full df OR reached exactly our target limit
+    while idx < len(df) and len(results) < total_to_extract:
+        # Dynamically adjust the chunk size so we never overshoot our specific limit
+        remaining = total_to_extract - len(results)
+        bs_to_use = min(current_bs, remaining, len(df) - idx)
+        
+        chunk = df.iloc[idx:idx + bs_to_use]
+        try:
+            # We call the existing extraction function on this chunk
+            chunk_results = get_activations_for_dataset(
+                chunk, model, tokenizer, device=device, batch_size=bs_to_use, show_progress=False
+            )
+            results.extend(chunk_results)
+            idx += bs_to_use
+            pbar.update(bs_to_use) # Exactly bs_to_use samples succeeded!
+            
+            # --- NEW: Speed recovery! ---
+            # If it succeeds, immediately recover back to initial speed for the NEXT chunk
+            current_bs = initial_batch_size
+            
+        except RuntimeError as e:
+            # Check for Out Of Memory Error
+            if "out of memory" in str(e).lower() or "outofmemoryerror" in str(getattr(e, "__class__", "")).lower():
+                torch.cuda.empty_cache()
+                gc.collect()
+                if bs_to_use > 1:
+                    current_bs = max(1, current_bs // 2)
+                    # Loop retries without advancing idx!
+                else:
+                    print(f"⚠️ Fatal OOM even with batch size 1 at index {idx}. Skipping this single bad sample to survive.")
+                    idx += 1
+                    # Notice we explicitly DO NOT update `pbar` or `results`. 
+                    # By dropping a bad text, we automatically force the loop to process 
+                    # an extra item later so we still strictly reach the 50,000 threshold perfectly.
+                    
+                    # Recover batch size after skipping the fatal sample
+                    current_bs = initial_batch_size
+            else:
+                raise e
+
+    pbar.close()
+    return results
+
