@@ -45,18 +45,18 @@ _DATASET_SPECS: dict[DlkDatasetId, _DatasetSpec] = {
 }
 
 
-def get_dlk_dataset(dataset_id: DlkDatasetId):
+def get_dlk_dataset(dataset_id: DlkDatasetId, limit: int = 60000):
     dataset_spec = _DATASET_SPECS[dataset_id]
     try:
-        dataset: Any = load_dataset(dataset_spec.name, dataset_spec.subset, trust_remote_code=True)
-    except Exception as e:
-        print(f"Error loading {dataset_id} with trust_remote_code=True: {e}")
-        # fallback
+        # Standard datasets now complain if trust_remote_code=True is passed unnecessarily
         dataset: Any = load_dataset(dataset_spec.name, dataset_spec.subset)
+    except Exception as e:
+        # fallback for script-based datasets
+        dataset: Any = load_dataset(dataset_spec.name, dataset_spec.subset, trust_remote_code=True)
     
     return {
-        **_get_dlk_dataset(dataset_id, dataset, split="train", limit=3000),
-        **_get_dlk_dataset(dataset_id, dataset, split="validation", limit=3000),
+        **_get_dlk_dataset(dataset_id, dataset, split="train", limit=limit),
+        **_get_dlk_dataset(dataset_id, dataset, split="validation", limit=limit),
     }
 
 
