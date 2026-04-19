@@ -104,6 +104,10 @@ def robust_get_activations(df, model, tokenizer, device, initial_batch_size, des
             idx += bs_to_use
             pbar.update(bs_to_use) # Exactly bs_to_use samples succeeded!
             
+            # Flush completely after each successful chunk
+            gc.collect()
+            torch.cuda.empty_cache()
+            
             # --- NEW: Speed recovery! ---
             # If it succeeds, immediately recover back to initial speed for the NEXT chunk
             current_bs = initial_batch_size
