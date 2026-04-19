@@ -110,9 +110,18 @@ def robust_get_activations(df, model, tokenizer, device, initial_batch_size, des
             
         except RuntimeError as e:
             # Check for Out Of Memory Error
-            if "out of memory" in str(e).lower() or "outofmemoryerror" in str(getattr(e, "__class__", "")).lower():
-                torch.cuda.empty_cache()
+            is_oom = "out of memory" in str(e).lower() or "outofmemoryerror" in str(getattr(e, "__class__", "")).lower()
+            
+            if is_oom:
+                # Crucial: Clear traceback frames to release GPU memory tied to local variables (inputs, outputs)
+                import traceback
+                traceback.clear_frames(e.__traceback__)
+                del e
+                
+                # Double collect to ensure frames are entirely wiped from memory
                 gc.collect()
+                torch.cuda.empty_cache()
+                
                 if bs_to_use > 1:
                     current_bs = max(1, current_bs // 2)
                     # Loop retries without advancing idx!
