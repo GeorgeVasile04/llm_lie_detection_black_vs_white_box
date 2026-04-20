@@ -80,11 +80,10 @@ def get_activations_for_dataset(df, model, tokenizer, device="cuda", batch_size=
     Returns:
         List of dicts: [{'activations': ..., 'label': int, 'text': ...}, ...]
     """
+    import gc
     results = []
     
     if batch_size == 1:
-        import gc
-        import torch
         # Original single-sample mode (simpler, easier to debug)
         for index, row in df.iterrows():
             context_text = get_white_box_context(row)
