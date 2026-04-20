@@ -59,7 +59,7 @@ def get_wb_activations(model, tokenizer, context_text, layer_nums=None, device="
             
     return activations
 
-def get_activations_for_dataset(df, model, tokenizer, device="cuda", batch_size=1, show_progress=False):
+def get_activations_for_dataset(df, model, tokenizer, device="cuda", batch_size=1, show_progress=False, max_length=None):
     """
     Iterates over the "Aligned" dataset layout (from load_data.py).
     Each row has 'question', 'answer', 'label'.
@@ -117,7 +117,11 @@ def get_activations_for_dataset(df, model, tokenizer, device="cuda", batch_size=
                 batch_row_data.append(context_text)
             
             # Tokenize all texts in batch
-            inputs = tokenizer(batch_texts, return_tensors="pt", padding=True, truncation=True).to(device)
+            if max_length is not None:
+                tokenizer.truncation_side = "left"
+                inputs = tokenizer(batch_texts, return_tensors="pt", padding=True, truncation=True, max_length=max_length).to(device)
+            else:
+                inputs = tokenizer(batch_texts, return_tensors="pt", padding=True, truncation=True).to(device)
             
             # Forward pass for entire batch
             with torch.no_grad():

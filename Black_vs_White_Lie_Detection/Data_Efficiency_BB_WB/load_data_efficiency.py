@@ -130,13 +130,36 @@ def robust_get_activations(df, model, tokenizer, device, initial_batch_size, des
                     current_bs = max(1, current_bs // 2)
                     # Loop retries without advancing idx!
                 else:
-                    print(f"⚠️ Fatal OOM even with batch size 1 at index {idx}. Skipping this single bad sample to survive.")
-                    idx += 1
-                    # Notice we explicitly DO NOT update `pbar` or `results`. 
-                    # By dropping a bad text, we automatically force the loop to process 
-                    # an extra item later so we still strictly reach the 50,000 threshold perfectly.
+                    print(f"⚠️ Fatal OOM at batch size 1 at index {idx}. Retrying with left-truncation...")
+                    success = False
+                    # Drop the tokens aggressively from the left to save memory and preserve answer probe
+                    for max_len in [2048, 1024, 768]:
+                        try:
+                            chunk_results = get_activations_for_dataset(
+                                chunk, model, tokenizer, device=device, batch_size=1, show_progress=False, max_length=max_len
+                            )
+                            results.extend(chunk_results)
+                            idx += 1
+                            pbar.update(1)
+                            success = True
+                            print(f"✅ Survived by truncating to {max_len} tokens form the left!")
+                            break
+                        except RuntimeError as e2:
+                            is_oom2 = "out of memory" in str(e2).lower() or "outofmemoryerror" in str(getattr(e2, "__class__", "")).lower()
+                            if is_oom2:
+                                import traceback
+                                traceback.clear_frames(e2.__traceback__)
+                                del e2
+                                gc.collect()
+                                torch.cuda.empty_cache()
+                            else:
+                                raise e2
+                                
+                    if not success:
+                        print(f"❌ Failed even with max_length=768. Skipping this single sample as a last resort.")
+                        idx += 1
                     
-                    # Recover batch size after skipping the fatal sample
+                    # Recover batch size after resolving the fatal sample
                     current_bs = initial_batch_size
             else:
                 raise e
