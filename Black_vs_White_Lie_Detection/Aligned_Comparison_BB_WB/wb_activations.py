@@ -21,7 +21,7 @@ def load_model(model_name, device="cuda"):
 
     return model, tokenizer
 
-def get_wb_activations(model, tokenizer, context_text, layer_nums=None, device="cuda"):
+def get_wb_activations(model, tokenizer, context_text, layer_nums=None, device="cuda", max_length=None):
     """
     Extracts activations from the LAST token of the context_text.
     
@@ -31,11 +31,16 @@ def get_wb_activations(model, tokenizer, context_text, layer_nums=None, device="
         context_text: formatted prompt (Question + Answer)
         layer_nums: List of integers (layers to extract). If None, extracts all.
         device: 'cuda' or 'cpu'.
+        max_length: Optional integer indicating the max sequence length (left-truncated).
         
     Returns:
         activations: Dict {layer_num: numpy_array}
     """
-    inputs = tokenizer(context_text, return_tensors="pt").to(device)
+    if max_length is not None:
+        tokenizer.truncation_side = "left"
+        inputs = tokenizer(context_text, return_tensors="pt", truncation=True, max_length=max_length).to(device)
+    else:
+        inputs = tokenizer(context_text, return_tensors="pt").to(device)
     
     with torch.no_grad():
         outputs = model(**inputs, output_hidden_states=True)
@@ -78,18 +83,26 @@ def get_activations_for_dataset(df, model, tokenizer, device="cuda", batch_size=
     results = []
     
     if batch_size == 1:
+        import gc
+        import torch
         # Original single-sample mode (simpler, easier to debug)
         for index, row in df.iterrows():
             context_text = get_white_box_context(row)
             label = row['label']
             group_id = row.get('id', index)
-            activations = get_wb_activations(model, tokenizer, context_text, device=device)
+            activations = get_wb_activations(model, tokenizer, context_text, device=device, max_length=max_length)
             results.append({
                 "activations": activations,
                 "label": label,
                 "text": context_text,
                 "id": group_id
             })
+            
+            # Explicit cleanup after every single sample to prevent OOM
+            del context_text
+            del activations
+            torch.cuda.empty_cache()
+            gc.collect()
     else:
         # Batched mode: process multiple samples per forward pass
         from tqdm.auto import tqdm
