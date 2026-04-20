@@ -58,8 +58,8 @@ def get_wb_activations(model, tokenizer, context_text, layer_nums=None, device="
     for layer_idx in layer_nums:
         if layer_idx < total_layers:
             # Extract last token: [batch=0, seq_len=-1, hidden_dim]
-            # .cpu().to(torch.float32) avoids making a full fp32 copy on GPU before transferring
-            act = hidden_states[layer_idx][0, -1, :].cpu().to(torch.float32).numpy()
+            # .cpu().to(torch.float16) avoids making a full fp32 copy on GPU before transferring and halves RAM
+            act = hidden_states[layer_idx][0, -1, :].cpu().to(torch.float16).numpy()
             activations[layer_idx] = act
             
     return activations
@@ -154,8 +154,8 @@ def get_activations_for_dataset(df, model, tokenizer, device="cuda", batch_size=
                 activations = {}
                 for layer_idx in range(total_layers):
                     # Extract activation at last token position for this sample
-                    # Move immediately to CPU numpy array to save GPU memory (.cpu().to(torch.float32) avoids GPU fp32 copy)
-                    act = hidden_states[layer_idx][sample_idx, last_token_pos, :].cpu().to(torch.float32).numpy()
+                    # Move immediately to CPU numpy array in float16 to halve RAM size and save GPU memory
+                    act = hidden_states[layer_idx][sample_idx, last_token_pos, :].cpu().to(torch.float16).numpy()
                     activations[layer_idx] = act
                 
                 results.append({

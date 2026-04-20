@@ -81,19 +81,20 @@ import torch
 from tqdm.auto import tqdm
 from Black_vs_White_Lie_Detection.Aligned_Comparison_BB_WB.wb_activations import get_activations_for_dataset
 
+
 def robust_get_activations(df, model, tokenizer, device, initial_batch_size, desc="Extracting", target_size=None):
     results = []
     idx = 0
     total_to_extract = target_size if target_size is not None else len(df)
     pbar = tqdm(total=total_to_extract, desc=desc)
     current_bs = initial_batch_size
-    
+
     # We iterate until we've processed the full df OR reached exactly our target limit
     while idx < len(df) and len(results) < total_to_extract:
         # Dynamically adjust the chunk size so we never overshoot our specific limit
         remaining = total_to_extract - len(results)
         bs_to_use = min(current_bs, remaining, len(df) - idx)
-        
+
         chunk = df.iloc[idx:idx + bs_to_use]
         try:
             # We call the existing extraction function on this chunk
@@ -102,30 +103,30 @@ def robust_get_activations(df, model, tokenizer, device, initial_batch_size, des
             )
             results.extend(chunk_results)
             idx += bs_to_use
-            pbar.update(bs_to_use) # Exactly bs_to_use samples succeeded!
-            
+            pbar.update(bs_to_use)  # Exactly bs_to_use samples succeeded!
+
             # Flush completely after each successful chunk
             gc.collect()
             torch.cuda.empty_cache()
-            
+
             # --- NEW: Speed recovery! ---
             # If it succeeds, immediately recover back to initial speed for the NEXT chunk
             current_bs = initial_batch_size
-            
+
         except RuntimeError as e:
             # Check for Out Of Memory Error
             is_oom = "out of memory" in str(e).lower() or "outofmemoryerror" in str(getattr(e, "__class__", "")).lower()
-            
+
             if is_oom:
                 # Crucial: Clear traceback frames to release GPU memory tied to local variables (inputs, outputs)
                 import traceback
                 traceback.clear_frames(e.__traceback__)
                 del e
-                
+
                 # Double collect to ensure frames are entirely wiped from memory
                 gc.collect()
                 torch.cuda.empty_cache()
-                
+
                 if bs_to_use > 1:
                     current_bs = max(1, current_bs // 2)
                     # Loop retries without advancing idx!
@@ -154,11 +155,11 @@ def robust_get_activations(df, model, tokenizer, device, initial_batch_size, des
                                 torch.cuda.empty_cache()
                             else:
                                 raise e2
-                                
+
                     if not success:
                         print(f"❌ Failed even with max_length=768. Skipping this single sample as a last resort.")
                         idx += 1
-                    
+
                     # Recover batch size after resolving the fatal sample
                     current_bs = initial_batch_size
             else:
