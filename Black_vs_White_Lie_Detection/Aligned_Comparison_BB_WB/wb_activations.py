@@ -81,6 +81,7 @@ def get_activations_for_dataset(df, model, tokenizer, device="cuda", batch_size=
         List of dicts: [{'activations': ..., 'label': int, 'text': ...}, ...]
     """
     import gc
+    import torch
     results = []
     
     if batch_size == 1:
