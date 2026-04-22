@@ -121,14 +121,16 @@ def _get_dlk_dataset(
         true_label: int = row["label"]
         false_label_options = list(range(len(template.labels)))
         false_label_options.remove(true_label)
-        false_label = false_label_options[row_idx % len(false_label_options)]
-        labels = sorted([true_label, false_label])
+        
+        # For the script check, let's yield ALL false_labels instead of just one
+        # so that when the user inspects one question, they see all possible options.
+        labels = [true_label] + false_label_options
 
         for label_idx, label in enumerate(labels):
             format_args: dict[str, str] = dict(label=template.labels[label])
             if template.insert_label_options:
                 format_args["label1"] = template.labels[labels[0]]
-                format_args["label2"] = template.labels[labels[1]]
+                format_args["label2"] = template.labels[labels[1]] if len(labels) > 1 else ""
             for arg in template.args:
                 format_args[arg] = row[arg]
             prompt = template.template.format(**format_args)

@@ -16,7 +16,7 @@ from White_Box_Lie_Detection.repeng.datasets.elk import (
 
 datasets_to_check = [
     "commonsense_qa", "race", "arc_easy", "arc_challenge", "open_book_qa", 
-    "boolq", "copa", "rte", "piqa", "imdb", "amazon_polarity", "ag_news", 
+    "boolq", "copa", "rte", "imdb", "amazon_polarity", "ag_news", 
     "dbpedia_14", "got_cities", "got_sp_en_trans", "got_larger_than", 
     "got_cities_cities_conj", "got_cities_cities_disj"
 ]
@@ -42,50 +42,97 @@ def load_dataset_full(name):
         return []
 
     processed_data = []
+    example_rows = []
+    first_id = None
+    first_split = None
+    
     for key, row in data_dict.items():
+        g_id = row.group_id if getattr(row, 'group_id', None) else key
+        
+        if first_id is None:
+            first_id = g_id
+            first_split = getattr(row, 'split', None)
+            
+        if g_id == first_id and getattr(row, 'split', None) == first_split:
+            example_rows.append(row)
+            
         # NOTE: We grab train and validation/test altogether 
         # to see the max possible pool we can sample from.
         item = {
-            "id": row.group_id if row.group_id else key,
+            "id": g_id,
             "label": 1 if row.label else 0,
         }
         processed_data.append(item)
-    return processed_data
+    return processed_data, example_rows
 
-print(f"{'Dataset':<25} | {'Total Samples':<15} | {'True (1)':<10} | {'False (0)':<10} | {'Unique Questions':<18} | {'Good for Phase 2? (>=3k True & False)'}")
-print("-" * 115)
+examples_dict = {}
 
 for ds_name in datasets_to_check:
-    data = load_dataset_full(ds_name)
+    data, example_rows = load_dataset_full(ds_name)
     if not data:
-        print(f"{ds_name:<25} | {'ERROR':<15} | {'-':<10} | {'-':<10} | {'-':<18} | {'No'}")
         continue
         
-    df = pd.DataFrame(data)
-    total_samples = len(df)
-    n_true = df['label'].sum()
-    n_false = total_samples - n_true
+    examples_dict[ds_name] = example_rows
+
+
+print("\n" + "="*115)
+print("DATASET EXAMPLES")
+print("="*115 + "\n")
+
+for ds_name, example_rows in examples_dict.items():
+    if not example_rows:
+        continue
     
-    # Unique questions are determined by counting how many unique IDs we have
-    # For every question, we want to ensure we can pair 1 True / 1 False
-    # So the maximum balanced pairs we can form is min(True, False) for each unique question.
+    print(f"[{ds_name.upper()}] Example Request/Answers:")
+    print("-" * 50)
     
-    # Group by question ID 
-    # and count how many trues and falses it has
-    grouped = df.groupby('id').agg(
-        n_true=('label', 'sum'),
-        n_total=('label', 'count')
-    )
-    grouped['n_false'] = grouped['n_total'] - grouped['n_true']
+    # Try to extract common 'question' or context from format_args
+    # Some datasets just have texts since they are not templated the same way
     
-    # A question can only contribute to a Balanced setup if it has at least 1 True and 1 False
-    valid_balanced_questions = grouped[(grouped['n_true'] > 0) & (grouped['n_false'] > 0)]
-    n_unique_questions_balanced = len(valid_balanced_questions)
+    first_row = example_rows[0]
     
-    # Total unique questions (no matter if balanceable)
-    n_unique_total = len(grouped)
-    
-    is_good = "YES" if (n_true >= 3000 and n_false >= 3000 and n_unique_questions_balanced >= 3000) else "NO"
-    
-    print(f"{ds_name:<25} | {total_samples:<15} | {n_true:<10} | {n_false:<10} | {n_unique_total:<18} | {is_good} (has {n_unique_questions_balanced} valid balanced qs)")
+    # Let's try to extract parts from format_args
+    if hasattr(first_row, 'format_args') and first_row.format_args:
+        args = first_row.format_args
+        
+        # Look for article/context
+        for key in ['article', 'context', 'premise', 'text', 'sentence1', 'passage', 'content']:
+            if key in args:
+                val = args[key]
+                if len(val) > 800: val = val[:800] + " ... [TRUNCATED]"
+                print(f"Context/Premise/Content:\n{val}\n")
+                break
+                
+        # Look for question
+        for key in ['question', 'question_stem', 'hypothesis', 'sentence2', 'goal']:
+            if key in args:
+                print(f"Question/Hypothesis/Goal:\n{args[key]}\n")
+                break
+                
+        # For datasets like COPA or PIQA that have choice1/choice2 in the context
+        choices_printed = False
+        for key in ['choice1', 'choice2', 'sol1', 'sol2']:
+            if key in args:
+                print(f"{key.capitalize()}: {args[key]}")
+                choices_printed = True
+        if choices_printed:
+            print("")
+                
+        print("Answers:")
+        for i, row in enumerate(example_rows):
+            # 'label' is used by dlk datasets (like IMDb, AG News, etc.) for the answer option
+            ans = row.format_args.get('answer', row.format_args.get('choice', row.format_args.get('label', 'None specifically formatted')))
+            label_str = "TRUE" if row.label else "FALSE"
+            print(f"  {i+1}) [Label: {label_str:<5}] {ans}")
+            
+    else:
+        # Fallback to just printing the text
+        if hasattr(first_row, 'text'):
+            for i, row in enumerate(example_rows):
+                label_str = "TRUE" if row.label else "FALSE"
+                print(f"  {i+1}) [Label: {label_str:<5}]\n{row.text.strip()}\n")
+        else:
+            print("  (Cannot properly display, missing standard attributes.)")
+            
+    print("\n" + "="*80 + "\n")
 
