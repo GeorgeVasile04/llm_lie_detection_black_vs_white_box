@@ -19,7 +19,6 @@ All experiments use the open-weights **`meta-llama/Llama-2-7b-chat-hf`** (33 hid
 
 - It is widely studied in the lie-detection literature (original RepEng / Marks & Tegmark work), giving directly comparable baselines.
 - Its chat-tuned variant natively understands the `[INST]` / `[/INST]` instruction-tag formatting used to force the persona of the answering entity (see §4).
-- 7 B parameters are the upper bound that still allows full-layer activation extraction inside a single Colab A100 session.
 
 Tokeniser padding is mapped to the EOS token and kept right-aligned so that the "last non-padding token" of a batch can be located with `attention_mask.sum(dim=1) - 1`. This is the token whose hidden state is extracted as the white-box representation for that sample.
 
