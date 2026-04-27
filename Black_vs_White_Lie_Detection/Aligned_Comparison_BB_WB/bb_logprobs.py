@@ -201,3 +201,51 @@ def compute_bb_features_for_dataset(
 
     return results
 
+def compute_l1_yes_no_answers(
+    df, model, tokenizer, device="cuda", batch_size=64, probe_indices=None, show_progress=True, probe_batch_size=24
+):
+    """
+    Level 1 Access: Prompts the LLM with elicitation questions and records 1 if the answer is Yes/True, 0 otherwise.
+    Returns a 48-component vector of 1s and 0s for each sample in the dataset.
+    """
+    probes_df = load_probes(probe_indices=probe_indices)
+    
+    results = []
+    
+    from prompt_utils import get_white_box_context
+    from tqdm.auto import tqdm
+    
+    iterator = range(len(df))
+    if show_progress:
+        iterator = tqdm(iterator, desc="Computing L1 Yes/No answers")
+        
+    for idx in iterator:
+        row = df.iloc[idx]
+        sample_label = row.get("label", None)
+        features = []
+        
+        context = get_white_box_context(row)
+        
+        # Batch probes to speed up text generation
+        for p_idx, probe_row in probes_df.iterrows():
+            question = probe_row["question"]
+            prompt = f"{context}\n\nQuestion: {question}\nAnswer:"
+            
+            inputs = tokenizer(prompt, return_tensors="pt").to(device)
+            # Generate 1 max new token to get the immediate Yes/No response
+            outputs = model.generate(**inputs, max_new_tokens=1, do_sample=False, pad_token_id=tokenizer.eos_token_id)
+            answer_token = tokenizer.decode(outputs[0][-1:]).strip().lower()
+            
+            # Simple heuristic mapping for True/Yes vs False/No
+            is_yes = 1 if answer_token in ["yes", "true", "1", "correct", "y", "t"] else 0
+            
+            features.append(is_yes)
+            
+        results.append({
+            "label": sample_label,
+            "l1_features": features,
+            "context": context
+        })
+        
+    return results
+
