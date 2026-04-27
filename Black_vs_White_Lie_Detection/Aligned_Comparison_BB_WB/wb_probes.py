@@ -7,13 +7,24 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 from sklearn.decomposition import PCA
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import accuracy_score, roc_auc_score
+from sklearn.metrics import roc_auc_score, average_precision_score, precision_recall_curve
 from dataclasses import dataclass
 from typing import Literal, Dict, Any, List, Optional
 import warnings
 
 # Suppress sklearn warnings for cleaner output
 warnings.filterwarnings("ignore")
+
+def best_recall_at_precision(y_true, y_scores, target_precision=0.90):
+    """Calculates best recall maintaining at least 'target_precision'"""
+    if len(np.unique(y_true)) < 2:
+        return 0.0
+    precisions, recalls, thresholds = precision_recall_curve(y_true, y_scores)
+    # Find all indices where precision >= target_precision
+    valid_idx = np.where(precisions >= target_precision)[0]
+    if len(valid_idx) == 0:
+        return 0.0  # No threshold gives required precision
+    return np.max(recalls[valid_idx])
 
 ProbeMethod = Literal["lr", "dim", "lat", "ccs", "lda", "pca", "pca-g", "lr-g"]
 
@@ -290,22 +301,19 @@ def train_wb_probes(
         result = probe.predict(X_test, groups=g_test)
         logits = result.logits
         
-        # Unsupervised Directional Flipper Correction
+        # Unsupervised Directional Flipper Correction — sign decided on TRAIN data only (no leakage)
         if method in ["dim", "pca", "pca-g", "lat", "ccs"]:
             train_logits = probe.predict(X_train, groups=g_train).logits
-            if len(np.unique(y_test)) == 2:
-                auc_normal = roc_auc_score(y_test, logits)
-                auc_flipped = roc_auc_score(y_test, -logits)
+            if len(np.unique(y_train)) == 2:
+                train_auc_normal = roc_auc_score(y_train, train_logits)
+                train_auc_flipped = roc_auc_score(y_train, -train_logits)
             else:
-                auc_normal, auc_flipped = 0.5, 0.5
-                
-            if auc_flipped > auc_normal:
+                train_auc_normal, train_auc_flipped = 0.5, 0.5
+
+            if train_auc_flipped > train_auc_normal:
                 logits = -logits
-                auc = auc_flipped
                 train_logits = -train_logits
-            else:
-                auc = auc_normal
-                
+
             if len(np.unique(y_train)) == 2:
                 mean_pos = np.mean(train_logits[y_train == 1])
                 mean_neg = np.mean(train_logits[y_train == 0])
@@ -314,17 +322,17 @@ def train_wb_probes(
                 threshold = 0.0
         else:
             threshold = 0.0
-            if len(np.unique(y_test)) == 2:
-                auc = roc_auc_score(y_test, logits)
-            else:
-                auc = 0.5
-                
-        preds = (np.array(logits) > threshold).astype(int)
-        acc = accuracy_score(y_test, preds)
-        
+
+        if len(np.unique(y_test)) == 2:
+            auc = roc_auc_score(y_test, logits)
+            map_score = average_precision_score(y_test, logits)
+            brp_90 = best_recall_at_precision(y_test, logits, target_precision=0.90)
+        else:
+            auc, map_score, brp_90 = 0.5, 0.5, 0.0
+
         probes[layer] = probe
-        metrics[layer] = {'accuracy': acc, 'auc': auc}
-        print(f"Layer {layer} Results ({method}) - Acc: {acc:.4f}, AUC: {auc:.4f}")
+        metrics[layer] = {'AUC': auc, 'MAP': map_score, 'BRP_90': brp_90}
+        print(f"Layer {layer} Results ({method}) - AUC: {auc:.4f}, MAP: {map_score:.4f}, BRP_90: {brp_90:.4f}")
         
     return probes, metrics
 

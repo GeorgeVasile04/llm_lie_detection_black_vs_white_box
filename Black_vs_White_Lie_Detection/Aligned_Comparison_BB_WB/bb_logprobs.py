@@ -202,7 +202,7 @@ def compute_bb_features_for_dataset(
     return results
 
 def compute_l1_yes_no_answers(
-    df, model, tokenizer, device="cuda", batch_size=64, probe_indices=None, show_progress=True, probe_batch_size=24
+    df, model, tokenizer, device="cuda", batch_size=64, probe_indices=None, show_progress=True, probe_batch_size=48
 ):
     """
     Level 1 Access: Prompts the LLM with elicitation questions and records 1 if the answer is Yes/True, 0 otherwise.
@@ -228,7 +228,7 @@ def compute_l1_yes_no_answers(
         
         # Batch probes to speed up text generation
         for p_idx, probe_row in probes_df.iterrows():
-            question = probe_row["question"]
+            question = probe_row["probe"]
             prompt = f"{context}\n\nQuestion: {question}\nAnswer:"
             
             inputs = tokenizer(prompt, return_tensors="pt").to(device)
