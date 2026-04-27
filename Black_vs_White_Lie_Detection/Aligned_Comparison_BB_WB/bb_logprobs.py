@@ -202,50 +202,72 @@ def compute_bb_features_for_dataset(
     return results
 
 def compute_l1_yes_no_answers(
-    df, model, tokenizer, device="cuda", batch_size=64, probe_indices=None, show_progress=True, probe_batch_size=48
+    df, model, tokenizer, device="cuda", batch_size=50, probe_indices=None, show_progress=True, probe_batch_size=48, desc="L1 Yes/No"
 ):
     """
-    Level 1 Access: Prompts the LLM with elicitation questions and records 1 if the answer is Yes/True, 0 otherwise.
-    Returns a 48-component vector of 1s and 0s for each sample in the dataset.
+    Level 1 Access: one batched forward pass per sample (all 48 probes at once).
+    Reads the argmax token at the last position — equivalent to greedy generate(max_new_tokens=1)
+    but ~24x faster because it avoids 48 sequential model.generate() calls.
+    Returns a 48-component binary vector (1=Yes, 0=No) per sample.
     """
     probes_df = load_probes(probe_indices=probe_indices)
-    
-    results = []
-    
+
     from prompt_utils import get_white_box_context
     from tqdm.auto import tqdm
-    
+
+    # Build the set of token IDs that count as "yes"
+    yes_texts = ["yes", "true", "1", "correct", "y", "t",
+                 "Yes", "True", "Correct", "Y", "T"]
+    yes_token_ids = set()
+    for text in yes_texts:
+        ids = tokenizer.encode(text, add_special_tokens=False)
+        if len(ids) == 1:
+            yes_token_ids.add(ids[0])
+
+    probes = [row["probe"] for _, row in probes_df.iterrows()]
+
+    results = []
     iterator = range(len(df))
     if show_progress:
-        iterator = tqdm(iterator, desc="Computing L1 Yes/No answers")
-        
+        iterator = tqdm(iterator, desc=desc, total=len(df), unit="sample")
+
     for idx in iterator:
         row = df.iloc[idx]
         sample_label = row.get("label", None)
-        features = []
-        
         context = get_white_box_context(row)
-        
-        # Batch probes to speed up text generation
-        for p_idx, probe_row in probes_df.iterrows():
-            question = probe_row["probe"]
-            prompt = f"{context}\n\nQuestion: {question}\nAnswer:"
-            
-            inputs = tokenizer(prompt, return_tensors="pt").to(device)
-            # Generate 1 max new token to get the immediate Yes/No response
-            outputs = model.generate(**inputs, max_new_tokens=1, do_sample=False, pad_token_id=tokenizer.eos_token_id, temperature=None, top_p=None)
-            answer_token = tokenizer.decode(outputs[0][-1:]).strip().lower()
-            
-            # Simple heuristic mapping for True/Yes vs False/No
-            is_yes = 1 if answer_token in ["yes", "true", "1", "correct", "y", "t"] else 0
-            
-            features.append(is_yes)
-            
+
+        prompts = [f"{context}\n\nQuestion: {q}\nAnswer:" for q in probes]
+        features = []
+
+        # Process probes in chunks to avoid OOM (same strategy as L2)
+        for i in range(0, len(prompts), probe_batch_size):
+            chunk = prompts[i:i + probe_batch_size]
+
+            inputs = tokenizer(
+                chunk,
+                return_tensors="pt",
+                padding=True,
+                truncation=True,
+            ).to(device)
+
+            with torch.no_grad():
+                logits = model(**inputs).logits  # [batch, seq_len, vocab]
+
+            # Last real token position per prompt (right-padded)
+            last_idx = inputs["attention_mask"].sum(dim=1) - 1
+
+            for b in range(len(chunk)):
+                argmax_id = logits[b, last_idx[b]].argmax().item()
+                features.append(1 if argmax_id in yes_token_ids else 0)
+
+            del inputs, logits
+            torch.cuda.empty_cache()
+
         results.append({
             "label": sample_label,
             "l1_features": features,
-            "context": context
+            "context": context,
         })
-        
+
     return results
 
