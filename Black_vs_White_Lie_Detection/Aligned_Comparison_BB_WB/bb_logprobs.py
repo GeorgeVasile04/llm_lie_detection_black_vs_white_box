@@ -233,7 +233,7 @@ def compute_l1_yes_no_answers(
             
             inputs = tokenizer(prompt, return_tensors="pt").to(device)
             # Generate 1 max new token to get the immediate Yes/No response
-            outputs = model.generate(**inputs, max_new_tokens=1, do_sample=False, pad_token_id=tokenizer.eos_token_id)
+            outputs = model.generate(**inputs, max_new_tokens=1, do_sample=False, pad_token_id=tokenizer.eos_token_id, temperature=None, top_p=None)
             answer_token = tokenizer.decode(outputs[0][-1:]).strip().lower()
             
             # Simple heuristic mapping for True/Yes vs False/No
