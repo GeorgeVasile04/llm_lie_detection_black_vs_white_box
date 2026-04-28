@@ -43,60 +43,61 @@ def select_best_layer_cv(
     
     cv = StratifiedKFold(n_splits=n_splits, shuffle=True, random_state=42)
     
-    best_layer = layer_list[0]
+    # Default to layer 21 (mid-network) when no layer produces a valid CV result.
+    best_layer = 21
     best_auc = -1.0
-    
+
     for layer in layer_list:
         try:
             X_layer = np.array([item['activations'][layer] for item in activation_data])
         except KeyError:
             continue
-            
+
         fold_aucs = []
         for train_idx, val_idx in cv.split(X_layer, y_all):
             X_train, X_val = X_layer[train_idx], X_layer[val_idx]
             y_train, y_val = y_all[train_idx], y_all[val_idx]
             g_train, g_val = g_all[train_idx], g_all[val_idx]
-            
+
             if method == "lr":
                 try:
                     probe = train_lr_probe(X_train, y_train)
-                except ValueError:
+                except (ValueError, IndexError):
                     continue
             elif method == "lr-g":
                 try:
                     probe = train_lr_g_probe(X_train, y_train, g_train)
-                except ValueError:
+                except (ValueError, IndexError):
                     continue
             elif method == "dim":
                 try:
                     probe = train_dim_probe(X_train, y_train)
-                except (ValueError, np.linalg.LinAlgError):
+                except (ValueError, np.linalg.LinAlgError, IndexError):
                     continue
             elif method == "pca":
                 try:
                     probe = train_pca_probe(X_train)
-                except (ValueError, np.linalg.LinAlgError):
+                except (ValueError, np.linalg.LinAlgError, IndexError):
                     continue
             elif method == "pca-g":
                 try:
                     probe = train_pca_g_probe(X_train, g_train)
-                except (ValueError, np.linalg.LinAlgError):
+                except (ValueError, np.linalg.LinAlgError, IndexError):
                     continue
             elif method == "lat":
                 try:
                     probe = train_lat_probe(X_train)
-                except (ValueError, np.linalg.LinAlgError):
+                except (ValueError, np.linalg.LinAlgError, IndexError):
                     continue
             elif method == "lda":
                 try:
                     probe = train_lda_probe(X_train, y_train)
-                except (ValueError, np.linalg.LinAlgError):
+                except (ValueError, np.linalg.LinAlgError, IndexError):
                     continue
             elif method == "ccs":
                 try:
                     probe = train_ccs_probe(X_train, y_train, g_train)
-                except (ValueError, np.linalg.LinAlgError):
+                except (ValueError, np.linalg.LinAlgError, IndexError):
                     continue
             else:
                 raise ValueError(f"Unknown Method: {method}")
