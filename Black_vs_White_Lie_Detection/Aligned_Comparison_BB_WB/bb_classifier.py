@@ -7,7 +7,7 @@ def best_recall_at_precision(y_true, y_scores, target_precision=0.90):
     """Calculates best recall maintaining at least 'target_precision'"""
     if len(np.unique(y_true)) < 2:
         return 0.0
-    precisions, recalls, thresholds = precision_recall_curve(y_true, y_scores)
+    precisions, recalls, _ = precision_recall_curve(y_true, y_scores)
     valid_idx = np.where(precisions >= target_precision)[0]
     if len(valid_idx) == 0:
         return 0.0  
@@ -49,4 +49,4 @@ def train_bb_classifier(X_train, X_test, y_train, y_test):
 
     print(f"Black Box Results - AUC: {auc:.4f}, MAP: {map_score:.4f}, BRP_90: {brp_90:.4f}")
 
-    return clf, {'AUC': auc, 'MAP': map_score, 'BRP_90': brp_90}
+    return {"clf": clf, "scaler": scaler}, {'AUC': auc, 'MAP': map_score, 'BRP_90': brp_90}
