@@ -1,12 +1,16 @@
-Dataset,Black Box AUC,Best WB LR AUC,Best WB DiM AUC,Black Box Acc,Best WB LR Acc,Best WB DiM Acc
-commonsense_qa,0.738,0.824 (L15),0.790 (L15),0.806,0.834,0.644
-arc_challenge,0.710,0.700 (L13),0.713 (L15),0.750,0.733,0.593
-open_book_qa,0.725,0.785 (L15),0.719 (L15),0.771,0.764,0.364
-got_cities,0.999,1.000 (L17),0.999 (L15),0.983,0.993,0.983
-got_sp_en_trans,0.982,1.000 (L29),0.986 (L27),0.974,0.983,0.871
-got_larger_than,0.980,1.000 (L27),0.912 (L27),0.924,0.995,0.759
-got_cities_cities_conj,0.994,0.999 (L21),0.995 (L29),0.966,0.988,0.938
-got_cities_cities_disj,0.951,0.995 (L29),0.887 (L15),0.870,0.969,0.808
-imdb,0.999,1.000 (L1),1.000 (L1),0.985,1.000,1.000
-copa,0.456,0.459 (L1),0.554 (L21),0.450,0.450,0.550
-boolq,0.676,0.680 (L15),0.668 (L17),0.642,0.625,0.620
+Dataset,L1 (Yes/No) AUC,L2 (Logprobs) AUC,Best L3 WB AUC
+commonsense_qa,0.727,0.752,"0.868 (Grouped Logistic Regression, L15)"
+race,0.585,0.750,"0.628 (Difference in Means, L13)"
+arc_easy,0.833,0.875,"0.943 (Grouped Logistic Regression, L15)"
+arc_challenge,0.680,0.718,"0.780 (Grouped Logistic Regression, L15)"
+open_book_qa,0.738,0.746,"0.870 (Grouped Logistic Regression, L16)"
+got_cities,0.951,0.999,"1.000 (Linear Discriminant Analysis, L25)"
+got_sp_en_trans,0.910,0.982,"1.000 (Logistic Regression, L31)"
+got_larger_than,0.843,0.983,"1.000 (Linear Discriminant Analysis, L14)"
+imdb,0.953,0.644,"1.000 (Linear Artificial Tomography, L16)"
+amazon_polarity,0.972,0.802,"1.000 (Logistic Regression, L8)"
+ag_news,0.818,0.938,"0.981 (Logistic Regression, L8)"
+dbpedia_14,0.961,0.989,"1.000 (Logistic Regression, L8)"
+rte,0.648,0.633,"0.900 (Grouped Logistic Regression, L24)"
+copa,0.456,0.456,"0.463 (Logistic Regression, L1)"
+boolq,0.651,0.741,"0.754 (Grouped Logistic Regression, L15)"

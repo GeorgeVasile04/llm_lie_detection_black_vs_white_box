@@ -3,52 +3,52 @@ AUC,MAP,BRP_90,Dataset,Access_Level,Method,Layer
 0.806715625,0.5531715718941506,0.045,commonsense_qa,Level 3,Difference in Means,15
 0.673128125,0.3431065916076311,0.0,commonsense_qa,Level 3,Linear Artificial Tomography,26
 0.6962406250000001,0.3683842643446775,0.015,commonsense_qa,Level 3,Contrast-Consistent Search,14
-0.6210156250000002,0.27556809269457383,0.0,commonsense_qa,Level 3,Linear Discriminant Analysis,17
+0.6210156250000002,0.2755680926945738,0.0,commonsense_qa,Level 3,Linear Discriminant Analysis,17
 0.677503125,0.3484178254923651,0.0,commonsense_qa,Level 3,Principal Component Analysis,26
-0.678271875,0.37933076017655626,0.015,commonsense_qa,Level 3,Grouped PCA,18
+0.678271875,0.3793307601765562,0.015,commonsense_qa,Level 3,Grouped PCA,18
 0.867828125,0.6761144652150111,0.195,commonsense_qa,Level 3,Grouped Logistic Regression,15
 0.5829333333333333,0.3140816926700323,0.0,race,Level 3,Logistic Regression,10
-0.6275839999999999,0.36591796972805934,0.0,race,Level 3,Difference in Means,13
+0.6275839999999999,0.3659179697280593,0.0,race,Level 3,Difference in Means,13
 0.504896,0.2511498657329819,0.0,race,Level 3,Linear Artificial Tomography,22
 0.5474453333333333,0.2951801700017843,0.0,race,Level 3,Contrast-Consistent Search,16
 0.5502400000000001,0.3038628779177281,0.016,race,Level 3,Linear Discriminant Analysis,9
 0.5028,0.2490824316996214,0.0,race,Level 3,Principal Component Analysis,23
 0.5375946666666667,0.2879622707637607,0.0,race,Level 3,Grouped PCA,5
-0.5959519999999999,0.33150346825803845,0.0,race,Level 3,Grouped Logistic Regression,9
+0.5959519999999999,0.3315034682580384,0.0,race,Level 3,Grouped Logistic Regression,9
 0.8905929978235176,0.7641476109851207,0.3253012048192771,arc_easy,Level 3,Logistic Regression,15
-0.8777480093476434,0.6977096791118047,0.14457831325301204,arc_easy,Level 3,Difference in Means,14
-0.5232327445601314,0.26051896353463455,0.0,arc_easy,Level 3,Linear Artificial Tomography,12
-0.9039353151621132,0.7698460060720819,0.25301204819277107,arc_easy,Level 3,Contrast-Consistent Search,15
-0.67662393916545,0.39614839755455517,0.004016064257028112,arc_easy,Level 3,Linear Discriminant Analysis,15
-0.5224519917218808,0.26706275794492285,0.0,arc_easy,Level 3,Principal Component Analysis,11
-0.8505179172081133,0.6487852820487785,0.008032128514056224,arc_easy,Level 3,Grouped PCA,13
+0.8777480093476434,0.6977096791118047,0.144578313253012,arc_easy,Level 3,Difference in Means,14
+0.5232327445601314,0.2605189635346345,0.0,arc_easy,Level 3,Linear Artificial Tomography,12
+0.9039353151621132,0.7698460060720819,0.253012048192771,arc_easy,Level 3,Contrast-Consistent Search,15
+0.67662393916545,0.3961483975545551,0.0040160642570281,arc_easy,Level 3,Linear Discriminant Analysis,15
+0.5224519917218808,0.2670627579449228,0.0,arc_easy,Level 3,Principal Component Analysis,11
+0.8505179172081133,0.6487852820487785,0.0080321285140562,arc_easy,Level 3,Grouped PCA,13
 0.9430852571404126,0.8881947217846972,0.6586345381526104,arc_easy,Level 3,Grouped Logistic Regression,15
-0.7396103170761547,0.48140303501906895,0.00796812749003984,arc_challenge,Level 3,Logistic Regression,14
-0.725075665296092,0.4761130672163955,0.01593625498007968,arc_challenge,Level 3,Difference in Means,14
+0.7396103170761547,0.4814030350190689,0.0079681274900398,arc_challenge,Level 3,Logistic Regression,14
+0.725075665296092,0.4761130672163955,0.0159362549800796,arc_challenge,Level 3,Difference in Means,14
 0.5157687008973452,0.2664620332311113,0.0,arc_challenge,Level 3,Linear Artificial Tomography,15
-0.5719338932653897,0.29713677174569963,0.00398406374501992,arc_challenge,Level 3,Contrast-Consistent Search,13
-0.5592848898132436,0.30558252140411374,0.00398406374501992,arc_challenge,Level 3,Linear Discriminant Analysis,17
-0.5128165575348805,0.26422982432739195,0.0,arc_challenge,Level 3,Principal Component Analysis,15
-0.6448066213118155,0.363750196571473,0.00398406374501992,arc_challenge,Level 3,Grouped PCA,15
-0.7797541476284449,0.5912178916838776,0.055776892430278883,arc_challenge,Level 3,Grouped Logistic Regression,15
+0.5719338932653897,0.2971367717456996,0.0039840637450199,arc_challenge,Level 3,Contrast-Consistent Search,13
+0.5592848898132436,0.3055825214041137,0.0039840637450199,arc_challenge,Level 3,Linear Discriminant Analysis,17
+0.5128165575348805,0.2642298243273919,0.0,arc_challenge,Level 3,Principal Component Analysis,15
+0.6448066213118155,0.363750196571473,0.0039840637450199,arc_challenge,Level 3,Grouped PCA,15
+0.7797541476284449,0.5912178916838776,0.0557768924302788,arc_challenge,Level 3,Grouped Logistic Regression,15
 0.7868106666666667,0.5851709236503813,0.116,open_book_qa,Level 3,Logistic Regression,16
 0.7216693333333334,0.4926996635001188,0.012,open_book_qa,Level 3,Difference in Means,15
 0.5589813333333333,0.2760278838887745,0.0,open_book_qa,Level 3,Linear Artificial Tomography,4
 0.5291306666666666,0.2697625120770558,0.0,open_book_qa,Level 3,Contrast-Consistent Search,14
-0.6389653333333334,0.37124365273178306,0.0,open_book_qa,Level 3,Linear Discriminant Analysis,16
+0.6389653333333334,0.371243652731783,0.0,open_book_qa,Level 3,Linear Discriminant Analysis,16
 0.5615093333333334,0.2773109411854735,0.0,open_book_qa,Level 3,Principal Component Analysis,4
-0.5735146666666666,0.27812273260032405,0.0,open_book_qa,Level 3,Grouped PCA,5
+0.5735146666666666,0.278122732600324,0.0,open_book_qa,Level 3,Grouped PCA,5
 0.869712,0.7344566008890581,0.316,open_book_qa,Level 3,Grouped Logistic Regression,16
-0.9998801860384058,0.9998826417879781,1.0,got_cities,Level 3,Logistic Regression,14
-0.9995098519752966,0.9994864027777377,1.0,got_cities,Level 3,Difference in Means,14
-0.9422496705116057,0.9505861702420267,0.8118811881188119,got_cities,Level 3,Linear Artificial Tomography,32
-0.9999019703950592,0.9999026438978579,1.0,got_cities,Level 3,Contrast-Consistent Search,30
-0.9999455391083663,0.9999461067788978,1.0,got_cities,Level 3,Linear Discriminant Analysis,25
-0.9550915487588363,0.9628199328618247,0.8415841584158416,got_cities,Level 3,Principal Component Analysis,32
-0.898822555522879,0.9066555805410211,0.5808580858085809,got_cities,Level 3,Grouped PCA,32
+0.9998801860384058,0.999882641787978,1.0,got_cities,Level 3,Logistic Regression,14
+0.9995098519752966,0.9994864027777376,1.0,got_cities,Level 3,Difference in Means,14
+0.9422496705116056,0.9505861702420269,0.8118811881188119,got_cities,Level 3,Linear Artificial Tomography,32
+0.9999019703950592,0.999902643897858,1.0,got_cities,Level 3,Contrast-Consistent Search,30
+0.9999455391083664,0.9999461067788978,1.0,got_cities,Level 3,Linear Discriminant Analysis,25
+0.9550915487588364,0.9628199328618248,0.8415841584158416,got_cities,Level 3,Principal Component Analysis,32
+0.898822555522879,0.9066555805410212,0.5808580858085809,got_cities,Level 3,Grouped PCA,32
 0.9998910782167326,0.9998918166193071,1.0,got_cities,Level 3,Grouped Logistic Regression,14
 1.0,1.0000000000000002,1.0,got_sp_en_trans,Level 3,Logistic Regression,31
-0.9852853745541021,0.9893957762892669,0.9655172413793104,got_sp_en_trans,Level 3,Difference in Means,30
+0.985285374554102,0.9893957762892668,0.9655172413793104,got_sp_en_trans,Level 3,Difference in Means,30
 0.8626634958382877,0.8693296542157467,0.4827586206896552,got_sp_en_trans,Level 3,Linear Artificial Tomography,32
 1.0,1.0000000000000002,1.0,got_sp_en_trans,Level 3,Contrast-Consistent Search,32
 0.9994054696789536,0.999410508071505,1.0,got_sp_en_trans,Level 3,Linear Discriminant Analysis,29
@@ -56,10 +56,66 @@ AUC,MAP,BRP_90,Dataset,Access_Level,Method,Layer
 0.72294887039239,0.738618334671471,0.3103448275862069,got_sp_en_trans,Level 3,Grouped PCA,32
 0.9997027348394768,0.9997077732320282,1.0,got_sp_en_trans,Level 3,Grouped Logistic Regression,13
 0.9999648236197668,0.999964907698649,1.0,got_larger_than,Level 3,Logistic Regression,30
-0.9114698450480451,0.9334718500391159,0.774818401937046,got_larger_than,Level 3,Difference in Means,32
+0.9114698450480452,0.933471850039116,0.774818401937046,got_larger_than,Level 3,Difference in Means,32
 0.8946936430418189,0.919197498484475,0.7457627118644068,got_larger_than,Level 3,Linear Artificial Tomography,32
-0.5344230194232247,0.5616384764138087,0.04600484261501211,got_larger_than,Level 3,Contrast-Consistent Search,26
+0.5344230194232247,0.5616384764138087,0.0460048426150121,got_larger_than,Level 3,Contrast-Consistent Search,26
 1.0,1.0,1.0,got_larger_than,Level 3,Linear Discriminant Analysis,14
 0.8943946438098366,0.9189907889641794,0.7409200968523002,got_larger_than,Level 3,Principal Component Analysis,32
 0.9002104720083955,0.9231917336533252,0.7772397094430993,got_larger_than,Level 3,Grouped PCA,32
 1.0,1.0,1.0,got_larger_than,Level 3,Grouped Logistic Regression,14
+0.998852,0.9988419657374922,0.998,imdb,Level 3,Logistic Regression,11
+0.999936,0.9999351594310828,1.0,imdb,Level 3,Difference in Means,31
+1.0,1.0,1.0,imdb,Level 3,Linear Artificial Tomography,16
+1.0,1.0,1.0,imdb,Level 3,Contrast-Consistent Search,15
+0.9678200000000001,0.9639728585053751,0.946,imdb,Level 3,Linear Discriminant Analysis,22
+1.0,1.0,1.0,imdb,Level 3,Principal Component Analysis,16
+1.0,1.0,1.0,imdb,Level 3,Grouped PCA,16
+0.998932,0.9989541720069145,1.0,imdb,Level 3,Grouped Logistic Regression,13
+1.0,1.0,1.0,amazon_polarity,Level 3,Logistic Regression,8
+0.999988,0.9999880715705766,1.0,amazon_polarity,Level 3,Difference in Means,13
+0.644436,0.6871322741086883,0.2,amazon_polarity,Level 3,Linear Artificial Tomography,10
+0.48505600000000004,0.4576999913409608,0.0,amazon_polarity,Level 3,Contrast-Consistent Search,20
+1.0,1.0,1.0,amazon_polarity,Level 3,Linear Discriminant Analysis,9
+0.644112,0.687490061476772,0.202,amazon_polarity,Level 3,Principal Component Analysis,10
+0.65066,0.6923746475272268,0.21,amazon_polarity,Level 3,Grouped PCA,10
+1.0,1.0,1.0,amazon_polarity,Level 3,Grouped Logistic Regression,4
+0.981024,0.9541644863826122,0.916,ag_news,Level 3,Logistic Regression,8
+0.9395546666666666,0.8514822759935657,0.48,ag_news,Level 3,Difference in Means,12
+0.519232,0.24456924590244827,0.0,ag_news,Level 3,Linear Artificial Tomography,6
+0.657808,0.4847595107003809,0.072,ag_news,Level 3,Contrast-Consistent Search,13
+0.8237386666666666,0.5788785333442844,0.004,ag_news,Level 3,Linear Discriminant Analysis,27
+0.5380586666666667,0.25514721525160267,0.0,ag_news,Level 3,Principal Component Analysis,7
+0.5380746666666667,0.25537532398186924,0.0,ag_news,Level 3,Grouped PCA,7
+0.9806666666666667,0.9517841478936906,0.896,ag_news,Level 3,Grouped Logistic Regression,8
+1.0,1.0,1.0,dbpedia_14,Level 3,Logistic Regression,8
+0.9999551005747126,0.9994444444444444,1.0,dbpedia_14,Level 3,Difference in Means,15
+0.8245180795019157,0.1696836157552341,0.0,dbpedia_14,Level 3,Linear Artificial Tomography,23
+0.8572647270114943,0.8581800302334005,0.8472222222222222,dbpedia_14,Level 3,Contrast-Consistent Search,13
+1.0,1.0,1.0,dbpedia_14,Level 3,Linear Discriminant Analysis,2
+0.8152538314176245,0.1631643262869882,0.0,dbpedia_14,Level 3,Principal Component Analysis,24
+0.8113924808429118,0.16038711992749438,0.0,dbpedia_14,Level 3,Grouped PCA,24
+1.0,1.0,1.0,dbpedia_14,Level 3,Grouped Logistic Regression,9
+0.8960236677136415,0.8924631334338686,0.5379061371841155,rte,Level 3,Logistic Regression,15
+0.7674477707255405,0.7802981116105789,0.148014440433213,rte,Level 3,Difference in Means,25
+0.5102764274263968,0.5489453906403181,0.0,rte,Level 3,Linear Artificial Tomography,17
+0.5131175956939358,0.5359826254796964,0.0,rte,Level 3,Contrast-Consistent Search,17
+0.5765225664351158,0.5546490733054851,0.0,rte,Level 3,Linear Discriminant Analysis,17
+0.5104849535377758,0.5482546563961367,0.0,rte,Level 3,Principal Component Analysis,17
+0.5108759399966114,0.5478694214902691,0.0,rte,Level 3,Grouped PCA,17
+0.9002854201149499,0.9035241588232275,0.6714801444043321,rte,Level 3,Grouped Logistic Regression,24
+0.46259999999999996,0.4803557146837074,0.0,copa,Level 3,Logistic Regression,1
+0.4467,0.47299573651845267,0.0,copa,Level 3,Difference in Means,17
+0.447,0.47416919721430995,0.0,copa,Level 3,Linear Artificial Tomography,1
+0.4524,0.4764010771872651,0.0,copa,Level 3,Contrast-Consistent Search,1
+0.4343,0.46386445138751575,0.0,copa,Level 3,Linear Discriminant Analysis,1
+0.4527,0.47484786965596476,0.0,copa,Level 3,Principal Component Analysis,8
+0.4527,0.47484786965596476,0.0,copa,Level 3,Grouped PCA,8
+0.44909999999999994,0.47482551192268574,0.0,copa,Level 3,Grouped Logistic Regression,1
+0.641092,0.6228626075760719,0.004,boolq,Level 3,Logistic Regression,4
+0.6715439999999999,0.6687205480576257,0.004,boolq,Level 3,Difference in Means,17
+0.6339359999999999,0.6361387383582948,0.002,boolq,Level 3,Linear Artificial Tomography,17
+0.644752,0.6298500670904613,0.002,boolq,Level 3,Contrast-Consistent Search,15
+0.551588,0.5435840536049908,0.0,boolq,Level 3,Linear Discriminant Analysis,32
+0.634936,0.6367329747420862,0.002,boolq,Level 3,Principal Component Analysis,17
+0.635736,0.6353996406199744,0.002,boolq,Level 3,Grouped PCA,17
+0.7537440000000001,0.7379649888590811,0.044,boolq,Level 3,Grouped Logistic Regression,15
