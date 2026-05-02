@@ -1,0 +1,88 @@
+FULL PROMPT INSPECTION -- RACE & IMDB (no truncation)
+================================================================================
+
+================================================================================
+DATASET: RACE  --  1 full question, all propositions (no truncation)
+================================================================================
+  group_id = middle3813.txt  |  4 proposition(s)
+
+  [TRUE ]
+------------------------------------------------------------
+  [INST] Question: Article: Hundreds of people did not get their train tickets through the online train ticketing service after paying the money.
+  The China Railway Customer Service Center said that it would try to solve the problem and return the money in 15 working days.
+  The service center said changes would be made to the online booking system which limited  each purchase which is finished in 30 minutes. Many people said that they failed to book tickets because of the time limit in purchase.
+  People who paid without getting their tickets have formed groups on QQ. As many as 400 people had joined the QQ group by Thursday and the group continues to grow.
+  The ticket buyers said their money had been returned through online banks but they didn't get confirmation  from the online booking system.
+  They are afraid that they will not be able to get refunds  because they don't have the order number given to those who have succeeded in booking. People also said they were unable to inquire  through the booking hotline 12306, because it is almost always busy.
+  The China Railway Customer Service Center Website suggested that the online banks didn't return the payment information to the online booking system because of network problems.
+  The online railway booking service was made by the Ministry of Railways on Dec. 21, in order that people can easily buy train tickets during the Spring Festival.
+  
+  Question: Why did many people join the QQ group? [/INST]
+  They want to get back their refunds.
+
+
+  [FALSE]
+------------------------------------------------------------
+  [INST] Question: Article: Hundreds of people did not get their train tickets through the online train ticketing service after paying the money.
+  The China Railway Customer Service Center said that it would try to solve the problem and return the money in 15 working days.
+  The service center said changes would be made to the online booking system which limited  each purchase which is finished in 30 minutes. Many people said that they failed to book tickets because of the time limit in purchase.
+  People who paid without getting their tickets have formed groups on QQ. As many as 400 people had joined the QQ group by Thursday and the group continues to grow.
+  The ticket buyers said their money had been returned through online banks but they didn't get confirmation  from the online booking system.
+  They are afraid that they will not be able to get refunds  because they don't have the order number given to those who have succeeded in booking. People also said they were unable to inquire  through the booking hotline 12306, because it is almost always busy.
+  The China Railway Customer Service Center Website suggested that the online banks didn't return the payment information to the online booking system because of network problems.
+  The online railway booking service was made by the Ministry of Railways on Dec. 21, in order that people can easily buy train tickets during the Spring Festival.
+  
+  Question: Why did many people join the QQ group? [/INST]
+  They wanted to book the train tickets.
+
+
+  [FALSE]
+------------------------------------------------------------
+  [INST] Question: Article: Hundreds of people did not get their train tickets through the online train ticketing service after paying the money.
+  The China Railway Customer Service Center said that it would try to solve the problem and return the money in 15 working days.
+  The service center said changes would be made to the online booking system which limited  each purchase which is finished in 30 minutes. Many people said that they failed to book tickets because of the time limit in purchase.
+  People who paid without getting their tickets have formed groups on QQ. As many as 400 people had joined the QQ group by Thursday and the group continues to grow.
+  The ticket buyers said their money had been returned through online banks but they didn't get confirmation  from the online booking system.
+  They are afraid that they will not be able to get refunds  because they don't have the order number given to those who have succeeded in booking. People also said they were unable to inquire  through the booking hotline 12306, because it is almost always busy.
+  The China Railway Customer Service Center Website suggested that the online banks didn't return the payment information to the online booking system because of network problems.
+  The online railway booking service was made by the Ministry of Railways on Dec. 21, in order that people can easily buy train tickets during the Spring Festival.
+  
+  Question: Why did many people join the QQ group? [/INST]
+  They wanted to chat with each other.
+
+
+  [FALSE]
+------------------------------------------------------------
+  [INST] Question: Article: Hundreds of people did not get their train tickets through the online train ticketing service after paying the money.
+  The China Railway Customer Service Center said that it would try to solve the problem and return the money in 15 working days.
+  The service center said changes would be made to the online booking system which limited  each purchase which is finished in 30 minutes. Many people said that they failed to book tickets because of the time limit in purchase.
+  People who paid without getting their tickets have formed groups on QQ. As many as 400 people had joined the QQ group by Thursday and the group continues to grow.
+  The ticket buyers said their money had been returned through online banks but they didn't get confirmation  from the online booking system.
+  They are afraid that they will not be able to get refunds  because they don't have the order number given to those who have succeeded in booking. People also said they were unable to inquire  through the booking hotline 12306, because it is almost always busy.
+  The China Railway Customer Service Center Website suggested that the online banks didn't return the payment information to the online booking system because of network problems.
+  The online railway booking service was made by the Ministry of Railways on Dec. 21, in order that people can easily buy train tickets during the Spring Festival.
+  
+  Question: Why did many people join the QQ group? [/INST]
+  They want to get the payment information.
+
+
+================================================================================
+DATASET: IMDB  --  1 full question, all propositions (no truncation)
+================================================================================
+  group_id = 1  |  2 proposition(s)
+
+  [TRUE ]
+------------------------------------------------------------
+  [INST] Question: "I Am Curious: Yellow" is a risible and pretentious steaming pile. It doesn't matter what one's political views are because this film can hardly be taken seriously on any level. As for the claim that frontal male nudity is an automatic NC-17, that isn't true. I've seen R-rated films with male nudity. Granted, they only offer some fleeting views, but where are the R-rated films with gaping vulvas and flapping labia? Nowhere, because they don't exist. The same goes for those crappy cable shows: schlongs swinging in the breeze but not a clitoris in sight. And those pretentious indie movies like The Brown Bunny, in which we're treated to the site of Vincent Gallo's throbbing johnson, but not a trace of pink visible on Chloe Sevigny. Before crying (or implying) "double-standard" in matters of nudity, the mentally obtuse should take into account one unavoidably obvious anatomical difference between men and women: there are no genitals on display when actresses appears nude, and the same cannot be said for a man. In fact, you generally won't see female genitals in an American film in anything short of porn or explicit erotica. This alleged double-standard is less a double standard than an admittedly depressing ability to come to terms culturally with the insides of women's bodies. [/INST]
+  Negative
+
+
+  [FALSE]
+------------------------------------------------------------
+  [INST] Question: "I Am Curious: Yellow" is a risible and pretentious steaming pile. It doesn't matter what one's political views are because this film can hardly be taken seriously on any level. As for the claim that frontal male nudity is an automatic NC-17, that isn't true. I've seen R-rated films with male nudity. Granted, they only offer some fleeting views, but where are the R-rated films with gaping vulvas and flapping labia? Nowhere, because they don't exist. The same goes for those crappy cable shows: schlongs swinging in the breeze but not a clitoris in sight. And those pretentious indie movies like The Brown Bunny, in which we're treated to the site of Vincent Gallo's throbbing johnson, but not a trace of pink visible on Chloe Sevigny. Before crying (or implying) "double-standard" in matters of nudity, the mentally obtuse should take into account one unavoidably obvious anatomical difference between men and women: there are no genitals on display when actresses appears nude, and the same cannot be said for a man. In fact, you generally won't see female genitals in an American film in anything short of porn or explicit erotica. This alleged double-standard is less a double standard than an admittedly depressing ability to come to terms culturally with the insides of women's bodies. [/INST]
+  Positive
+
+
+================================================================================
+END
+================================================================================
