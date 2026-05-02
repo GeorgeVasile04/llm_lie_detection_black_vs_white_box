@@ -121,20 +121,37 @@ def load_dataset_aligned(dataset_name="commonsense_qa", split='validation', n_sa
             # define safe_args excluding 'label'
             safe_args = {k: v for k, v in row.format_args.items() if k != 'label'}
             item.update(safe_args)
-            
+
             # Use format_args['label'] as the answer text if it exists (common in DLK)
             if 'label' in row.format_args and 'answer' not in item:
                  item['answer'] = row.format_args['label']
-            
+
             # Normalize common fields
             if 'question' not in item and 'question_stem' in item:
                 item['question'] = item['question_stem']
-            
+
             if 'answer' not in item:
                 if 'choice' in item:
                     item['answer'] = item['choice']
-                elif 'statement' in item: 
+                elif 'statement' in item:
                     item['answer'] = item['statement']
+
+        # COPA: format_args['question'] is the relation type ('cause'/'effect'), not a real
+        # question. item.update(safe_args) above sets item['question'] = 'cause'/'effect',
+        # producing a nonsense prompt. Rebuild 'question' as the full context and replace
+        # the abstract 'Choice 1/2' answer with the actual choice text.
+        if name == "copa" and all(k in item for k in ('premise', 'choice1', 'choice2')):
+            relation = item.get('question', 'cause')
+            item['question'] = (
+                f'Consider the following premise: "{item["premise"]}"\n'
+                f'Choice 1: {item["choice1"]}\n'
+                f'Choice 2: {item["choice2"]}\n'
+                f'Q: Which one is more likely to be the {relation}, choice 1 or choice 2?'
+            )
+            if item.get('answer') == 'Choice 1':
+                item['answer'] = item['choice1']
+            elif item.get('answer') == 'Choice 2':
+                item['answer'] = item['choice2']
 
         processed_data.append(item)
         
