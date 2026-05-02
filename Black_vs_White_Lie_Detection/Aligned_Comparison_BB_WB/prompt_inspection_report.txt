@@ -1,0 +1,1261 @@
+PROMPT INSPECTION REPORT
+3 questions × all propositions per dataset  (45 questions total)
+================================================================================
+
+================================================================================
+DATASET: COMMONSENSE_QA
+================================================================================
+
+  -- Question 1  (group_id = 4f94ac123435f41bdfe2c0650087b4e1) --
+
+    [FALSE]
+------------------------------------------------------------
+    [INST] Question: What might someone shout when he or she is frustrated? [/INST]
+    mortal
+
+    [FALSE]
+------------------------------------------------------------
+    [INST] Question: What might someone shout when he or she is frustrated? [/INST]
+    satan
+
+    [FALSE]
+------------------------------------------------------------
+    [INST] Question: What might someone shout when he or she is frustrated? [/INST]
+    heaven
+
+    [FALSE]
+------------------------------------------------------------
+    [INST] Question: What might someone shout when he or she is frustrated? [/INST]
+    angel
+
+    [TRUE ]
+------------------------------------------------------------
+    [INST] Question: What might someone shout when he or she is frustrated? [/INST]
+    devil
+
+  -- Question 2  (group_id = c368bf8c2b56b1e2d33dadd045301f91) --
+
+    [FALSE]
+------------------------------------------------------------
+    [INST] Question: What happens to people in horror movies who die? [/INST]
+    killed in war
+
+    [TRUE ]
+------------------------------------------------------------
+    [INST] Question: What happens to people in horror movies who die? [/INST]
+    murdered
+
+    [FALSE]
+------------------------------------------------------------
+    [INST] Question: What happens to people in horror movies who die? [/INST]
+    not important
+
+    [FALSE]
+------------------------------------------------------------
+    [INST] Question: What happens to people in horror movies who die? [/INST]
+    sentenced to jail
+
+    [FALSE]
+------------------------------------------------------------
+    [INST] Question: What happens to people in horror movies who die? [/INST]
+    cremated
+
+  -- Question 3  (group_id = 20f9064e1e3c746249dff3637d7b8681) --
+
+    [FALSE]
+------------------------------------------------------------
+    [INST] Question: Johnny wants to get money his brother.  He doesn't like to, but he sucks it up, makes the call, and finds himself doing what? [/INST]
+    employment
+
+    [FALSE]
+------------------------------------------------------------
+    [INST] Question: Johnny wants to get money his brother.  He doesn't like to, but he sucks it up, makes the call, and finds himself doing what? [/INST]
+    do work
+
+    [FALSE]
+------------------------------------------------------------
+    [INST] Question: Johnny wants to get money his brother.  He doesn't like to, but he sucks it up, makes the call, and finds himself doing what? [/INST]
+    threaten
+
+    [FALSE]
+------------------------------------------------------------
+    [INST] Question: Johnny wants to get money his brother.  He doesn't like to, but he sucks it up, makes the call, and finds himself doing what? [/INST]
+    work for
+
+    [TRUE ]
+------------------------------------------------------------
+    [INST] Question: Johnny wants to get money his brother.  He doesn't like to, but he sucks it up, makes the call, and finds himself doing what? [/INST]
+    asking for money
+
+
+================================================================================
+DATASET: RACE
+================================================================================
+
+  -- Question 1  (group_id = middle3813.txt) --
+
+    [TRUE ]
+------------------------------------------------------------
+    [INST] Question: Article: Hundreds of people did not get their train tickets through the online train ticketing service after paying the money.
+    The China Railway Customer Service Center said that it would try to solve the problem and return the money in 15 working days.
+    The service center said changes would be made to the online booking system which limited  each purchase which is finished in 30 minutes. Many people said that they failed to book tickets because of the time limit in purchase.
+    People who paid without getting their tickets have formed groups on QQ. As many as 400 people had joined the QQ group by Thursday and the group continues to grow.
+    The ticket buyers said their money had been returned through online banks but they didn't get confirmation  from the online booking system.
+    They are afraid that they will not be able to get refunds  because they don't have the order number given to those who have succeeded in booking. People also said they were unable to inquire  through the booking hotline 12306, because it is almost always busy.
+    The China Railway Customer Service Center Website suggested that the online banks didn't return the payment information to the online booki
+    ... [truncated — 295 more chars]
+
+    [FALSE]
+------------------------------------------------------------
+    [INST] Question: Article: Hundreds of people did not get their train tickets through the online train ticketing service after paying the money.
+    The China Railway Customer Service Center said that it would try to solve the problem and return the money in 15 working days.
+    The service center said changes would be made to the online booking system which limited  each purchase which is finished in 30 minutes. Many people said that they failed to book tickets because of the time limit in purchase.
+    People who paid without getting their tickets have formed groups on QQ. As many as 400 people had joined the QQ group by Thursday and the group continues to grow.
+    The ticket buyers said their money had been returned through online banks but they didn't get confirmation  from the online booking system.
+    They are afraid that they will not be able to get refunds  because they don't have the order number given to those who have succeeded in booking. People also said they were unable to inquire  through the booking hotline 12306, because it is almost always busy.
+    The China Railway Customer Service Center Website suggested that the online banks didn't return the payment information to the online booki
+    ... [truncated — 297 more chars]
+
+    [FALSE]
+------------------------------------------------------------
+    [INST] Question: Article: Hundreds of people did not get their train tickets through the online train ticketing service after paying the money.
+    The China Railway Customer Service Center said that it would try to solve the problem and return the money in 15 working days.
+    The service center said changes would be made to the online booking system which limited  each purchase which is finished in 30 minutes. Many people said that they failed to book tickets because of the time limit in purchase.
+    People who paid without getting their tickets have formed groups on QQ. As many as 400 people had joined the QQ group by Thursday and the group continues to grow.
+    The ticket buyers said their money had been returned through online banks but they didn't get confirmation  from the online booking system.
+    They are afraid that they will not be able to get refunds  because they don't have the order number given to those who have succeeded in booking. People also said they were unable to inquire  through the booking hotline 12306, because it is almost always busy.
+    The China Railway Customer Service Center Website suggested that the online banks didn't return the payment information to the online booki
+    ... [truncated — 295 more chars]
+
+    [FALSE]
+------------------------------------------------------------
+    [INST] Question: Article: Hundreds of people did not get their train tickets through the online train ticketing service after paying the money.
+    The China Railway Customer Service Center said that it would try to solve the problem and return the money in 15 working days.
+    The service center said changes would be made to the online booking system which limited  each purchase which is finished in 30 minutes. Many people said that they failed to book tickets because of the time limit in purchase.
+    People who paid without getting their tickets have formed groups on QQ. As many as 400 people had joined the QQ group by Thursday and the group continues to grow.
+    The ticket buyers said their money had been returned through online banks but they didn't get confirmation  from the online booking system.
+    They are afraid that they will not be able to get refunds  because they don't have the order number given to those who have succeeded in booking. People also said they were unable to inquire  through the booking hotline 12306, because it is almost always busy.
+    The China Railway Customer Service Center Website suggested that the online banks didn't return the payment information to the online booki
+    ... [truncated — 300 more chars]
+
+  -- Question 2  (group_id = high42.txt) --
+
+    [FALSE]
+------------------------------------------------------------
+    [INST] Question: Article: It's our hope that the calculator will promote action, awareness and empowerment by showing you that one person can make a difference and help stop global warming.
+    There are many simple things you can do in your daily life--what you eat, what you drive, how you build your home--that can have an effect on your immediate surroundings, and on places as far away as Antarctica. Here is a list of things that you can do to make a difference.
+    Use Compact Fluorescent Bulbs
+    Replace 3 frequently used light bulbs with compact fluorescent bulbs. Save 300lbs (pounds) of carbon dioxide and $60 per year.
+    Use Recycled Paper
+    Make sure your printer paper is 100% post consumer recycled paper. Save 5lbs of carbon dioxide per ream of paper.
+    Take Shorter Showers
+    Showers account for 2/3 of all water heating costs. Save 350 lbs of carbon dioxide and $99 per year.
+    Buy Products Locally
+    Buy locally and reduce the amount of energy required to drive your products to your home.
+    Carpool When You Can
+    Own a big vehicle? _ with friends and co-workers saves fuel. Save 790 lbs of carbon dioxide and hundreds of dollars per year.
+    Don't Idle in Your Car
+    Idling wastes money and gas, and generates
+    ... [truncated — 669 more chars]
+
+    [FALSE]
+------------------------------------------------------------
+    [INST] Question: Article: It's our hope that the calculator will promote action, awareness and empowerment by showing you that one person can make a difference and help stop global warming.
+    There are many simple things you can do in your daily life--what you eat, what you drive, how you build your home--that can have an effect on your immediate surroundings, and on places as far away as Antarctica. Here is a list of things that you can do to make a difference.
+    Use Compact Fluorescent Bulbs
+    Replace 3 frequently used light bulbs with compact fluorescent bulbs. Save 300lbs (pounds) of carbon dioxide and $60 per year.
+    Use Recycled Paper
+    Make sure your printer paper is 100% post consumer recycled paper. Save 5lbs of carbon dioxide per ream of paper.
+    Take Shorter Showers
+    Showers account for 2/3 of all water heating costs. Save 350 lbs of carbon dioxide and $99 per year.
+    Buy Products Locally
+    Buy locally and reduce the amount of energy required to drive your products to your home.
+    Carpool When You Can
+    Own a big vehicle? _ with friends and co-workers saves fuel. Save 790 lbs of carbon dioxide and hundreds of dollars per year.
+    Don't Idle in Your Car
+    Idling wastes money and gas, and generates
+    ... [truncated — 667 more chars]
+
+    [TRUE ]
+------------------------------------------------------------
+    [INST] Question: Article: It's our hope that the calculator will promote action, awareness and empowerment by showing you that one person can make a difference and help stop global warming.
+    There are many simple things you can do in your daily life--what you eat, what you drive, how you build your home--that can have an effect on your immediate surroundings, and on places as far away as Antarctica. Here is a list of things that you can do to make a difference.
+    Use Compact Fluorescent Bulbs
+    Replace 3 frequently used light bulbs with compact fluorescent bulbs. Save 300lbs (pounds) of carbon dioxide and $60 per year.
+    Use Recycled Paper
+    Make sure your printer paper is 100% post consumer recycled paper. Save 5lbs of carbon dioxide per ream of paper.
+    Take Shorter Showers
+    Showers account for 2/3 of all water heating costs. Save 350 lbs of carbon dioxide and $99 per year.
+    Buy Products Locally
+    Buy locally and reduce the amount of energy required to drive your products to your home.
+    Carpool When You Can
+    Own a big vehicle? _ with friends and co-workers saves fuel. Save 790 lbs of carbon dioxide and hundreds of dollars per year.
+    Don't Idle in Your Car
+    Idling wastes money and gas, and generates
+    ... [truncated — 676 more chars]
+
+    [FALSE]
+------------------------------------------------------------
+    [INST] Question: Article: It's our hope that the calculator will promote action, awareness and empowerment by showing you that one person can make a difference and help stop global warming.
+    There are many simple things you can do in your daily life--what you eat, what you drive, how you build your home--that can have an effect on your immediate surroundings, and on places as far away as Antarctica. Here is a list of things that you can do to make a difference.
+    Use Compact Fluorescent Bulbs
+    Replace 3 frequently used light bulbs with compact fluorescent bulbs. Save 300lbs (pounds) of carbon dioxide and $60 per year.
+    Use Recycled Paper
+    Make sure your printer paper is 100% post consumer recycled paper. Save 5lbs of carbon dioxide per ream of paper.
+    Take Shorter Showers
+    Showers account for 2/3 of all water heating costs. Save 350 lbs of carbon dioxide and $99 per year.
+    Buy Products Locally
+    Buy locally and reduce the amount of energy required to drive your products to your home.
+    Carpool When You Can
+    Own a big vehicle? _ with friends and co-workers saves fuel. Save 790 lbs of carbon dioxide and hundreds of dollars per year.
+    Don't Idle in Your Car
+    Idling wastes money and gas, and generates
+    ... [truncated — 686 more chars]
+
+  -- Question 3  (group_id = high2324.txt) --
+
+    [FALSE]
+------------------------------------------------------------
+    [INST] Question: Article: Prison Breakis a huge hit thanks to its handsome star, Wentworth Miller. His character, Michael Scofield, is the engine that drives the show.
+    Having committed a crime to get into prison and break out with his innocent brother, Michael Scofield is one of the most interesting personalities on TV today. But what about the man behind the character?
+    Miller,35, is a hard guy to figure out. He does not come from a normal background and has never lived his life in a typical way.
+    Miller didn't take direct path to fame and fortune. He graduated from Princeton University in 1995, not with a degree in theatre of film, but in English. He didn't even act when he was in college. His only performance experience was in his university's singing group. Yet , at graduation Miller still decided to make the move to Hollywood.
+    Miller has always been different. Although he is American, he was in Britain when his father was studying there. His family background is also a special mix of cultures. "My father is black and my mother is white. That means I have always been caught in the middle. I could be either one, which can make you feel out of place," Miller says.
+    Following his unu
+    ... [truncated — 686 more chars]
+
+    [TRUE ]
+------------------------------------------------------------
+    [INST] Question: Article: Prison Breakis a huge hit thanks to its handsome star, Wentworth Miller. His character, Michael Scofield, is the engine that drives the show.
+    Having committed a crime to get into prison and break out with his innocent brother, Michael Scofield is one of the most interesting personalities on TV today. But what about the man behind the character?
+    Miller,35, is a hard guy to figure out. He does not come from a normal background and has never lived his life in a typical way.
+    Miller didn't take direct path to fame and fortune. He graduated from Princeton University in 1995, not with a degree in theatre of film, but in English. He didn't even act when he was in college. His only performance experience was in his university's singing group. Yet , at graduation Miller still decided to make the move to Hollywood.
+    Miller has always been different. Although he is American, he was in Britain when his father was studying there. His family background is also a special mix of cultures. "My father is black and my mother is white. That means I have always been caught in the middle. I could be either one, which can make you feel out of place," Miller says.
+    Following his unu
+    ... [truncated — 679 more chars]
+
+    [FALSE]
+------------------------------------------------------------
+    [INST] Question: Article: Prison Breakis a huge hit thanks to its handsome star, Wentworth Miller. His character, Michael Scofield, is the engine that drives the show.
+    Having committed a crime to get into prison and break out with his innocent brother, Michael Scofield is one of the most interesting personalities on TV today. But what about the man behind the character?
+    Miller,35, is a hard guy to figure out. He does not come from a normal background and has never lived his life in a typical way.
+    Miller didn't take direct path to fame and fortune. He graduated from Princeton University in 1995, not with a degree in theatre of film, but in English. He didn't even act when he was in college. His only performance experience was in his university's singing group. Yet , at graduation Miller still decided to make the move to Hollywood.
+    Miller has always been different. Although he is American, he was in Britain when his father was studying there. His family background is also a special mix of cultures. "My father is black and my mother is white. That means I have always been caught in the middle. I could be either one, which can make you feel out of place," Miller says.
+    Following his unu
+    ... [truncated — 673 more chars]
+
+    [FALSE]
+------------------------------------------------------------
+    [INST] Question: Article: Prison Breakis a huge hit thanks to its handsome star, Wentworth Miller. His character, Michael Scofield, is the engine that drives the show.
+    Having committed a crime to get into prison and break out with his innocent brother, Michael Scofield is one of the most interesting personalities on TV today. But what about the man behind the character?
+    Miller,35, is a hard guy to figure out. He does not come from a normal background and has never lived his life in a typical way.
+    Miller didn't take direct path to fame and fortune. He graduated from Princeton University in 1995, not with a degree in theatre of film, but in English. He didn't even act when he was in college. His only performance experience was in his university's singing group. Yet , at graduation Miller still decided to make the move to Hollywood.
+    Miller has always been different. Although he is American, he was in Britain when his father was studying there. His family background is also a special mix of cultures. "My father is black and my mother is white. That means I have always been caught in the middle. I could be either one, which can make you feel out of place," Miller says.
+    Following his unu
+    ... [truncated — 671 more chars]
+
+
+================================================================================
+DATASET: ARC_EASY
+================================================================================
+
+  -- Question 1  (group_id = MEA_2013_8_11) --
+
+    [TRUE ]
+------------------------------------------------------------
+    [INST] Question: Lori owns a house next to the lake. She uses lots of fertilizer to keep her lawn green. Which impact could fertilizing her lawn have on the lake? [/INST]
+    an increase in the algae population
+
+    [FALSE]
+------------------------------------------------------------
+    [INST] Question: Lori owns a house next to the lake. She uses lots of fertilizer to keep her lawn green. Which impact could fertilizing her lawn have on the lake? [/INST]
+    an increase in the fish population
+
+    [FALSE]
+------------------------------------------------------------
+    [INST] Question: Lori owns a house next to the lake. She uses lots of fertilizer to keep her lawn green. Which impact could fertilizing her lawn have on the lake? [/INST]
+    an increase in the mosquito population
+
+    [FALSE]
+------------------------------------------------------------
+    [INST] Question: Lori owns a house next to the lake. She uses lots of fertilizer to keep her lawn green. Which impact could fertilizing her lawn have on the lake? [/INST]
+    an increase in the lake's depth
+
+  -- Question 2  (group_id = Mercury_SC_401191) --
+
+    [FALSE]
+------------------------------------------------------------
+    [INST] Question: Snapping a rubber band most likely produces which type of energy? [/INST]
+    heat
+
+    [FALSE]
+------------------------------------------------------------
+    [INST] Question: Snapping a rubber band most likely produces which type of energy? [/INST]
+    light
+
+    [TRUE ]
+------------------------------------------------------------
+    [INST] Question: Snapping a rubber band most likely produces which type of energy? [/INST]
+    sound
+
+    [FALSE]
+------------------------------------------------------------
+    [INST] Question: Snapping a rubber band most likely produces which type of energy? [/INST]
+    electrical
+
+  -- Question 3  (group_id = Mercury_7018358) --
+
+    [FALSE]
+------------------------------------------------------------
+    [INST] Question: In some dry areas, large amounts of water have been pumped from underground sources where water has been naturally stored for thousands of years. If the water is not replaced, what type of land feature is most likely to result? [/INST]
+    delta
+
+    [FALSE]
+------------------------------------------------------------
+    [INST] Question: In some dry areas, large amounts of water have been pumped from underground sources where water has been naturally stored for thousands of years. If the water is not replaced, what type of land feature is most likely to result? [/INST]
+    lake
+
+    [TRUE ]
+------------------------------------------------------------
+    [INST] Question: In some dry areas, large amounts of water have been pumped from underground sources where water has been naturally stored for thousands of years. If the water is not replaced, what type of land feature is most likely to result? [/INST]
+    desert
+
+    [FALSE]
+------------------------------------------------------------
+    [INST] Question: In some dry areas, large amounts of water have been pumped from underground sources where water has been naturally stored for thousands of years. If the water is not replaced, what type of land feature is most likely to result? [/INST]
+    mountains
+
+
+================================================================================
+DATASET: ARC_CHALLENGE
+================================================================================
+
+  -- Question 1  (group_id = MCAS_1999_8_34) --
+
+    [TRUE ]
+------------------------------------------------------------
+    [INST] Question: If a new moon occurred on June 2, when will the next new moon occur? [/INST]
+    June 30
+
+    [FALSE]
+------------------------------------------------------------
+    [INST] Question: If a new moon occurred on June 2, when will the next new moon occur? [/INST]
+    June 28
+
+    [FALSE]
+------------------------------------------------------------
+    [INST] Question: If a new moon occurred on June 2, when will the next new moon occur? [/INST]
+    June 23
+
+    [FALSE]
+------------------------------------------------------------
+    [INST] Question: If a new moon occurred on June 2, when will the next new moon occur? [/INST]
+    June 15
+
+  -- Question 2  (group_id = Mercury_7247975) --
+
+    [FALSE]
+------------------------------------------------------------
+    [INST] Question: Which action best models the motion of an arm at the elbow joint? [/INST]
+    opening a drawer
+
+    [FALSE]
+------------------------------------------------------------
+    [INST] Question: Which action best models the motion of an arm at the elbow joint? [/INST]
+    slicing an apple
+
+    [TRUE ]
+------------------------------------------------------------
+    [INST] Question: Which action best models the motion of an arm at the elbow joint? [/INST]
+    closing a car door
+
+    [FALSE]
+------------------------------------------------------------
+    [INST] Question: Which action best models the motion of an arm at the elbow joint? [/INST]
+    pushing a wheelbarrow
+
+  -- Question 3  (group_id = Mercury_7159758) --
+
+    [FALSE]
+------------------------------------------------------------
+    [INST] Question: A researcher is conducting an investigation to determine if water temperature affects the growth rate of a certain type of fish in a lake. Which unit would the researcher use when determining the mass of the fish? [/INST]
+    centimeters
+
+    [FALSE]
+------------------------------------------------------------
+    [INST] Question: A researcher is conducting an investigation to determine if water temperature affects the growth rate of a certain type of fish in a lake. Which unit would the researcher use when determining the mass of the fish? [/INST]
+    kilometers
+
+    [TRUE ]
+------------------------------------------------------------
+    [INST] Question: A researcher is conducting an investigation to determine if water temperature affects the growth rate of a certain type of fish in a lake. Which unit would the researcher use when determining the mass of the fish? [/INST]
+    grams
+
+    [FALSE]
+------------------------------------------------------------
+    [INST] Question: A researcher is conducting an investigation to determine if water temperature affects the growth rate of a certain type of fish in a lake. Which unit would the researcher use when determining the mass of the fish? [/INST]
+    liters
+
+
+================================================================================
+DATASET: OPEN_BOOK_QA
+================================================================================
+
+  -- Question 1  (group_id = 14-1272) --
+
+    [FALSE]
+------------------------------------------------------------
+    [INST] Question: Which can view an ocean? [/INST]
+    bogs
+
+    [FALSE]
+------------------------------------------------------------
+    [INST] Question: Which can view an ocean? [/INST]
+    logs
+
+    [FALSE]
+------------------------------------------------------------
+    [INST] Question: Which can view an ocean? [/INST]
+    pogs
+
+    [TRUE ]
+------------------------------------------------------------
+    [INST] Question: Which can view an ocean? [/INST]
+    dogs
+
+  -- Question 2  (group_id = 10-700) --
+
+    [FALSE]
+------------------------------------------------------------
+    [INST] Question: What is a lever used to move? [/INST]
+    planets
+
+    [FALSE]
+------------------------------------------------------------
+    [INST] Question: What is a lever used to move? [/INST]
+    small objects
+
+    [FALSE]
+------------------------------------------------------------
+    [INST] Question: What is a lever used to move? [/INST]
+    liquids
+
+    [TRUE ]
+------------------------------------------------------------
+    [INST] Question: What is a lever used to move? [/INST]
+    substantial objects
+
+  -- Question 3  (group_id = 12-5) --
+
+    [FALSE]
+------------------------------------------------------------
+    [INST] Question: which one of these individuals would have the most optimal quality of life? [/INST]
+    a doctor who sleeps six hours daily
+
+    [TRUE ]
+------------------------------------------------------------
+    [INST] Question: which one of these individuals would have the most optimal quality of life? [/INST]
+    a nurse who nine hours of shut eye daily
+
+    [FALSE]
+------------------------------------------------------------
+    [INST] Question: which one of these individuals would have the most optimal quality of life? [/INST]
+    a student who sleeps 2 hours daily
+
+    [FALSE]
+------------------------------------------------------------
+    [INST] Question: which one of these individuals would have the most optimal quality of life? [/INST]
+    a teacher who sleeps 5 hours daily
+
+
+================================================================================
+DATASET: GOT_CITIES
+================================================================================
+
+  -- Question 1  (group_id = 886) --
+
+    [TRUE ]
+------------------------------------------------------------
+    [INST] Question: The city of Zhangzhou is in China. [/INST]
+
+    [FALSE]
+------------------------------------------------------------
+    [INST] Question: The city of Zhangzhou is not in China. [/INST]
+
+  -- Question 2  (group_id = 1467) --
+
+    [FALSE]
+------------------------------------------------------------
+    [INST] Question: The city of Copenhagen is in China. [/INST]
+
+    [TRUE ]
+------------------------------------------------------------
+    [INST] Question: The city of Copenhagen is not in China. [/INST]
+
+  -- Question 3  (group_id = 245) --
+
+    [FALSE]
+------------------------------------------------------------
+    [INST] Question: The city of Ciudad Juarez is in India. [/INST]
+
+    [TRUE ]
+------------------------------------------------------------
+    [INST] Question: The city of Ciudad Juarez is not in India. [/INST]
+
+
+================================================================================
+DATASET: GOT_SP_EN_TRANS
+================================================================================
+
+  -- Question 1  (group_id = 286) --
+
+    [TRUE ]
+------------------------------------------------------------
+    [INST] Question: The Spanish word 'rosa' means 'rose'. [/INST]
+
+    [FALSE]
+------------------------------------------------------------
+    [INST] Question: The Spanish word 'rosa' does not mean 'rose'. [/INST]
+
+  -- Question 2  (group_id = 245) --
+
+    [TRUE ]
+------------------------------------------------------------
+    [INST] Question: The Spanish word 'cocinero' means 'cook'. [/INST]
+
+    [FALSE]
+------------------------------------------------------------
+    [INST] Question: The Spanish word 'cocinero' does not mean 'cook'. [/INST]
+
+  -- Question 3  (group_id = 342) --
+
+    [FALSE]
+------------------------------------------------------------
+    [INST] Question: The Spanish word 'pulpo' means 'slow'. [/INST]
+
+    [TRUE ]
+------------------------------------------------------------
+    [INST] Question: The Spanish word 'pulpo' does not mean 'slow'. [/INST]
+
+
+================================================================================
+DATASET: GOT_LARGER_THAN
+================================================================================
+
+  -- Question 1  (group_id = 886) --
+
+    [TRUE ]
+------------------------------------------------------------
+    [INST] Question: Seventy-three is larger than fifty-seven. [/INST]
+
+    [FALSE]
+------------------------------------------------------------
+    [INST] Question: Seventy-three is smaller than fifty-seven. [/INST]
+
+  -- Question 2  (group_id = 286) --
+
+    [FALSE]
+------------------------------------------------------------
+    [INST] Question: Fifty-seven is larger than seventy-six. [/INST]
+
+    [TRUE ]
+------------------------------------------------------------
+    [INST] Question: Fifty-seven is smaller than seventy-six. [/INST]
+
+  -- Question 3  (group_id = 1064) --
+
+    [TRUE ]
+------------------------------------------------------------
+    [INST] Question: Seventy-seven is larger than fifty-nine. [/INST]
+
+    [FALSE]
+------------------------------------------------------------
+    [INST] Question: Seventy-seven is smaller than fifty-nine. [/INST]
+
+
+================================================================================
+DATASET: IMDB
+================================================================================
+
+  -- Question 1  (group_id = 1) --
+
+    [TRUE ]
+------------------------------------------------------------
+    [INST] Question: "I Am Curious: Yellow" is a risible and pretentious steaming pile. It doesn't matter what one's political views are because this film can hardly be taken seriously on any level. As for the claim that frontal male nudity is an automatic NC-17, that isn't true. I've seen R-rated films with male nudity. Granted, they only offer some fleeting views, but where are the R-rated films with gaping vulvas and flapping labia? Nowhere, because they don't exist. The same goes for those crappy cable shows: schlongs swinging in the breeze but not a clitoris in sight. And those pretentious indie movies like The Brown Bunny, in which we're treated to the site of Vincent Gallo's throbbing johnson, but not a trace of pink visible on Chloe Sevigny. Before crying (or implying) "double-standard" in matters of nudity, the mentally obtuse should take into account one unavoidably obvious anatomical difference between men and women: there are no genitals on display when actresses appears nude, and the same cannot be said for a man. In fact, you generally won't see female genitals in an American film in anything short of porn or explicit erotica. This alleged double-standard is less a double
+    ... [truncated — 128 more chars]
+
+    [FALSE]
+------------------------------------------------------------
+    [INST] Question: "I Am Curious: Yellow" is a risible and pretentious steaming pile. It doesn't matter what one's political views are because this film can hardly be taken seriously on any level. As for the claim that frontal male nudity is an automatic NC-17, that isn't true. I've seen R-rated films with male nudity. Granted, they only offer some fleeting views, but where are the R-rated films with gaping vulvas and flapping labia? Nowhere, because they don't exist. The same goes for those crappy cable shows: schlongs swinging in the breeze but not a clitoris in sight. And those pretentious indie movies like The Brown Bunny, in which we're treated to the site of Vincent Gallo's throbbing johnson, but not a trace of pink visible on Chloe Sevigny. Before crying (or implying) "double-standard" in matters of nudity, the mentally obtuse should take into account one unavoidably obvious anatomical difference between men and women: there are no genitals on display when actresses appears nude, and the same cannot be said for a man. In fact, you generally won't see female genitals in an American film in anything short of porn or explicit erotica. This alleged double-standard is less a double
+    ... [truncated — 128 more chars]
+
+  -- Question 2  (group_id = 10) --
+
+    [TRUE ]
+------------------------------------------------------------
+    [INST] Question: It was great to see some of my favorite stars of 30 years ago including John Ritter, Ben Gazarra and Audrey Hepburn. They looked quite wonderful. But that was it. They were not given any characters or good lines to work with. I neither understood or cared what the characters were doing.<br /><br />Some of the smaller female roles were fine, Patty Henson and Colleen Camp were quite competent and confident in their small sidekick parts. They showed some talent and it is sad they didn't go on to star in more and better films. Sadly, I didn't think Dorothy Stratten got a chance to act in this her only important film role.<br /><br />The film appears to have some fans, and I was very open-minded when I started watching it. I am a big Peter Bogdanovich fan and I enjoyed his last movie, "Cat's Meow" and all his early ones from "Targets" to "Nickleodeon". So, it really surprised me that I was barely able to keep awake watching this one.<br /><br />It is ironic that this movie is about a detective agency where the detectives and clients get romantically involved with each other. Five years later, Bogdanovich's ex-girlfriend, Cybil Shepherd had a hit television series called
+    ... [truncated — 336 more chars]
+
+    [FALSE]
+------------------------------------------------------------
+    [INST] Question: It was great to see some of my favorite stars of 30 years ago including John Ritter, Ben Gazarra and Audrey Hepburn. They looked quite wonderful. But that was it. They were not given any characters or good lines to work with. I neither understood or cared what the characters were doing.<br /><br />Some of the smaller female roles were fine, Patty Henson and Colleen Camp were quite competent and confident in their small sidekick parts. They showed some talent and it is sad they didn't go on to star in more and better films. Sadly, I didn't think Dorothy Stratten got a chance to act in this her only important film role.<br /><br />The film appears to have some fans, and I was very open-minded when I started watching it. I am a big Peter Bogdanovich fan and I enjoyed his last movie, "Cat's Meow" and all his early ones from "Targets" to "Nickleodeon". So, it really surprised me that I was barely able to keep awake watching this one.<br /><br />It is ironic that this movie is about a detective agency where the detectives and clients get romantically involved with each other. Five years later, Bogdanovich's ex-girlfriend, Cybil Shepherd had a hit television series called
+    ... [truncated — 336 more chars]
+
+  -- Question 3  (group_id = 100) --
+
+    [TRUE ]
+------------------------------------------------------------
+    [INST] Question: Terrible movie. Nuff Said.<br /><br />These Lines are Just Filler. The movie was bad. Why I have to expand on that I don't know. This is already a waste of my time. I just wanted to warn others. Avoid this movie. The acting sucks and the writing is just moronic. Bad in every way. The only nice thing about the movie are Deniz Akkaya's breasts. Even that was ruined though by a terrible and unneeded rape scene. The movie is a poorly contrived and totally unbelievable piece of garbage.<br /><br />OK now I am just going to rag on IMDb for this stupid rule of 10 lines of text minimum. First I waste my time watching this offal. Then feeling compelled to warn others I create an account with IMDb only to discover that I have to write a friggen essay on the film just to express how bad I think it is. Totally unnecessary. [/INST]
+    Negative
+
+    [FALSE]
+------------------------------------------------------------
+    [INST] Question: Terrible movie. Nuff Said.<br /><br />These Lines are Just Filler. The movie was bad. Why I have to expand on that I don't know. This is already a waste of my time. I just wanted to warn others. Avoid this movie. The acting sucks and the writing is just moronic. Bad in every way. The only nice thing about the movie are Deniz Akkaya's breasts. Even that was ruined though by a terrible and unneeded rape scene. The movie is a poorly contrived and totally unbelievable piece of garbage.<br /><br />OK now I am just going to rag on IMDb for this stupid rule of 10 lines of text minimum. First I waste my time watching this offal. Then feeling compelled to warn others I create an account with IMDb only to discover that I have to write a friggen essay on the film just to express how bad I think it is. Totally unnecessary. [/INST]
+    Positive
+
+
+================================================================================
+DATASET: AMAZON_POLARITY
+================================================================================
+
+  -- Question 1  (group_id = 1) --
+
+    [TRUE ]
+------------------------------------------------------------
+    [INST] Question: Consider the following example: "I'm reading a lot of reviews saying that this is the best 'game soundtrack' and I figured that I'd write a review to disagree a bit. This in my opinino is Yasunori Mitsuda's ultimate masterpiece. The music is timeless and I'm been listening to it for years now and its beauty simply refuses to fade.The price tag on this is pretty staggering I must say, but if you are going to buy any cd for this much money, this is the only one that I feel would be worth every penny."
+    Choice 1: Positive
+    Choice 2: Negative
+    Between choice 1 and choice 2, the sentiment of this example is Positive [/INST]
+    Positive
+
+    [FALSE]
+------------------------------------------------------------
+    [INST] Question: Consider the following example: "I'm reading a lot of reviews saying that this is the best 'game soundtrack' and I figured that I'd write a review to disagree a bit. This in my opinino is Yasunori Mitsuda's ultimate masterpiece. The music is timeless and I'm been listening to it for years now and its beauty simply refuses to fade.The price tag on this is pretty staggering I must say, but if you are going to buy any cd for this much money, this is the only one that I feel would be worth every penny."
+    Choice 1: Positive
+    Choice 2: Negative
+    Between choice 1 and choice 2, the sentiment of this example is Negative [/INST]
+    Negative
+
+  -- Question 2  (group_id = 10) --
+
+    [TRUE ]
+------------------------------------------------------------
+    [INST] Question: Consider the following example: "A complete waste of time. Typographical errors, poor grammar, and a totally pathetic plot add up to absolutely nothing. I'm embarrassed for this author and very disappointed I actually paid for this book."
+    Choice 1: Negative
+    Choice 2: Positive
+    Between choice 1 and choice 2, the sentiment of this example is Negative [/INST]
+    Negative
+
+    [FALSE]
+------------------------------------------------------------
+    [INST] Question: Consider the following example: "A complete waste of time. Typographical errors, poor grammar, and a totally pathetic plot add up to absolutely nothing. I'm embarrassed for this author and very disappointed I actually paid for this book."
+    Choice 1: Negative
+    Choice 2: Positive
+    Between choice 1 and choice 2, the sentiment of this example is Positive [/INST]
+    Positive
+
+  -- Question 3  (group_id = 100) --
+
+    [TRUE ]
+------------------------------------------------------------
+    [INST] Question: Consider the following example: "Book shipped quickly and was in excellent condition as stated. Easy transaction would buy again"
+    Choice 1: Positive
+    Choice 2: Negative
+    Between choice 1 and choice 2, the sentiment of this example is Positive [/INST]
+    Positive
+
+    [FALSE]
+------------------------------------------------------------
+    [INST] Question: Consider the following example: "Book shipped quickly and was in excellent condition as stated. Easy transaction would buy again"
+    Choice 1: Positive
+    Choice 2: Negative
+    Between choice 1 and choice 2, the sentiment of this example is Negative [/INST]
+    Negative
+
+
+================================================================================
+DATASET: AG_NEWS
+================================================================================
+
+  -- Question 1  (group_id = 0) --
+
+    [TRUE ]
+------------------------------------------------------------
+    [INST] Question: Wall St. Bears Claw Back Into the Black (Reuters) Reuters - Short-sellers, Wall Street's dwindling\band of ultra-cynics, are seeing green again. [/INST]
+    Business
+
+    [FALSE]
+------------------------------------------------------------
+    [INST] Question: Wall St. Bears Claw Back Into the Black (Reuters) Reuters - Short-sellers, Wall Street's dwindling\band of ultra-cynics, are seeing green again. [/INST]
+    World
+
+    [FALSE]
+------------------------------------------------------------
+    [INST] Question: Wall St. Bears Claw Back Into the Black (Reuters) Reuters - Short-sellers, Wall Street's dwindling\band of ultra-cynics, are seeing green again. [/INST]
+    Sports
+
+    [FALSE]
+------------------------------------------------------------
+    [INST] Question: Wall St. Bears Claw Back Into the Black (Reuters) Reuters - Short-sellers, Wall Street's dwindling\band of ultra-cynics, are seeing green again. [/INST]
+    Sci/Tech
+
+  -- Question 2  (group_id = 1) --
+
+    [TRUE ]
+------------------------------------------------------------
+    [INST] Question: Carlyle Looks Toward Commercial Aerospace (Reuters) Reuters - Private investment firm Carlyle Group,\which has a reputation for making well-timed and occasionally\controversial plays in the defense industry, has quietly placed\its bets on another part of the market. [/INST]
+    Business
+
+    [FALSE]
+------------------------------------------------------------
+    [INST] Question: Carlyle Looks Toward Commercial Aerospace (Reuters) Reuters - Private investment firm Carlyle Group,\which has a reputation for making well-timed and occasionally\controversial plays in the defense industry, has quietly placed\its bets on another part of the market. [/INST]
+    World
+
+    [FALSE]
+------------------------------------------------------------
+    [INST] Question: Carlyle Looks Toward Commercial Aerospace (Reuters) Reuters - Private investment firm Carlyle Group,\which has a reputation for making well-timed and occasionally\controversial plays in the defense industry, has quietly placed\its bets on another part of the market. [/INST]
+    Sports
+
+    [FALSE]
+------------------------------------------------------------
+    [INST] Question: Carlyle Looks Toward Commercial Aerospace (Reuters) Reuters - Private investment firm Carlyle Group,\which has a reputation for making well-timed and occasionally\controversial plays in the defense industry, has quietly placed\its bets on another part of the market. [/INST]
+    Sci/Tech
+
+  -- Question 3  (group_id = 10) --
+
+    [TRUE ]
+------------------------------------------------------------
+    [INST] Question: Oil and Economy Cloud Stocks' Outlook  NEW YORK (Reuters) - Soaring crude prices plus worries  about the economy and the outlook for earnings are expected to  hang over the stock market next week during the depth of the  summer doldrums. [/INST]
+    Business
+
+    [FALSE]
+------------------------------------------------------------
+    [INST] Question: Oil and Economy Cloud Stocks' Outlook  NEW YORK (Reuters) - Soaring crude prices plus worries  about the economy and the outlook for earnings are expected to  hang over the stock market next week during the depth of the  summer doldrums. [/INST]
+    World
+
+    [FALSE]
+------------------------------------------------------------
+    [INST] Question: Oil and Economy Cloud Stocks' Outlook  NEW YORK (Reuters) - Soaring crude prices plus worries  about the economy and the outlook for earnings are expected to  hang over the stock market next week during the depth of the  summer doldrums. [/INST]
+    Sports
+
+    [FALSE]
+------------------------------------------------------------
+    [INST] Question: Oil and Economy Cloud Stocks' Outlook  NEW YORK (Reuters) - Soaring crude prices plus worries  about the economy and the outlook for earnings are expected to  hang over the stock market next week during the depth of the  summer doldrums. [/INST]
+    Sci/Tech
+
+
+================================================================================
+DATASET: DBPEDIA_14
+================================================================================
+
+  -- Question 1  (group_id = 0) --
+
+    [TRUE ]
+------------------------------------------------------------
+    [INST] Question: Consider the following example: " Abbott of Farnham E D Abbott Limited was a British coachbuilding business based in Farnham Surrey trading under that name from 1929. A major part of their output was under sub-contract to motor vehicle manufacturers. Their business closed in 1972."
+    Choice 1: Company
+    Choice 2: EducationalInstitution
+    Between choice 1 and choice 2, the topic of this example is Company [/INST]
+    Company
+
+    [FALSE]
+------------------------------------------------------------
+    [INST] Question: Consider the following example: " Abbott of Farnham E D Abbott Limited was a British coachbuilding business based in Farnham Surrey trading under that name from 1929. A major part of their output was under sub-contract to motor vehicle manufacturers. Their business closed in 1972."
+    Choice 1: Company
+    Choice 2: EducationalInstitution
+    Between choice 1 and choice 2, the topic of this example is EducationalInstitution [/INST]
+    EducationalInstitution
+
+    [FALSE]
+------------------------------------------------------------
+    [INST] Question: Consider the following example: " Abbott of Farnham E D Abbott Limited was a British coachbuilding business based in Farnham Surrey trading under that name from 1929. A major part of their output was under sub-contract to motor vehicle manufacturers. Their business closed in 1972."
+    Choice 1: Company
+    Choice 2: EducationalInstitution
+    Between choice 1 and choice 2, the topic of this example is Artist [/INST]
+    Artist
+
+    [FALSE]
+------------------------------------------------------------
+    [INST] Question: Consider the following example: " Abbott of Farnham E D Abbott Limited was a British coachbuilding business based in Farnham Surrey trading under that name from 1929. A major part of their output was under sub-contract to motor vehicle manufacturers. Their business closed in 1972."
+    Choice 1: Company
+    Choice 2: EducationalInstitution
+    Between choice 1 and choice 2, the topic of this example is Athlete [/INST]
+    Athlete
+
+    [FALSE]
+------------------------------------------------------------
+    [INST] Question: Consider the following example: " Abbott of Farnham E D Abbott Limited was a British coachbuilding business based in Farnham Surrey trading under that name from 1929. A major part of their output was under sub-contract to motor vehicle manufacturers. Their business closed in 1972."
+    Choice 1: Company
+    Choice 2: EducationalInstitution
+    Between choice 1 and choice 2, the topic of this example is OfficeHolder [/INST]
+    OfficeHolder
+
+    [FALSE]
+------------------------------------------------------------
+    [INST] Question: Consider the following example: " Abbott of Farnham E D Abbott Limited was a British coachbuilding business based in Farnham Surrey trading under that name from 1929. A major part of their output was under sub-contract to motor vehicle manufacturers. Their business closed in 1972."
+    Choice 1: Company
+    Choice 2: EducationalInstitution
+    Between choice 1 and choice 2, the topic of this example is MeanOfTransportation [/INST]
+    MeanOfTransportation
+
+    [FALSE]
+------------------------------------------------------------
+    [INST] Question: Consider the following example: " Abbott of Farnham E D Abbott Limited was a British coachbuilding business based in Farnham Surrey trading under that name from 1929. A major part of their output was under sub-contract to motor vehicle manufacturers. Their business closed in 1972."
+    Choice 1: Company
+    Choice 2: EducationalInstitution
+    Between choice 1 and choice 2, the topic of this example is Building [/INST]
+    Building
+
+    [FALSE]
+------------------------------------------------------------
+    [INST] Question: Consider the following example: " Abbott of Farnham E D Abbott Limited was a British coachbuilding business based in Farnham Surrey trading under that name from 1929. A major part of their output was under sub-contract to motor vehicle manufacturers. Their business closed in 1972."
+    Choice 1: Company
+    Choice 2: EducationalInstitution
+    Between choice 1 and choice 2, the topic of this example is NaturalPlace [/INST]
+    NaturalPlace
+
+    [FALSE]
+------------------------------------------------------------
+    [INST] Question: Consider the following example: " Abbott of Farnham E D Abbott Limited was a British coachbuilding business based in Farnham Surrey trading under that name from 1929. A major part of their output was under sub-contract to motor vehicle manufacturers. Their business closed in 1972."
+    Choice 1: Company
+    Choice 2: EducationalInstitution
+    Between choice 1 and choice 2, the topic of this example is Village [/INST]
+    Village
+
+    [FALSE]
+------------------------------------------------------------
+    [INST] Question: Consider the following example: " Abbott of Farnham E D Abbott Limited was a British coachbuilding business based in Farnham Surrey trading under that name from 1929. A major part of their output was under sub-contract to motor vehicle manufacturers. Their business closed in 1972."
+    Choice 1: Company
+    Choice 2: EducationalInstitution
+    Between choice 1 and choice 2, the topic of this example is Animal [/INST]
+    Animal
+
+    [FALSE]
+------------------------------------------------------------
+    [INST] Question: Consider the following example: " Abbott of Farnham E D Abbott Limited was a British coachbuilding business based in Farnham Surrey trading under that name from 1929. A major part of their output was under sub-contract to motor vehicle manufacturers. Their business closed in 1972."
+    Choice 1: Company
+    Choice 2: EducationalInstitution
+    Between choice 1 and choice 2, the topic of this example is Plant [/INST]
+    Plant
+
+    [FALSE]
+------------------------------------------------------------
+    [INST] Question: Consider the following example: " Abbott of Farnham E D Abbott Limited was a British coachbuilding business based in Farnham Surrey trading under that name from 1929. A major part of their output was under sub-contract to motor vehicle manufacturers. Their business closed in 1972."
+    Choice 1: Company
+    Choice 2: EducationalInstitution
+    Between choice 1 and choice 2, the topic of this example is Album [/INST]
+    Album
+
+    [FALSE]
+------------------------------------------------------------
+    [INST] Question: Consider the following example: " Abbott of Farnham E D Abbott Limited was a British coachbuilding business based in Farnham Surrey trading under that name from 1929. A major part of their output was under sub-contract to motor vehicle manufacturers. Their business closed in 1972."
+    Choice 1: Company
+    Choice 2: EducationalInstitution
+    Between choice 1 and choice 2, the topic of this example is Film [/INST]
+    Film
+
+    [FALSE]
+------------------------------------------------------------
+    [INST] Question: Consider the following example: " Abbott of Farnham E D Abbott Limited was a British coachbuilding business based in Farnham Surrey trading under that name from 1929. A major part of their output was under sub-contract to motor vehicle manufacturers. Their business closed in 1972."
+    Choice 1: Company
+    Choice 2: EducationalInstitution
+    Between choice 1 and choice 2, the topic of this example is WrittenWork [/INST]
+    WrittenWork
+
+  -- Question 2  (group_id = 1) --
+
+    [TRUE ]
+------------------------------------------------------------
+    [INST] Question: Consider the following example: " Schwan-STABILO is a German maker of pens for writing colouring and cosmetics as well as markers and highlighters for office use. It is the world's largest manufacturer of highlighter pens Stabilo Boss."
+    Choice 1: Company
+    Choice 2: EducationalInstitution
+    Between choice 1 and choice 2, the topic of this example is Company [/INST]
+    Company
+
+    [FALSE]
+------------------------------------------------------------
+    [INST] Question: Consider the following example: " Schwan-STABILO is a German maker of pens for writing colouring and cosmetics as well as markers and highlighters for office use. It is the world's largest manufacturer of highlighter pens Stabilo Boss."
+    Choice 1: Company
+    Choice 2: EducationalInstitution
+    Between choice 1 and choice 2, the topic of this example is EducationalInstitution [/INST]
+    EducationalInstitution
+
+    [FALSE]
+------------------------------------------------------------
+    [INST] Question: Consider the following example: " Schwan-STABILO is a German maker of pens for writing colouring and cosmetics as well as markers and highlighters for office use. It is the world's largest manufacturer of highlighter pens Stabilo Boss."
+    Choice 1: Company
+    Choice 2: EducationalInstitution
+    Between choice 1 and choice 2, the topic of this example is Artist [/INST]
+    Artist
+
+    [FALSE]
+------------------------------------------------------------
+    [INST] Question: Consider the following example: " Schwan-STABILO is a German maker of pens for writing colouring and cosmetics as well as markers and highlighters for office use. It is the world's largest manufacturer of highlighter pens Stabilo Boss."
+    Choice 1: Company
+    Choice 2: EducationalInstitution
+    Between choice 1 and choice 2, the topic of this example is Athlete [/INST]
+    Athlete
+
+    [FALSE]
+------------------------------------------------------------
+    [INST] Question: Consider the following example: " Schwan-STABILO is a German maker of pens for writing colouring and cosmetics as well as markers and highlighters for office use. It is the world's largest manufacturer of highlighter pens Stabilo Boss."
+    Choice 1: Company
+    Choice 2: EducationalInstitution
+    Between choice 1 and choice 2, the topic of this example is OfficeHolder [/INST]
+    OfficeHolder
+
+    [FALSE]
+------------------------------------------------------------
+    [INST] Question: Consider the following example: " Schwan-STABILO is a German maker of pens for writing colouring and cosmetics as well as markers and highlighters for office use. It is the world's largest manufacturer of highlighter pens Stabilo Boss."
+    Choice 1: Company
+    Choice 2: EducationalInstitution
+    Between choice 1 and choice 2, the topic of this example is MeanOfTransportation [/INST]
+    MeanOfTransportation
+
+    [FALSE]
+------------------------------------------------------------
+    [INST] Question: Consider the following example: " Schwan-STABILO is a German maker of pens for writing colouring and cosmetics as well as markers and highlighters for office use. It is the world's largest manufacturer of highlighter pens Stabilo Boss."
+    Choice 1: Company
+    Choice 2: EducationalInstitution
+    Between choice 1 and choice 2, the topic of this example is Building [/INST]
+    Building
+
+    [FALSE]
+------------------------------------------------------------
+    [INST] Question: Consider the following example: " Schwan-STABILO is a German maker of pens for writing colouring and cosmetics as well as markers and highlighters for office use. It is the world's largest manufacturer of highlighter pens Stabilo Boss."
+    Choice 1: Company
+    Choice 2: EducationalInstitution
+    Between choice 1 and choice 2, the topic of this example is NaturalPlace [/INST]
+    NaturalPlace
+
+    [FALSE]
+------------------------------------------------------------
+    [INST] Question: Consider the following example: " Schwan-STABILO is a German maker of pens for writing colouring and cosmetics as well as markers and highlighters for office use. It is the world's largest manufacturer of highlighter pens Stabilo Boss."
+    Choice 1: Company
+    Choice 2: EducationalInstitution
+    Between choice 1 and choice 2, the topic of this example is Village [/INST]
+    Village
+
+    [FALSE]
+------------------------------------------------------------
+    [INST] Question: Consider the following example: " Schwan-STABILO is a German maker of pens for writing colouring and cosmetics as well as markers and highlighters for office use. It is the world's largest manufacturer of highlighter pens Stabilo Boss."
+    Choice 1: Company
+    Choice 2: EducationalInstitution
+    Between choice 1 and choice 2, the topic of this example is Animal [/INST]
+    Animal
+
+    [FALSE]
+------------------------------------------------------------
+    [INST] Question: Consider the following example: " Schwan-STABILO is a German maker of pens for writing colouring and cosmetics as well as markers and highlighters for office use. It is the world's largest manufacturer of highlighter pens Stabilo Boss."
+    Choice 1: Company
+    Choice 2: EducationalInstitution
+    Between choice 1 and choice 2, the topic of this example is Plant [/INST]
+    Plant
+
+    [FALSE]
+------------------------------------------------------------
+    [INST] Question: Consider the following example: " Schwan-STABILO is a German maker of pens for writing colouring and cosmetics as well as markers and highlighters for office use. It is the world's largest manufacturer of highlighter pens Stabilo Boss."
+    Choice 1: Company
+    Choice 2: EducationalInstitution
+    Between choice 1 and choice 2, the topic of this example is Album [/INST]
+    Album
+
+    [FALSE]
+------------------------------------------------------------
+    [INST] Question: Consider the following example: " Schwan-STABILO is a German maker of pens for writing colouring and cosmetics as well as markers and highlighters for office use. It is the world's largest manufacturer of highlighter pens Stabilo Boss."
+    Choice 1: Company
+    Choice 2: EducationalInstitution
+    Between choice 1 and choice 2, the topic of this example is Film [/INST]
+    Film
+
+    [FALSE]
+------------------------------------------------------------
+    [INST] Question: Consider the following example: " Schwan-STABILO is a German maker of pens for writing colouring and cosmetics as well as markers and highlighters for office use. It is the world's largest manufacturer of highlighter pens Stabilo Boss."
+    Choice 1: Company
+    Choice 2: EducationalInstitution
+    Between choice 1 and choice 2, the topic of this example is WrittenWork [/INST]
+    WrittenWork
+
+  -- Question 3  (group_id = 10) --
+
+    [TRUE ]
+------------------------------------------------------------
+    [INST] Question: Consider the following example: " Angstrem Group (Russian: ОАО «Ангстрем» named after angstrom) is a group of Russian companies one of the largest manufacturers of integrated circuits in Eastern Europe.The group includes: OAO Angstrem (the parent company design and manufacturing of electronic products and semiconductors); OAO Angstrem-M (custom design of integrated circuits staff training); OAO Angstrem-T (under-construction plant with 130-90 nm topology); OAO Angstrem-2M NGO Angstrem OAO Antek↑"
+    Choice 1: Company
+    Choice 2: EducationalInstitution
+    Between choice 1 and choice 2, the topic of this example is Company [/INST]
+    Company
+
+    [FALSE]
+------------------------------------------------------------
+    [INST] Question: Consider the following example: " Angstrem Group (Russian: ОАО «Ангстрем» named after angstrom) is a group of Russian companies one of the largest manufacturers of integrated circuits in Eastern Europe.The group includes: OAO Angstrem (the parent company design and manufacturing of electronic products and semiconductors); OAO Angstrem-M (custom design of integrated circuits staff training); OAO Angstrem-T (under-construction plant with 130-90 nm topology); OAO Angstrem-2M NGO Angstrem OAO Antek↑"
+    Choice 1: Company
+    Choice 2: EducationalInstitution
+    Between choice 1 and choice 2, the topic of this example is EducationalInstitution [/INST]
+    EducationalInstitution
+
+    [FALSE]
+------------------------------------------------------------
+    [INST] Question: Consider the following example: " Angstrem Group (Russian: ОАО «Ангстрем» named after angstrom) is a group of Russian companies one of the largest manufacturers of integrated circuits in Eastern Europe.The group includes: OAO Angstrem (the parent company design and manufacturing of electronic products and semiconductors); OAO Angstrem-M (custom design of integrated circuits staff training); OAO Angstrem-T (under-construction plant with 130-90 nm topology); OAO Angstrem-2M NGO Angstrem OAO Antek↑"
+    Choice 1: Company
+    Choice 2: EducationalInstitution
+    Between choice 1 and choice 2, the topic of this example is Artist [/INST]
+    Artist
+
+    [FALSE]
+------------------------------------------------------------
+    [INST] Question: Consider the following example: " Angstrem Group (Russian: ОАО «Ангстрем» named after angstrom) is a group of Russian companies one of the largest manufacturers of integrated circuits in Eastern Europe.The group includes: OAO Angstrem (the parent company design and manufacturing of electronic products and semiconductors); OAO Angstrem-M (custom design of integrated circuits staff training); OAO Angstrem-T (under-construction plant with 130-90 nm topology); OAO Angstrem-2M NGO Angstrem OAO Antek↑"
+    Choice 1: Company
+    Choice 2: EducationalInstitution
+    Between choice 1 and choice 2, the topic of this example is Athlete [/INST]
+    Athlete
+
+    [FALSE]
+------------------------------------------------------------
+    [INST] Question: Consider the following example: " Angstrem Group (Russian: ОАО «Ангстрем» named after angstrom) is a group of Russian companies one of the largest manufacturers of integrated circuits in Eastern Europe.The group includes: OAO Angstrem (the parent company design and manufacturing of electronic products and semiconductors); OAO Angstrem-M (custom design of integrated circuits staff training); OAO Angstrem-T (under-construction plant with 130-90 nm topology); OAO Angstrem-2M NGO Angstrem OAO Antek↑"
+    Choice 1: Company
+    Choice 2: EducationalInstitution
+    Between choice 1 and choice 2, the topic of this example is OfficeHolder [/INST]
+    OfficeHolder
+
+    [FALSE]
+------------------------------------------------------------
+    [INST] Question: Consider the following example: " Angstrem Group (Russian: ОАО «Ангстрем» named after angstrom) is a group of Russian companies one of the largest manufacturers of integrated circuits in Eastern Europe.The group includes: OAO Angstrem (the parent company design and manufacturing of electronic products and semiconductors); OAO Angstrem-M (custom design of integrated circuits staff training); OAO Angstrem-T (under-construction plant with 130-90 nm topology); OAO Angstrem-2M NGO Angstrem OAO Antek↑"
+    Choice 1: Company
+    Choice 2: EducationalInstitution
+    Between choice 1 and choice 2, the topic of this example is MeanOfTransportation [/INST]
+    MeanOfTransportation
+
+    [FALSE]
+------------------------------------------------------------
+    [INST] Question: Consider the following example: " Angstrem Group (Russian: ОАО «Ангстрем» named after angstrom) is a group of Russian companies one of the largest manufacturers of integrated circuits in Eastern Europe.The group includes: OAO Angstrem (the parent company design and manufacturing of electronic products and semiconductors); OAO Angstrem-M (custom design of integrated circuits staff training); OAO Angstrem-T (under-construction plant with 130-90 nm topology); OAO Angstrem-2M NGO Angstrem OAO Antek↑"
+    Choice 1: Company
+    Choice 2: EducationalInstitution
+    Between choice 1 and choice 2, the topic of this example is Building [/INST]
+    Building
+
+    [FALSE]
+------------------------------------------------------------
+    [INST] Question: Consider the following example: " Angstrem Group (Russian: ОАО «Ангстрем» named after angstrom) is a group of Russian companies one of the largest manufacturers of integrated circuits in Eastern Europe.The group includes: OAO Angstrem (the parent company design and manufacturing of electronic products and semiconductors); OAO Angstrem-M (custom design of integrated circuits staff training); OAO Angstrem-T (under-construction plant with 130-90 nm topology); OAO Angstrem-2M NGO Angstrem OAO Antek↑"
+    Choice 1: Company
+    Choice 2: EducationalInstitution
+    Between choice 1 and choice 2, the topic of this example is NaturalPlace [/INST]
+    NaturalPlace
+
+    [FALSE]
+------------------------------------------------------------
+    [INST] Question: Consider the following example: " Angstrem Group (Russian: ОАО «Ангстрем» named after angstrom) is a group of Russian companies one of the largest manufacturers of integrated circuits in Eastern Europe.The group includes: OAO Angstrem (the parent company design and manufacturing of electronic products and semiconductors); OAO Angstrem-M (custom design of integrated circuits staff training); OAO Angstrem-T (under-construction plant with 130-90 nm topology); OAO Angstrem-2M NGO Angstrem OAO Antek↑"
+    Choice 1: Company
+    Choice 2: EducationalInstitution
+    Between choice 1 and choice 2, the topic of this example is Village [/INST]
+    Village
+
+    [FALSE]
+------------------------------------------------------------
+    [INST] Question: Consider the following example: " Angstrem Group (Russian: ОАО «Ангстрем» named after angstrom) is a group of Russian companies one of the largest manufacturers of integrated circuits in Eastern Europe.The group includes: OAO Angstrem (the parent company design and manufacturing of electronic products and semiconductors); OAO Angstrem-M (custom design of integrated circuits staff training); OAO Angstrem-T (under-construction plant with 130-90 nm topology); OAO Angstrem-2M NGO Angstrem OAO Antek↑"
+    Choice 1: Company
+    Choice 2: EducationalInstitution
+    Between choice 1 and choice 2, the topic of this example is Animal [/INST]
+    Animal
+
+    [FALSE]
+------------------------------------------------------------
+    [INST] Question: Consider the following example: " Angstrem Group (Russian: ОАО «Ангстрем» named after angstrom) is a group of Russian companies one of the largest manufacturers of integrated circuits in Eastern Europe.The group includes: OAO Angstrem (the parent company design and manufacturing of electronic products and semiconductors); OAO Angstrem-M (custom design of integrated circuits staff training); OAO Angstrem-T (under-construction plant with 130-90 nm topology); OAO Angstrem-2M NGO Angstrem OAO Antek↑"
+    Choice 1: Company
+    Choice 2: EducationalInstitution
+    Between choice 1 and choice 2, the topic of this example is Plant [/INST]
+    Plant
+
+    [FALSE]
+------------------------------------------------------------
+    [INST] Question: Consider the following example: " Angstrem Group (Russian: ОАО «Ангстрем» named after angstrom) is a group of Russian companies one of the largest manufacturers of integrated circuits in Eastern Europe.The group includes: OAO Angstrem (the parent company design and manufacturing of electronic products and semiconductors); OAO Angstrem-M (custom design of integrated circuits staff training); OAO Angstrem-T (under-construction plant with 130-90 nm topology); OAO Angstrem-2M NGO Angstrem OAO Antek↑"
+    Choice 1: Company
+    Choice 2: EducationalInstitution
+    Between choice 1 and choice 2, the topic of this example is Album [/INST]
+    Album
+
+    [FALSE]
+------------------------------------------------------------
+    [INST] Question: Consider the following example: " Angstrem Group (Russian: ОАО «Ангстрем» named after angstrom) is a group of Russian companies one of the largest manufacturers of integrated circuits in Eastern Europe.The group includes: OAO Angstrem (the parent company design and manufacturing of electronic products and semiconductors); OAO Angstrem-M (custom design of integrated circuits staff training); OAO Angstrem-T (under-construction plant with 130-90 nm topology); OAO Angstrem-2M NGO Angstrem OAO Antek↑"
+    Choice 1: Company
+    Choice 2: EducationalInstitution
+    Between choice 1 and choice 2, the topic of this example is Film [/INST]
+    Film
+
+    [FALSE]
+------------------------------------------------------------
+    [INST] Question: Consider the following example: " Angstrem Group (Russian: ОАО «Ангстрем» named after angstrom) is a group of Russian companies one of the largest manufacturers of integrated circuits in Eastern Europe.The group includes: OAO Angstrem (the parent company design and manufacturing of electronic products and semiconductors); OAO Angstrem-M (custom design of integrated circuits staff training); OAO Angstrem-T (under-construction plant with 130-90 nm topology); OAO Angstrem-2M NGO Angstrem OAO Antek↑"
+    Choice 1: Company
+    Choice 2: EducationalInstitution
+    Between choice 1 and choice 2, the topic of this example is WrittenWork [/INST]
+    WrittenWork
+
+
+================================================================================
+DATASET: RTE
+================================================================================
+
+  -- Question 1  (group_id = 886) --
+
+    [TRUE ]
+------------------------------------------------------------
+    [INST] Question: In the meantime, she said, the act of applying for European Union membership would create new confidence in Iceland abroad, helping to speed economic recovery. Commentators in Iceland have given high ratings to Ms. Sigurdardottir's performance in her 80 days in office, and in the election campaign, saying she has steadied the country's faltering self-confidence in the wake of the banking collapse and turbulent January street protests, the first political violence in Iceland since protests over the country's decision to join NATO in 1949.
+    Question: Does this imply that "NATO was founded in 1949.", yes or no?
+    no [/INST]
+    no
+
+    [FALSE]
+------------------------------------------------------------
+    [INST] Question: In the meantime, she said, the act of applying for European Union membership would create new confidence in Iceland abroad, helping to speed economic recovery. Commentators in Iceland have given high ratings to Ms. Sigurdardottir's performance in her 80 days in office, and in the election campaign, saying she has steadied the country's faltering self-confidence in the wake of the banking collapse and turbulent January street protests, the first political violence in Iceland since protests over the country's decision to join NATO in 1949.
+    Question: Does this imply that "NATO was founded in 1949.", yes or no?
+    yes [/INST]
+    yes
+
+  -- Question 2  (group_id = 286) --
+
+    [TRUE ]
+------------------------------------------------------------
+    [INST] Question: Claes denied categorically that they had ever known of the existence of an Agusta proposal, and told the NATO ambassadors that he did not know anything about an Agusta payment to the Socialist Party.
+    Question: Does this imply that "NATO Secretary General Willy Claes resigned.", yes or no?
+    no [/INST]
+    no
+
+    [FALSE]
+------------------------------------------------------------
+    [INST] Question: Claes denied categorically that they had ever known of the existence of an Agusta proposal, and told the NATO ambassadors that he did not know anything about an Agusta payment to the Socialist Party.
+    Question: Does this imply that "NATO Secretary General Willy Claes resigned.", yes or no?
+    yes [/INST]
+    yes
+
+  -- Question 3  (group_id = 1467) --
+
+    [TRUE ]
+------------------------------------------------------------
+    [INST] Question: Someone said to be an informant within Abu Musab al-Zarqawi's trusted circle told Coalition forces the insurgent leader was going to have a meeting, it has emerged. This information appears to have led US F-16Cs to a safehouse in the Iraqi town of Hibhid, where the Jordanian and five others, including a child, were killed on Wednesday.
+    Question: Does this imply that "Al-Zarquawi is dead.", yes or no?
+    no [/INST]
+    no
+
+    [FALSE]
+------------------------------------------------------------
+    [INST] Question: Someone said to be an informant within Abu Musab al-Zarqawi's trusted circle told Coalition forces the insurgent leader was going to have a meeting, it has emerged. This information appears to have led US F-16Cs to a safehouse in the Iraqi town of Hibhid, where the Jordanian and five others, including a child, were killed on Wednesday.
+    Question: Does this imply that "Al-Zarquawi is dead.", yes or no?
+    yes [/INST]
+    yes
+
+
+================================================================================
+DATASET: COPA
+================================================================================
+
+  -- Question 1  (group_id = 286) --
+
+    [TRUE ]
+------------------------------------------------------------
+    [INST] Question: Consider the following premise: "The boy had trouble buttoning his shirt."
+    Choice 1: He refused to wear the shirt.
+    Choice 2: He asked his mother for help.
+    Q: Which one is more likely to be the effect, choice 1 or choice 2? [/INST]
+    He asked his mother for help.
+
+    [FALSE]
+------------------------------------------------------------
+    [INST] Question: Consider the following premise: "The boy had trouble buttoning his shirt."
+    Choice 1: He refused to wear the shirt.
+    Choice 2: He asked his mother for help.
+    Q: Which one is more likely to be the effect, choice 1 or choice 2? [/INST]
+    He refused to wear the shirt.
+
+  -- Question 2  (group_id = 245) --
+
+    [TRUE ]
+------------------------------------------------------------
+    [INST] Question: Consider the following premise: "I clenched the candy wrapper in my fist."
+    Choice 1: The wrapper crinkled.
+    Choice 2: The wrapper ripped.
+    Q: Which one is more likely to be the effect, choice 1 or choice 2? [/INST]
+    The wrapper crinkled.
+
+    [FALSE]
+------------------------------------------------------------
+    [INST] Question: Consider the following premise: "I clenched the candy wrapper in my fist."
+    Choice 1: The wrapper crinkled.
+    Choice 2: The wrapper ripped.
+    Q: Which one is more likely to be the effect, choice 1 or choice 2? [/INST]
+    The wrapper ripped.
+
+  -- Question 3  (group_id = 374) --
+
+    [TRUE ]
+------------------------------------------------------------
+    [INST] Question: Consider the following premise: "The man grieved."
+    Choice 1: His wife criticized him.
+    Choice 2: His mother passed away.
+    Q: Which one is more likely to be the cause, choice 1 or choice 2? [/INST]
+    His mother passed away.
+
+    [FALSE]
+------------------------------------------------------------
+    [INST] Question: Consider the following premise: "The man grieved."
+    Choice 1: His wife criticized him.
+    Choice 2: His mother passed away.
+    Q: Which one is more likely to be the cause, choice 1 or choice 2? [/INST]
+    His wife criticized him.
+
+
+================================================================================
+DATASET: BOOLQ
+================================================================================
+
+  -- Question 1  (group_id = 1039) --
+
+    [TRUE ]
+------------------------------------------------------------
+    [INST] Passage: Golden goal -- The term golden goal was introduced by FIFA in 1993 along with the rule change because the alternative term, ``sudden death'', was perceived to have negative connotations. In a knockout competition, following a draw, two fifteen-minute periods of extra time are played. If either team scores a goal during extra time, the game ends immediately and the scoring team becomes the winner. The winning goal is known as the ``golden goal''. If there have been no goals scored after both periods of extra time, a penalty shoot-out decides the game. The golden goal was not compulsory, and individual competitions using extra time could choose whether to apply it during extra time. The first European Championship played with the rule was in 1996; the first World Cup played with the rule was in 1998.
+    
+    Question: is soccer overtime sudden death in world cup [/INST]
+    False
+
+    [FALSE]
+------------------------------------------------------------
+    [INST] Question: Passage: Golden goal -- The term golden goal was introduced by FIFA in 1993 along with the rule change because the alternative term, ``sudden death'', was perceived to have negative connotations. In a knockout competition, following a draw, two fifteen-minute periods of extra time are played. If either team scores a goal during extra time, the game ends immediately and the scoring team becomes the winner. The winning goal is known as the ``golden goal''. If there have been no goals scored after both periods of extra time, a penalty shoot-out decides the game. The golden goal was not compulsory, and individual competitions using extra time could choose whether to apply it during extra time. The first European Championship played with the rule was in 1996; the first World Cup played with the rule was in 1998.
+    
+    Question: is soccer overtime sudden death in world cup [/INST]
+    True
+
+  -- Question 2  (group_id = 3633) --
+
+    [TRUE ]
+------------------------------------------------------------
+    [INST] Question: Passage: Google Drive -- Google Drive is a file storage and synchronization service developed by Google. Launched on April 24, 2012, Google Drive allows users to store files on their servers, synchronize files across devices, and share files. In addition to a website, Google Drive offers apps with offline capabilities for Windows and macOS computers, and Android and iOS smartphones and tablets. Google Drive encompasses Google Docs, Sheets and Slides, an office suite that permits collaborative editing of documents, spreadsheets, presentations, drawings, forms, and more. Files created and edited through the office suite are saved in Google Drive.
+    
+    Question: is google docs and google drive the same [/INST]
+    False
+
+    [FALSE]
+------------------------------------------------------------
+    [INST] Question: Passage: Google Drive -- Google Drive is a file storage and synchronization service developed by Google. Launched on April 24, 2012, Google Drive allows users to store files on their servers, synchronize files across devices, and share files. In addition to a website, Google Drive offers apps with offline capabilities for Windows and macOS computers, and Android and iOS smartphones and tablets. Google Drive encompasses Google Docs, Sheets and Slides, an office suite that permits collaborative editing of documents, spreadsheets, presentations, drawings, forms, and more. Files created and edited through the office suite are saved in Google Drive.
+    
+    Question: is google docs and google drive the same [/INST]
+    True
+
+  -- Question 3  (group_id = 5848) --
+
+    [TRUE ]
+------------------------------------------------------------
+    [INST] Question: Passage: The Last Airbender -- Shyamalan or Paramount/Nickelodeon did not immediately confirm the ``go-ahead'' or whether the plug will be pulled on the trilogy. While filming The Last Airbender, Shyamalan mapped out a rough draft for a second film that is ``darker'' and includes Azula, portrayed by Summer Bishil, as the main antagonist. In a July 2010 interview with New York Magazine, Shyamalan commented ``In the next few months we'll be able to know whether we have that opportunity or not'' when asked about the sequel. No such announcement was made and in a September 2010 interview when asked if he knew when the sequel will be made, he replied, ``I don't, because there are so many factors they take into account'', adding, ``I guess it will get into an area where it becomes a discussion--like pros and cons.'' In September 2015, Shyamalan confirmed to Metro UK that he may work on the sequel after completing his next thriller, which started shooting in November 2015.
+    
+    Question: why was there no sequel to the last airbender [/INST]
+    True
+
+    [FALSE]
+------------------------------------------------------------
+    [INST] Question: Passage: The Last Airbender -- Shyamalan or Paramount/Nickelodeon did not immediately confirm the ``go-ahead'' or whether the plug will be pulled on the trilogy. While filming The Last Airbender, Shyamalan mapped out a rough draft for a second film that is ``darker'' and includes Azula, portrayed by Summer Bishil, as the main antagonist. In a July 2010 interview with New York Magazine, Shyamalan commented ``In the next few months we'll be able to know whether we have that opportunity or not'' when asked about the sequel. No such announcement was made and in a September 2010 interview when asked if he knew when the sequel will be made, he replied, ``I don't, because there are so many factors they take into account'', adding, ``I guess it will get into an area where it becomes a discussion--like pros and cons.'' In September 2015, Shyamalan confirmed to Metro UK that he may work on the sequel after completing his next thriller, which started shooting in November 2015.
+    
+    Question: why was there no sequel to the last airbender [/INST]
+    False
+
+
+================================================================================
+END OF REPORT
+================================================================================

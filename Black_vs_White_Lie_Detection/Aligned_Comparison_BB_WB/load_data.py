@@ -153,6 +153,18 @@ def load_dataset_aligned(dataset_name="commonsense_qa", split='validation', n_sa
             elif item.get('answer') == 'Choice 2':
                 item['answer'] = item['choice2']
 
+        # RACE: the article is stored in item['article'] but get_base_prompt only uses
+        # item['question'] and item['answer']. Without the article the questions are
+        # unanswerable from world knowledge alone. Prepend the article to the question.
+        if name == "race" and 'article' in item:
+            item['question'] = f"Article: {item['article']}\n\nQuestion: {item['question']}"
+
+        # BOOLQ: the reading passage is stored in item['passage'] but never used.
+        # BoolQ is a reading-comprehension task; the answer often depends on the specific
+        # passage rather than world knowledge. Prepend the passage to the question.
+        if name == "boolq" and 'passage' in item:
+            item['question'] = f"Passage: {item['passage']}\n\nQuestion: {item['question']}"
+
         processed_data.append(item)
         
         count += 1
