@@ -201,6 +201,81 @@ def compute_bb_features_for_dataset(
 
     return results
 
+def compute_l2_logprob_features(
+    df, model, tokenizer, device="cuda", probe_indices=None,
+    show_progress=True, elicitation_batch_size=48, desc="L2 Logprobs"
+):
+    """
+    Level 2 Access: compute log P(Yes) - log P(No) for every elicitation probe.
+
+    Mirrors compute_l1_yes_no_answers but extracts a continuous logprob ratio
+    score instead of a binary argmax. Setting elicitation_batch_size to the
+    total number of probes (48) processes all probes in a single forward pass
+    per sample, halving compute vs the legacy probe_batch_size=24 path.
+
+    Args:
+        df: DataFrame with samples.
+        model: The LLM model.
+        tokenizer: The tokenizer.
+        device: 'cuda' or 'cpu'.
+        probe_indices: Optional array of probe indices. If None, uses all probes.
+        show_progress: Whether to show a tqdm progress bar.
+        elicitation_batch_size: Probes per forward pass. Default 48 = one pass
+                                 per sample. Reduce for very long prompts (e.g.
+                                 RACE with full articles) to avoid GPU OOM.
+        desc: Progress bar description.
+
+    Returns:
+        List of dicts: [{'label': int, 'l2_features': [float x N_probes]}, ...]
+    """
+    probes_df = load_probes(probe_indices=probe_indices)
+
+    from prompt_utils import get_black_box_context
+    from tqdm.auto import tqdm
+
+    probes = [row["probe"] for _, row in probes_df.iterrows()]
+
+    yes_ids = [tokenizer.encode(v, add_special_tokens=False)[0]
+               for v in ["Yes", "yes"]
+               if len(tokenizer.encode(v, add_special_tokens=False)) == 1]
+    no_ids  = [tokenizer.encode(v, add_special_tokens=False)[0]
+               for v in ["No", "no"]
+               if len(tokenizer.encode(v, add_special_tokens=False)) == 1]
+
+    results  = []
+    iterator = range(len(df))
+    if show_progress:
+        iterator = tqdm(iterator, desc=desc, total=len(df), unit="sample")
+
+    for idx in iterator:
+        row    = df.iloc[idx]
+        label  = row.get("label", None)
+        prompts = [get_black_box_context(row, probe) for probe in probes]
+        scores  = []
+
+        for i in range(0, len(prompts), elicitation_batch_size):
+            chunk  = prompts[i : i + elicitation_batch_size]
+            inputs = tokenizer(chunk, return_tensors="pt",
+                               padding=True, truncation=True).to(device)
+            with torch.no_grad():
+                logits = model(**inputs).logits
+
+            last_idx = inputs["attention_mask"].sum(dim=1) - 1
+            for b in range(len(chunk)):
+                pl    = logits[b, last_idx[b]]
+                probs = torch.softmax(pl, dim=-1)
+                yes_p = sum(probs[j].item() for j in yes_ids)
+                no_p  = sum(probs[j].item() for j in no_ids)
+                scores.append(np.log(max(yes_p, 1e-10)) - np.log(max(no_p, 1e-10)))
+
+            del inputs, logits
+            torch.cuda.empty_cache()
+
+        results.append({"label": label, "l2_features": scores})
+
+    return results
+
+
 def compute_l1_yes_no_answers(
     df, model, tokenizer, device="cuda", batch_size=50, probe_indices=None, show_progress=True, probe_batch_size=48, desc="L1 Yes/No"
 ):
